@@ -3,19 +3,25 @@
 
 #include "pch.h"
 #include <iostream>
+#include <string>;
+using namespace std;
 
 int main()
 {
-    std::cout << "Hello World!\n"; 
+	int option = 0;
+	while (true)
+	{
+		//Display Menu
+		cout << "===============================\n";
+		cout << "1. Display all stations\n"; // Choose a line after selecting this option
+		cout << "2. Display station information\n"; // Ask for station name after selecting this option
+		cout << "3. Add new station\n"; // Add new station at specified line in file
+		cout << "4. Display route\n"; // Ask for source and destination stations. Display a route and price.
+		cout << "===============================\n";
+		cout << "Select an option: ";
+
+		cin >> option;
+		//advanced features
+	}
 }
 
-// Run program: Ctrl + F5 or Debug > Start Without Debugging menu
-// Debug program: F5 or Debug > Start Debugging menu
-
-// Tips for Getting Started: 
-//   1. Use the Solution Explorer window to add/manage files
-//   2. Use the Team Explorer window to connect to source control
-//   3. Use the Output window to see build output and other messages
-//   4. Use the Error List window to view errors
-//   5. Go to Project > Add New Item to create new code files, or Project > Add Existing Item to add existing code files to the project
-//   6. In the future, to open this project again, go to File > Open > Project and select the .sln file
