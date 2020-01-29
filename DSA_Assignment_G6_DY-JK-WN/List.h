@@ -3,19 +3,21 @@
 using namespace std;
 #include <string>;
 
-const int MAX_SIZE = 100;
+//const int MAX_SIZE = 100;
 typedef string ItemType;
 
 class List
 {
 private:
-	ItemType items[MAX_SIZE];
+	int MAX_SIZE;
+	ItemType items[1];
 	int      size;
 
 public:
 
 	// constructor
 	List();
+	List(int newSize);
 
 	// add an item to the back of the list (append)
 	// pre : size < MAX_SIZE
@@ -55,4 +57,6 @@ public:
 	void print();
 
 	void replace(int index, ItemType item);
+
+	bool resizeList(int newSize);
 };

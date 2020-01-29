@@ -2,7 +2,16 @@
 #include "List.h"  
 
 // constructor
-List::List() { size = 0; }
+List::List() 
+{ 
+	size = 0; 
+}
+
+List::List(int newSize) 
+{ 
+	size = 0; 
+	items->resize(newSize);
+}
 
 // add an item to the back of the list (append)
 bool List::add(ItemType item)
@@ -64,7 +73,7 @@ void List::print()
 {
 	for (int i = 0; i < getLength(); i++)
 	{
-		std::cout << items[i];
+		std::cout << items[i] << endl;
 	}
 }
 
@@ -72,4 +81,14 @@ void List::print()
 void List::replace(int index, ItemType item)
 {
 
+}
+
+bool List::resizeList(int newSize)
+{
+	if (newSize >= this->size)
+	{
+		items->resize(newSize);
+		return true;
+	}
+	return false;
 }
