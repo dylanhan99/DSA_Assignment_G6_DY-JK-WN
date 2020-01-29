@@ -4,10 +4,75 @@
 #include "pch.h"
 #include <iostream>
 #include <string>;
+#include <fstream>
 using namespace std;
+
+#include "List.h"
+
+bool ReadFile(string filename, List* outList)
+{
+	string line;
+	ifstream myfile(filename);
+	if (myfile.is_open())
+	{
+		while (getline(myfile, line))
+		{
+			outList->add(line);
+		}
+		myfile.close();
+		return true;
+	}
+
+	else
+	{
+		cout << "Unable to open file";
+		return false;
+	}
+}
+
+int CountFileLines(string filename)
+{
+	int number_of_lines = 0;
+	string line;
+	ifstream myfile(filename);
+	if (myfile.is_open())
+	{
+		while (getline(myfile, line))
+			++number_of_lines;
+
+		myfile.close();
+		return number_of_lines;
+	}
+	else
+	{
+		cout << "Unable to open file";
+		return -1;
+	}
+}
 
 int main()
 {
+	string DYmainpath = "C:\\Users\\HanWei\\Desktop\\NP stuff\\Year_3-2_FINAL\\DSA\\!Assignment\\";
+	string JKmainpath = "";
+	string WNmainpath = "";
+	string full_simple = "full\\";
+
+	string FaresPath		= DYmainpath + full_simple + "Fares.csv";
+	string InterchangesPath = DYmainpath + full_simple + "Interchanges.csv";
+	string RoutesPath		= DYmainpath + full_simple + "Routes.csv";
+	string StationsPath		= DYmainpath + full_simple + "Stations.csv";
+
+	List* FaresList = new List();
+	List* InterchangesList = new List();
+	List* RoutesList = new List();
+	List* StationsList = new List();
+
+	CountFileLines(FaresPath);
+	if (ReadFile(FaresPath, FaresList))
+		cout << "Success";
+	FaresList->print();
+	cout << FaresList->getLength();
+
 	int option = 0;
 	while (true)
 	{
