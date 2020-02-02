@@ -4,19 +4,22 @@
 class Station
 {
 private:
-	bool isInterchange;
-	List stationIDs;
+	string stationName;
+	string stationID;
+	int distanceToNext; //in ascending order of ID. So EW23 to EW24 is 3500m
 
 public:
 	Station();
 	~Station();
 
-	Station(bool isInterchange, string stationID);
+	Station(string stationName, string stationID);
 
-	void setIsInterchange(bool interchange);
+	void SetDistance(int distance);
 
-	bool addStationID(string stationID);
+	string getStationName();
 
-	int getNumStationIDs();
+	string getStationID();
+
+	int getDistance();
 };
 

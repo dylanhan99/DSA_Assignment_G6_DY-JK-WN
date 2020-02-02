@@ -5,12 +5,12 @@ using namespace std;
 
 //const int MAX_SIZE = 100;
 typedef string ItemType;
+const int MAX_SIZE = 300;
 
 class List
 {
 private:
-	int MAX_SIZE;
-	ItemType items[1];
+	ItemType items[MAX_SIZE];
 	int      size;
 
 public:

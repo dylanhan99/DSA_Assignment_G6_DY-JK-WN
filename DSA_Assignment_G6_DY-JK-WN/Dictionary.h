@@ -5,21 +5,13 @@ using namespace std;
 
 #include "Station.h"
 
-//const int MAX_SIZE = 101;
-
-//struct Station
-//{
-//	bool isInterchange;
-//	List stationIDs;
-//};
-
-//typedef Station ItemType;
 typedef string KeyType;
+const int DIC_MAX_SIZE = 101;
 
 class Dictionary
 {
 private:
-	int MAX_SIZE;
+
 	struct Node
 	{
 		KeyType  key;   // search key
@@ -27,7 +19,7 @@ private:
 		Node     *next;	// pointer pointing to next item
 	};
 
-	Node *items[1];
+	Node *items[DIC_MAX_SIZE];
 	int  size;			// number of items in the Dictionary
 
 public:
@@ -40,7 +32,7 @@ public:
 	int hash(KeyType key);
 
 	// add a new item with the specified key to the Dictionary
-	bool add(KeyType newKey, Station newItem);
+	bool add(KeyType newKey, string stationID, int distance);
 
 	// remove an item with the specified key in the Dictionary
 	void remove(KeyType key);

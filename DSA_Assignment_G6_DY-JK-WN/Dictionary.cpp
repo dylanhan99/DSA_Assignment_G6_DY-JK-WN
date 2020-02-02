@@ -1,7 +1,6 @@
 #include "pch.h"
 #include "Dictionary.h"
 
-
 Dictionary::Dictionary()
 {
 	size = 0;
@@ -29,11 +28,12 @@ int Dictionary::hash(KeyType key)
 	return sum;
 }
 
-bool Dictionary::add(KeyType newKey, Station newItem) // key is station name eg Jurong East, Item is Station info
+bool Dictionary::add(KeyType newKey, string stationID, int distance) // key is station name eg Jurong East, Item is Station info
 {
 	Node* newNode = new Node();
 	newNode->key = newKey;
-	newNode->item = newItem;
+	newNode->item = Station(newKey, stationID/*, distance*/);
+	newNode->item.SetDistance(distance);
 	newNode->next = NULL;
 
 	int index = hash(newKey);
@@ -136,8 +136,9 @@ void Dictionary::print() //update this function
 					break;
 				else
 				{
-					//cout << "Name: " << currentNode->key << endl;
-					//cout << "Number: " << currentNode->item << endl;
+					cout << "Number: " << currentNode->item.getStationID() << endl;
+					cout << "Number: " << currentNode->item.getStationName() << endl;
+					cout << "Number: " << currentNode->item.getDistance() << endl;
 					currentNode = currentNode->next;
 				}
 			}

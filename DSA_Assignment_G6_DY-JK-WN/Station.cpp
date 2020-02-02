@@ -11,24 +11,29 @@ Station::~Station()
 {
 }
 
-Station::Station(bool isInterchange, string stationID)
+Station::Station(string stationName, string stationID)
 {
-	this->isInterchange = isInterchange;
-	this->stationIDs.add(stationID);
+	this->stationName = stationName;
+	this->stationID = stationID;
+	this->distanceToNext = 0;
 }
 
-void Station::setIsInterchange(bool isInterchange)
+void Station::SetDistance(int distance)
 {
-	this->isInterchange = isInterchange;
+	this->distanceToNext = distance;
 }
 
-bool Station::addStationID(string stationID)
+int Station::getDistance()
 {
-	if (this->isInterchange)
-	{
-		this->stationIDs.resizeList(this->stationIDs.getLength() + 1);
-		this->stationIDs.add(stationID);
-		return true;
-	}
-	return false;
+	return this->distanceToNext;
+}
+
+string Station::getStationID()
+{
+	return this->stationName;
+}
+
+string Station::getStationName()
+{
+	return this->stationID;
 }

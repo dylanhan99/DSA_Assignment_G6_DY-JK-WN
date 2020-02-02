@@ -7,18 +7,13 @@ List::List()
 	size = 0; 
 }
 
-List::List(int newSize) 
-{ 
-	size = 0; 
-	items->resize(newSize);
-}
-
 // add an item to the back of the list (append)
 bool List::add(ItemType item)
 {
 	bool success = size < MAX_SIZE;
 	if (success)
 	{
+		//cout << "size = " << size;
 		items[size] = item;
 		size++;
 	}
@@ -59,7 +54,7 @@ ItemType List::get(int index)
 	if (success)
 		return items[index];
 	else
-		return "";
+		return "rip";
 }
 
 // check if the list is empty
