@@ -6,6 +6,7 @@
 #include <string>;
 #include <fstream>
 #include <sstream>  
+#include <vector>
 using namespace std;
 
 #include "Dictionary.h"
@@ -22,10 +23,10 @@ string InterchangesPath = DYmainpath + full_simple + "Interchanges.csv";
 string RoutesPath = DYmainpath + full_simple + "Routes.csv";
 string StationsPath = DYmainpath + full_simple + "Stations.csv";
 
-List* FaresList = new List();
-List* InterchangesList = new List();
-List* RoutesList = new List();
-List* StationsList = new List();
+List* FaresList;
+List* InterchangesList;
+List* RoutesList;
+List* StationsList;
 
 Queue* SplitQ(string str, char delimiter);
 List* SplitL(string str, char delimiter);
@@ -42,8 +43,7 @@ int main()
 	init();
 
 	if (ReadFile(FaresPath, FaresList))
-		cout << "length fares list" << FaresList->getLength() << endl;
-		//cout << "Fares success..." << endl;
+		cout << "Fares success..." << endl;
 	if (ReadFile(InterchangesPath, InterchangesList))
 		cout << "Interchanges success..." << endl;
 	if (ReadFile(RoutesPath, RoutesList))
@@ -128,17 +128,11 @@ bool ReadFile(string filename, List* outList)
 	if (myfile.is_open())
 	{
 		string line;
-		int count = 0;
 		while (getline(myfile, line))
 		{
-			//count++;
-			//cout << count << endl;
 			cout << "test" << endl;
 			cout << "line = " << line << endl;
 			outList->add(line);
-			//if (!outList->add(line))
-			//	cout << "FILILAEIL" << endl;
-			//cout << outList->getLength() << endl;
 		}
 		myfile.close();
 		return true;
@@ -151,12 +145,12 @@ int GetDistance(string stationID)
 {
 	string line;
 	int rowIndex, columnIndex = 0;
-	for (int i = 0; i < RoutesList->getLength(); i++)
+	for (int i = 0; i < RoutesList->getSize(); i++)
 	{
 		rowIndex = i;
 		if (i % 2 != 0)
 		{
-			i++;
+			//i++;
 			continue;
 		}
 		line = RoutesList->get(rowIndex).substr(0, 2); // Get first 2 letters in string to check line. EW/NS/DT/etc.
@@ -181,6 +175,9 @@ int GetDistance(string stationID)
 
 			return stoi(fare); //converts the string fare into int
 		}
+		else
+			continue;
+			//i++;
 	}
 	return -1;
 }
@@ -207,8 +204,8 @@ int CountFileLines(string filename)
 
 void InitDictionary(List* StationsList, Dictionary* outDictionary)
 {
-	cout << "length" << StationsList->getLength() << endl;
-	for (int i = 0; i < StationsList->getLength(); i++)
+	cout << "length" << StationsList->getSize() << endl;
+	for (int i = 0; i < StationsList->getSize(); i++)
 	{
 		string currentStation = StationsList->get(i);
 		Queue* currentStationInfo = SplitQ(currentStation, ',');
@@ -227,13 +224,9 @@ void InitDictionary(List* StationsList, Dictionary* outDictionary)
 
 void init()
 {
-	//FaresList = new List(CountFileLines(FaresPath));
-	//InterchangesList = new List(CountFileLines(InterchangesPath));
-	//RoutesList = new List(CountFileLines(RoutesPath));
-	//StationsList = new List(CountFileLines(StationsPath));
-	//FaresList = new List();
-	//InterchangesList = new List();
-	//RoutesList = new List();
-	//StationsList = new List();
+	FaresList = new List();
+	InterchangesList = new List();
+	RoutesList = new List();
+	StationsList = new List();
 }
 

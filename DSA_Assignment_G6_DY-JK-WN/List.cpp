@@ -1,89 +1,135 @@
 #include "pch.h"
-#include "List.h"  
+#include "List.h"
 
-// constructor
-List::List() 
-{ 
-	size = 0; 
+
+List::List()
+{
+	size = 0;
 }
 
-// add an item to the back of the list (append)
+
+List::~List()
+{
+}
+
 bool List::add(ItemType item)
 {
 	bool success = size < MAX_SIZE;
+
+	Node* newNode = new Node();
+	newNode->item = item;
+	newNode->next = NULL;
+
 	if (success)
 	{
-		//cout << "size = " << size;
-		items[size] = item;
+		if (size == 0)
+		{
+			firstNode = newNode;
+		}
+		else
+		{
+			lastNode->next = newNode;
+		}
+		lastNode = newNode;
+		workingNode = newNode;
 		size++;
 	}
 	return success;
 }
 
-// add an item at a specified position in the list (insert)
 bool List::add(int index, ItemType item)
 {
-	bool success = (index >= 0) && (index <= size) && (size < MAX_SIZE);
+	bool success = (index <= size) && (index <= MAX_SIZE) && (index >= 0);
 	if (success)
 	{
-		for (int pos = size; pos >= index; pos--)
-			items[pos] = items[pos - 1];
-		items[index] = item;
-		size++;  
+		Node* newNode = new Node();
+		newNode->item = item;
+		newNode->next = NULL;
+		if (index == 1)
+		{
+			newNode->next = firstNode;
+			firstNode = newNode;
+		}
+		else
+		{
+			for (int i = 0; i < index - 1; i++)
+			{
+				if (i == 0)
+					workingNode = firstNode;
+				else
+					workingNode = workingNode->next;
+			}
+			newNode->next = workingNode->next;
+			workingNode->next = newNode;
+			workingNode = newNode;
+		}
+
+		if (newNode->next == NULL)
+		{
+			lastNode = newNode;
+		}
+		size++;
 	}
 	return success;
 }
 
-// remove an item at a specified position in the list
-void List::remove(int index)
-{
-	bool success = (index >= 0) && (index < size);
-	if (success)
-	{
-		for (int pos = index; pos < size; pos++)
-			items[pos] = items[pos + 1];
-		size--;
-	}
-
-}
-
-// get an item at a specified position of the list (retrieve)
 ItemType List::get(int index)
 {
-	bool success = (index >= 0) && (index < size);
+	bool success = (index >= 0) && (index <= size);
+
 	if (success)
-		return items[index];
-	else
-		return "rip";
+	{
+		workingNode = firstNode;
+		for (int i = 0; i < index; i++)
+		{
+			workingNode = workingNode->next;
+		}
+		return workingNode->item;
+	}
+
+	return NULL; //error
 }
 
-// check if the list is empty
-bool List::isEmpty() { return size == 0; }
+void List::remove(int index)
+{
+	bool success = (index >= 0) && (index <= size);
 
-// check the size of the list
-int List::getLength() { return size; }
+	if (success)
+	{
+		Node* deleteNode = new Node;
+		for (int i = 0; i < index - 1; i++)
+		{
+			if (i <= 0)
+				workingNode = firstNode;
+			else
+				workingNode = workingNode->next;
 
-// display the items in the list
+			deleteNode = workingNode->next;
+			workingNode->next = workingNode->next->next;
+		}
+		if (index <= 1)
+		{
+			workingNode = firstNode;
+			firstNode = firstNode->next;
+		}
+		delete deleteNode;
+		size--;
+	}
+}
+
+int List::getSize()
+{
+	return size;
+}
+
 void List::print()
 {
-	for (int i = 0; i < getLength(); i++)
+	int index = 0;
+	workingNode = firstNode;
+	while (workingNode != NULL)
 	{
-		std::cout << items[i] << endl;
+		cout << index + 1 << ": " << workingNode->item << endl;
+		workingNode = workingNode->next;
+		index++;
 	}
-}
-
-// replace the  item in the specified index in the list
-void List::replace(int index, ItemType item)
-{
-
-}
-
-bool List::resizeList(int newSize)
-{
-	if (newSize >= this->size)
-	{
-		items->resize(newSize);
-		return true;
-	}
-	return false;
 }
