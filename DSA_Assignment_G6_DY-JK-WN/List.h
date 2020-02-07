@@ -3,17 +3,17 @@
 using namespace std;
 #include <string>;
 
-//const int MAX_SIZE = 100;
-typedef string ItemType;
+//typedef string ItemType;
 const int MAX_SIZE = 101;
 
+template <class ListTemplate>
 class List
 {
 private:
 	struct Node
 	{
-		ItemType item;	// item
-		Node*     next;	// pointer pointing to next item
+		ListTemplate item;	// item
+		Node*		 next;	// pointer pointing to next item
 	};
 
 	Node* firstNode;
@@ -27,18 +27,20 @@ public:
 	List();
 	~List();
 
+	int getSize();
+
+	void setSize(int i);
+
 	// add an item to the back of the list (append)
-	bool add(ItemType item);
+	bool add(ListTemplate item);
 
 	// add an item at a specified position in the list (insert)
-	bool add(int index, ItemType item);
+	bool add(int index, ListTemplate item);
 
-	ItemType get(int index);
+	ListTemplate* get(int index);
 
 	// remove an item at a specified position in the list
 	void remove(int index);
-
-	int getSize();
 
 	// display all the items in the list
 	void print();

@@ -91,21 +91,47 @@ void Dictionary::remove(KeyType key)
 	}
 }
 
-Station Dictionary::get(KeyType key)
+Station Dictionary::getStation(KeyType key)
 {
 	int index = hash(key);
-	Station returnItem;
+	//Station returnItem;
 	Node* currentNode = NULL;
 
 	if (items[index] != NULL)
 	{
 		currentNode = items[index];
 		while (currentNode->next != NULL)
+		{
 			if (currentNode->key == key)
+			{
+				//returnItem = currentNode->item;
 				return currentNode->item;
+			}
 			else
+			{
 				currentNode = currentNode->next;
+			}
+		}
 	}
+	//return returnItem;
+}
+
+List<Station>* Dictionary::getStations(KeyType key)
+{
+	int index = hash(key);
+	List<Station>* stationsList = new List<Station>();
+	Node* currentNode = NULL;
+
+	if (!isEmpty() && items[index] != NULL)
+	{
+		currentNode = items[index];
+		while (currentNode->next != NULL)
+		{
+			//if (currentNode->key == key)
+			//	stationsList->add(;
+		}
+	}
+	return NULL;
 }
 
 bool Dictionary::isEmpty()
@@ -145,6 +171,11 @@ void Dictionary::print() //update this function
 		}
 	}
 	cout << "====================" << endl;
+}
+
+bool Dictionary::printStationInformation(KeyType stationName)
+{
+
 }
 
 int Dictionary::charvalue(char c)

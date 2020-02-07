@@ -1,18 +1,32 @@
 #include "pch.h"
 #include "List.h"
 
-
-List::List()
+template <class ListTemplate>
+List<ListTemplate>::List()
 {
 	size = 0;
 }
 
 
-List::~List()
+template <class ListTemplate>
+List<ListTemplate>::~List()
 {
 }
 
-bool List::add(ItemType item)
+template <class ListTemplate>
+int List<ListTemplate>::getSize()
+{
+	return size;
+}
+
+template <class ListTemplate>
+void List<ListTemplate>::setSize(int i)
+{
+	size = i;
+}
+
+template <class ListTemplate>
+bool List<ListTemplate>::add(ListTemplate item)
 {
 	bool success = size < MAX_SIZE;
 
@@ -37,7 +51,8 @@ bool List::add(ItemType item)
 	return success;
 }
 
-bool List::add(int index, ItemType item)
+template <class ListTemplate>
+bool List<ListTemplate>::add(int index, ListTemplate item)
 {
 	bool success = (index <= size) && (index <= MAX_SIZE) && (index >= 0);
 	if (success)
@@ -73,7 +88,8 @@ bool List::add(int index, ItemType item)
 	return success;
 }
 
-ItemType List::get(int index)
+template <class ListTemplate>
+ListTemplate* List<ListTemplate>::get(int index)
 {
 	bool success = (index >= 0) && (index <= size);
 
@@ -84,13 +100,14 @@ ItemType List::get(int index)
 		{
 			workingNode = workingNode->next;
 		}
-		return workingNode->item;
+		return &workingNode->item;
 	}
 
 	return NULL; //error
 }
 
-void List::remove(int index)
+template <class ListTemplate>
+void List<ListTemplate>::remove(int index)
 {
 	bool success = (index >= 0) && (index <= size);
 
@@ -117,18 +134,14 @@ void List::remove(int index)
 	}
 }
 
-int List::getSize()
-{
-	return size;
-}
-
-void List::print()
+template <class ListTemplate>
+void List<ListTemplate>::print()
 {
 	int index = 0;
 	workingNode = firstNode;
 	while (workingNode != NULL)
 	{
-		cout << index + 1 << ": " << workingNode->item << endl;
+		cout << index + 1 << ": " << &workingNode->item << endl;
 		workingNode = workingNode->next;
 		index++;
 	}
