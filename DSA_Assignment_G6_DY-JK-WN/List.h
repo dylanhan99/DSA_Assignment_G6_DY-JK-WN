@@ -2,6 +2,7 @@
 #include <iostream>
 using namespace std;
 #include <string>;
+#include "Station.h"
 
 //typedef string ItemType;
 const int MAX_SIZE = 101;
@@ -37,7 +38,7 @@ public:
 	// add an item at a specified position in the list (insert)
 	bool add(int index, ListTemplate item);
 
-	ListTemplate get(int index);
+	ListTemplate* get(int index);
 
 	// remove an item at a specified position in the list
 	void remove(int index);

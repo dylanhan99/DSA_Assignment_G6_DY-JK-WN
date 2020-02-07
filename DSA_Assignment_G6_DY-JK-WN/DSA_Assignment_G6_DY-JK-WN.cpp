@@ -169,10 +169,10 @@ int GetDistance(string stationID)
 			//i++;
 			continue; 
 		}
-		line = RoutesList->get(rowIndex).substr(0, 2); // Get first 2 letters in string to check line. EW/NS/DT/etc.
+		line = RoutesList->get(rowIndex)->substr(0, 2); // Get first 2 letters in string to check line. EW/NS/DT/etc.
 		if (stationID.substr(0, 2) == line)
 		{
-			Queue* faresQueue = SplitQ(RoutesList->get(rowIndex/* + 1*/), ',');
+			Queue* faresQueue = SplitQ(*RoutesList->get(rowIndex), ',');
 			while (!faresQueue->isEmpty())
 			{
 				string currentID;
@@ -183,7 +183,7 @@ int GetDistance(string stationID)
 					return -1;
 				columnIndex++;
 			}
-			faresQueue = SplitQ(RoutesList->get(rowIndex + 1), ',');
+			faresQueue = SplitQ(*RoutesList->get(rowIndex + 1), ',');
 			string fare;
 			faresQueue->getFront(fare); // if columnIndex == 0, fare will still have a value
 			for (int j = 0; i < columnIndex; i++)
@@ -224,7 +224,7 @@ void InitDictionary(List<string>* StationsList, Dictionary<Station>* outDictiona
 	//cout << "length" << StationsList->getSize() << endl;
 	for (int i = 0; i < StationsList->getSize(); i++)
 	{
-		string currentStation = StationsList->get(i);
+		string currentStation = *StationsList->get(i);
 		Queue* currentStationInfo = SplitQ(currentStation, ',');
 
 		string currentStationID, currentStationName;

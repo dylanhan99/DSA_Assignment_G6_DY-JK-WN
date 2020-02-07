@@ -89,7 +89,7 @@ bool List<ListTemplate>::add(int index, ListTemplate item)
 }
 
 template <class ListTemplate>
-ListTemplate List<ListTemplate>::get(int index)
+ListTemplate* List<ListTemplate>::get(int index)
 {
 	bool success = (index >= 0) && (index <= size);
 
@@ -100,7 +100,7 @@ ListTemplate List<ListTemplate>::get(int index)
 		{
 			workingNode = workingNode->next;
 		}
-		return workingNode->item;
+		return &workingNode->item;
 	}
 
 	return NULL; //error
@@ -146,3 +146,8 @@ void List<ListTemplate>::print()
 		index++;
 	}
 }
+
+template class List<Station>;
+template class List<string>;
+template class List<int>;
+template class List<char>;
