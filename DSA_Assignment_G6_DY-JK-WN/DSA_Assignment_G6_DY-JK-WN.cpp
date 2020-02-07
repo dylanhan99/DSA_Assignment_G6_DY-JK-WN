@@ -16,12 +16,12 @@ using namespace std;
 string DYmainpath = "C:\\Users\\HanWei\\Desktop\\NP stuff\\Year_3-2_FINAL\\DSA\\!Assignment\\";
 string JKmainpath = "";
 string WNmainpath = "";
-string full_simple = "full\\";
+string fullPath = "full\\";
 
-string FaresPath = DYmainpath + full_simple + "Fares.csv";
-string InterchangesPath = DYmainpath + full_simple + "Interchanges.csv";
-string RoutesPath = DYmainpath + full_simple + "Routes.csv";
-string StationsPath = DYmainpath + full_simple + "Stations.csv";
+string FaresPath = fullPath + "Fares.csv";
+string InterchangesPath = fullPath + "Interchanges.csv";
+string RoutesPath = fullPath + "Routes.csv";
+string StationsPath = fullPath + "Stations.csv";
 
 List* FaresList;
 List* InterchangesList;
