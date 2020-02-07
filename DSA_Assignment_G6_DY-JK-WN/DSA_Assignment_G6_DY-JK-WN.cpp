@@ -14,22 +14,12 @@ using namespace std;
 #include "Queue.h"
 #include "ArrayList.h"
 
-string DYmainpath = "C:\\Users\\HanWei\\Desktop\\NP stuff\\Year_3-2_FINAL\\DSA\\!Assignment\\";
-string JKmainpath = "";
-string WNmainpath = "";
 string fullPath = "full\\";
-
-string folderPath = DYmainpath + fullPath;
 
 string FaresPath = fullPath + "Fares.csv";
 string InterchangesPath = fullPath + "Interchanges.csv";
 string RoutesPath = fullPath + "Routes.csv";
 string StationsPath = fullPath + "Stations.csv";
-
-string FaresPath = folderPath + "Fares.csv";
-string InterchangesPath = folderPath + "Interchanges.csv";
-string RoutesPath = folderPath + "Routes.csv";
-string StationsPath = folderPath + "Stations.csv";
 
 List<string>* FaresList;
 List<string>* InterchangesList;
@@ -234,7 +224,7 @@ void InitDictionary(List<string>* StationsList, Dictionary<Station>* outDictiona
 	//cout << "length" << StationsList->getSize() << endl;
 	for (int i = 0; i < StationsList->getSize(); i++)
 	{
-		string currentStation = *StationsList->get(i);
+		string currentStation = StationsList->get(i);
 		Queue* currentStationInfo = SplitQ(currentStation, ',');
 
 		string currentStationID, currentStationName;

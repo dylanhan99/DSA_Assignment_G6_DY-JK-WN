@@ -42,7 +42,7 @@ public:
 	//Station getStation(KeyType key);
 
 	// get all stations with the same name (the key)
-	List<Station>* getStations(KeyType key);
+	//List<Station>* getStations(KeyType key);
 	ItemType get(KeyType key);
 
 	// check if the Dictionary is empty
