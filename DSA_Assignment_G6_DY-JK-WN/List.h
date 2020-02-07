@@ -37,7 +37,7 @@ public:
 	// add an item at a specified position in the list (insert)
 	bool add(int index, ListTemplate item);
 
-	ListTemplate* get(int index);
+	ListTemplate get(int index);
 
 	// remove an item at a specified position in the list
 	void remove(int index);
