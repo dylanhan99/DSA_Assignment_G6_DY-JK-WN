@@ -8,6 +8,7 @@ using namespace std;
 typedef string KeyType;
 const int DIC_MAX_SIZE = 101;
 
+template <class ItemType>
 class Dictionary
 {
 private:
@@ -15,7 +16,7 @@ private:
 	struct Node
 	{
 		KeyType  key;   // search key
-		Station item;	// data item
+		ItemType item;	// data item
 		Node     *next;	// pointer pointing to next item
 	};
 
@@ -38,7 +39,7 @@ public:
 	void remove(KeyType key);
 
 	// get an item with the specified key in the Dictionary (retrieve)
-	Station get(KeyType key);
+	ItemType get(KeyType key);
 
 	// check if the Dictionary is empty
 	bool isEmpty();

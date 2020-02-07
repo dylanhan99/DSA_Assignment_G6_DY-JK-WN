@@ -12,6 +12,7 @@ using namespace std;
 #include "Dictionary.h"
 #include "List.h"
 #include "Queue.h"
+#include "ArrayList.h"
 
 string DYmainpath = "C:\\Users\\HanWei\\Desktop\\NP stuff\\Year_3-2_FINAL\\DSA\\!Assignment\\";
 string JKmainpath = "";
@@ -28,17 +29,19 @@ List* InterchangesList;
 List* RoutesList;
 List* StationsList;
 
+ArrayList* NorthSouthArrayList;
+
 Queue* SplitQ(string str, char delimiter);
 List* SplitL(string str, char delimiter);
 bool ReadFile(string filename, List* outList);
 int GetDistance(string stationID);
 int CountFileLines(string filename);
-void InitDictionary(List* StationsList, Dictionary* outDictionary);
+void InitDictionary(List* StationsList, Dictionary<Station>* outDictionary);
 void init();
 
 int main()
 {
-	Dictionary* dic = new Dictionary();
+	Dictionary<Station>* dic = new Dictionary<Station>();
 
 	init();
 
@@ -202,7 +205,7 @@ int CountFileLines(string filename)
 	}
 }
 
-void InitDictionary(List* StationsList, Dictionary* outDictionary)
+void InitDictionary(List* StationsList, Dictionary<Station>* outDictionary)
 {
 	cout << "length" << StationsList->getSize() << endl;
 	for (int i = 0; i < StationsList->getSize(); i++)

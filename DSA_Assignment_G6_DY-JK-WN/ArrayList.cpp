@@ -14,7 +14,7 @@ ArrayList::~ArrayList()
 
 bool ArrayList::add(ItemType item)
 {
-	bool success = size < MAX_SIZE;
+	bool success = size < ARRAY_MAX_SIZE;
 	if (success)
 	{
 		items[size] = item;    // add to the end of the list
@@ -26,7 +26,7 @@ bool ArrayList::add(ItemType item)
 // add an item at a specified position in the list (insert)
 bool ArrayList::add(int index, ItemType item)
 {
-	bool success = (index >= 0) && (index <= size) && (size < MAX_SIZE);
+	bool success = (index >= 0) && (index <= size) && (size < ARRAY_MAX_SIZE);
 	if (success)
 	{  // make room for the item by shifting all items at
 	   // positions >= index toward the end of the

@@ -4,12 +4,12 @@
 
 using namespace std;
 typedef string ItemType;
-const int MAX_SIZE = 101;
+const int ARRAY_MAX_SIZE = 101;
 
 class ArrayList
 {
 private:
-	ItemType items[MAX_SIZE];
+	ItemType items[ARRAY_MAX_SIZE];
 	int size;
 
 public:
