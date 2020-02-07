@@ -96,12 +96,9 @@ void Dictionary<ItemType>::remove(KeyType key)
 	}
 }
 
-<<<<<<< HEAD
-Station Dictionary::getStation(KeyType key)
-=======
+//Station Dictionary::getStation(KeyType key)
 template <class ItemType>
 ItemType Dictionary<ItemType>::get(KeyType key)
->>>>>>> 61a4bac559668e35325871bb3b4fbd9b94495f04
 {
 	int index = hash(key);
 	//Station returnItem;
@@ -126,23 +123,23 @@ ItemType Dictionary<ItemType>::get(KeyType key)
 	//return returnItem;
 }
 
-List<Station>* Dictionary::getStations(KeyType key)
-{
-	int index = hash(key);
-	List<Station>* stationsList = new List<Station>();
-	Node* currentNode = NULL;
-
-	if (!isEmpty() && items[index] != NULL)
-	{
-		currentNode = items[index];
-		while (currentNode->next != NULL)
-		{
-			//if (currentNode->key == key)
-			//	stationsList->add(;
-		}
-	}
-	return NULL;
-}
+//List<Station>* Dictionary::getStations(KeyType key)
+//{
+//	int index = hash(key);
+//	List<Station>* stationsList = new List<Station>();
+//	Node* currentNode = NULL;
+//
+//	if (!isEmpty() && items[index] != NULL)
+//	{
+//		currentNode = items[index];
+//		while (currentNode->next != NULL)
+//		{
+//			//if (currentNode->key == key)
+//			//	stationsList->add(;
+//		}
+//	}
+//	return NULL;
+//}
 
 template <class ItemType>
 bool Dictionary<ItemType>::isEmpty()
@@ -186,17 +183,15 @@ void Dictionary<ItemType>::print() //update this function
 	cout << "====================" << endl;
 }
 
-<<<<<<< HEAD
-bool Dictionary::printStationInformation(KeyType stationName)
+template <class ItemType>
+void Dictionary<ItemType>::printStationInformation(KeyType stationName)
 {
-
+	
 }
 
-int Dictionary::charvalue(char c)
-=======
+//int Dictionary::charvalue(char c)
 template <class ItemType>
 int Dictionary<ItemType>::charvalue(char c)
->>>>>>> 61a4bac559668e35325871bb3b4fbd9b94495f04
 {
 	if (isalpha(c))
 	{

@@ -39,14 +39,11 @@ public:
 	void remove(KeyType key);
 
 	// get an item with the specified key in the Dictionary (retrieve)
-<<<<<<< HEAD
-	Station getStation(KeyType key);
+	//Station getStation(KeyType key);
 
 	// get all stations with the same name (the key)
 	List<Station>* getStations(KeyType key);
-=======
 	ItemType get(KeyType key);
->>>>>>> 61a4bac559668e35325871bb3b4fbd9b94495f04
 
 	// check if the Dictionary is empty
 	bool isEmpty();

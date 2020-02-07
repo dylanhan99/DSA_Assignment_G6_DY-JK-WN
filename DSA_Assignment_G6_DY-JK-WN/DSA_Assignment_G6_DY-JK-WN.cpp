@@ -19,14 +19,12 @@ string JKmainpath = "";
 string WNmainpath = "";
 string fullPath = "full\\";
 
-<<<<<<< HEAD
-string folderPath = DYmainpath + full_simple;
-=======
+string folderPath = DYmainpath + fullPath;
+
 string FaresPath = fullPath + "Fares.csv";
 string InterchangesPath = fullPath + "Interchanges.csv";
 string RoutesPath = fullPath + "Routes.csv";
 string StationsPath = fullPath + "Stations.csv";
->>>>>>> 61a4bac559668e35325871bb3b4fbd9b94495f04
 
 string FaresPath = folderPath + "Fares.csv";
 string InterchangesPath = folderPath + "Interchanges.csv";
@@ -45,11 +43,8 @@ List<string>* SplitL(string str, char delimiter);
 bool ReadFile(string filename, List<string>* outList);
 int GetDistance(string stationID);
 int CountFileLines(string filename);
-<<<<<<< HEAD
-void InitDictionary(List<string>* StationsList, Dictionary* outDictionary);
-=======
-void InitDictionary(List* StationsList, Dictionary<Station>* outDictionary);
->>>>>>> 61a4bac559668e35325871bb3b4fbd9b94495f04
+void InitDictionary(List<string>* StationsList, Dictionary<Station>* outDictionary);
+//void InitDictionary(List* StationsList, Dictionary<Station>* outDictionary);
 void init();
 
 int main()
@@ -233,11 +228,8 @@ int CountFileLines(string filename)
 	}
 }
 
-<<<<<<< HEAD
-void InitDictionary(List<string>* StationsList, Dictionary* outDictionary)
-=======
-void InitDictionary(List* StationsList, Dictionary<Station>* outDictionary)
->>>>>>> 61a4bac559668e35325871bb3b4fbd9b94495f04
+void InitDictionary(List<string>* StationsList, Dictionary<Station>* outDictionary)
+//void InitDictionary(List* StationsList, Dictionary<Station>* outDictionary)
 {
 	//cout << "length" << StationsList->getSize() << endl;
 	for (int i = 0; i < StationsList->getSize(); i++)
