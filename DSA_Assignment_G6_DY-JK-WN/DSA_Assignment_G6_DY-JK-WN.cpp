@@ -12,13 +12,21 @@ using namespace std;
 #include "Dictionary.h"
 #include "List.h"
 #include "Queue.h"
+#include "ArrayList.h"
 
 string DYmainpath = "C:\\Users\\HanWei\\Desktop\\NP stuff\\Year_3-2_FINAL\\DSA\\!Assignment\\";
 string JKmainpath = "";
 string WNmainpath = "";
-string full_simple = "full\\";
+string fullPath = "full\\";
 
+<<<<<<< HEAD
 string folderPath = DYmainpath + full_simple;
+=======
+string FaresPath = fullPath + "Fares.csv";
+string InterchangesPath = fullPath + "Interchanges.csv";
+string RoutesPath = fullPath + "Routes.csv";
+string StationsPath = fullPath + "Stations.csv";
+>>>>>>> 61a4bac559668e35325871bb3b4fbd9b94495f04
 
 string FaresPath = folderPath + "Fares.csv";
 string InterchangesPath = folderPath + "Interchanges.csv";
@@ -30,17 +38,23 @@ List<string>* InterchangesList;
 List<string>* RoutesList;
 List<string>* StationsList;
 
+ArrayList* NorthSouthArrayList;
+
 Queue* SplitQ(string str, char delimiter);
 List<string>* SplitL(string str, char delimiter);
 bool ReadFile(string filename, List<string>* outList);
 int GetDistance(string stationID);
 int CountFileLines(string filename);
+<<<<<<< HEAD
 void InitDictionary(List<string>* StationsList, Dictionary* outDictionary);
+=======
+void InitDictionary(List* StationsList, Dictionary<Station>* outDictionary);
+>>>>>>> 61a4bac559668e35325871bb3b4fbd9b94495f04
 void init();
 
 int main()
 {
-	Dictionary* dic = new Dictionary();
+	Dictionary<Station>* dic = new Dictionary<Station>();
 
 	init();
 
@@ -219,7 +233,11 @@ int CountFileLines(string filename)
 	}
 }
 
+<<<<<<< HEAD
 void InitDictionary(List<string>* StationsList, Dictionary* outDictionary)
+=======
+void InitDictionary(List* StationsList, Dictionary<Station>* outDictionary)
+>>>>>>> 61a4bac559668e35325871bb3b4fbd9b94495f04
 {
 	//cout << "length" << StationsList->getSize() << endl;
 	for (int i = 0; i < StationsList->getSize(); i++)

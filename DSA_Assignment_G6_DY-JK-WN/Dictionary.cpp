@@ -1,7 +1,8 @@
 #include "pch.h"
 #include "Dictionary.h"
 
-Dictionary::Dictionary()
+template <class ItemType>
+Dictionary<ItemType>::Dictionary()
 {
 	size = 0;
 	for (int i = 0; i < MAX_SIZE; i++)
@@ -9,11 +10,13 @@ Dictionary::Dictionary()
 }
 
 
-Dictionary::~Dictionary()
+template <class ItemType>
+Dictionary<ItemType>::~Dictionary()
 {
 }
 
-int Dictionary::hash(KeyType key)
+template <class ItemType>
+int Dictionary<ItemType>::hash(KeyType key)
 {
 	//horner's rule
 	int sum = 0;
@@ -28,7 +31,8 @@ int Dictionary::hash(KeyType key)
 	return sum;
 }
 
-bool Dictionary::add(KeyType newKey, string stationID, int distance) // key is station name eg Jurong East, Item is Station info
+template <class ItemType>
+bool Dictionary<ItemType>::add(KeyType newKey, string stationID, int distance) // key is station name eg Jurong East, Item is Station info
 {
 	Node* newNode = new Node();
 	newNode->key = newKey;
@@ -60,7 +64,8 @@ bool Dictionary::add(KeyType newKey, string stationID, int distance) // key is s
 	}
 }
 
-void Dictionary::remove(KeyType key)
+template <class ItemType>
+void Dictionary<ItemType>::remove(KeyType key)
 {
 	int index = hash(key);
 	Node* currentNode = NULL;
@@ -91,7 +96,12 @@ void Dictionary::remove(KeyType key)
 	}
 }
 
+<<<<<<< HEAD
 Station Dictionary::getStation(KeyType key)
+=======
+template <class ItemType>
+ItemType Dictionary<ItemType>::get(KeyType key)
+>>>>>>> 61a4bac559668e35325871bb3b4fbd9b94495f04
 {
 	int index = hash(key);
 	//Station returnItem;
@@ -134,7 +144,8 @@ List<Station>* Dictionary::getStations(KeyType key)
 	return NULL;
 }
 
-bool Dictionary::isEmpty()
+template <class ItemType>
+bool Dictionary<ItemType>::isEmpty()
 {
 	if (size > 0)
 		return false;
@@ -142,12 +153,14 @@ bool Dictionary::isEmpty()
 		return true;
 }
 
-int Dictionary::getLength()
+template <class ItemType>
+int Dictionary<ItemType>::getLength()
 {
 	return size;
 }
 
-void Dictionary::print() //update this function
+template <class ItemType>
+void Dictionary<ItemType>::print() //update this function
 {
 	for (int i = 0; i < MAX_SIZE; i++)
 	{
@@ -173,12 +186,17 @@ void Dictionary::print() //update this function
 	cout << "====================" << endl;
 }
 
+<<<<<<< HEAD
 bool Dictionary::printStationInformation(KeyType stationName)
 {
 
 }
 
 int Dictionary::charvalue(char c)
+=======
+template <class ItemType>
+int Dictionary<ItemType>::charvalue(char c)
+>>>>>>> 61a4bac559668e35325871bb3b4fbd9b94495f04
 {
 	if (isalpha(c))
 	{
@@ -190,3 +208,7 @@ int Dictionary::charvalue(char c)
 	else
 		return -1;
 }
+
+//Doesn't work with string
+//template class Dictionary<string>;
+template class Dictionary<Station>;
