@@ -43,7 +43,9 @@ public:
 
 	// get all stations with the same name (the key)
 	//List<Station>* getStations(KeyType key);
-	ItemType get(KeyType key);
+	ItemType* get(KeyType key);
+
+	List<Station>* getStations(KeyType stationName);
 
 	// check if the Dictionary is empty
 	bool isEmpty();
@@ -51,9 +53,7 @@ public:
 	// check the size of the Dictionary
 	int getLength();
 
-	// display the items in the Dictionary
-	void print();
-
+	// display the station information of a specified station in the Dictionary
 	void printStationInformation(KeyType stationName);
 
 	int charvalue(char c);

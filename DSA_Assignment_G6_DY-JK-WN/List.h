@@ -5,7 +5,7 @@ using namespace std;
 #include "Station.h"
 
 //typedef string ItemType;
-const int MAX_SIZE = 101;
+const int MAX_SIZE = 102;
 
 template <class ListTemplate>
 class List

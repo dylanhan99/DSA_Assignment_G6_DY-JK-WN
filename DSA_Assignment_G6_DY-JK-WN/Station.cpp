@@ -30,10 +30,16 @@ int Station::getDistance()
 
 string Station::getStationID()
 {
-	return this->stationName;
+	return this->stationID;
 }
 
 string Station::getStationName()
 {
-	return this->stationID;
+	return this->stationName;
+}
+
+string Station::getLine()
+{
+	string line = stationID.substr(0, 2);
+	return line;
 }

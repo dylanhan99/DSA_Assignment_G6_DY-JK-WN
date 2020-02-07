@@ -20,6 +20,8 @@ public:
 
 	string getStationID();
 
+	string getLine();
+
 	int getDistance();
 };
 

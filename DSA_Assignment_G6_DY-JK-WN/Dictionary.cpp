@@ -98,7 +98,7 @@ void Dictionary<ItemType>::remove(KeyType key)
 
 //Station Dictionary::getStation(KeyType key)
 template <class ItemType>
-ItemType Dictionary<ItemType>::get(KeyType key)
+ItemType* Dictionary<ItemType>::get(KeyType key)
 {
 	int index = hash(key);
 	//Station returnItem;
@@ -111,8 +111,7 @@ ItemType Dictionary<ItemType>::get(KeyType key)
 		{
 			if (currentNode->key == key)
 			{
-				//returnItem = currentNode->item;
-				return currentNode->item;
+				return &currentNode->item;
 			}
 			else
 			{
@@ -120,26 +119,29 @@ ItemType Dictionary<ItemType>::get(KeyType key)
 			}
 		}
 	}
-	//return returnItem;
+	return NULL;
 }
 
-//List<Station>* Dictionary::getStations(KeyType key)
-//{
-//	int index = hash(key);
-//	List<Station>* stationsList = new List<Station>();
-//	Node* currentNode = NULL;
-//
-//	if (!isEmpty() && items[index] != NULL)
-//	{
-//		currentNode = items[index];
-//		while (currentNode->next != NULL)
-//		{
-//			//if (currentNode->key == key)
-//			//	stationsList->add(;
-//		}
-//	}
-//	return NULL;
-//}
+template <class ItemType>
+List<Station>* Dictionary<ItemType>::getStations(KeyType key)
+{
+	int index = hash(key);
+	Node* currentNode = NULL;
+	List<Station>* stationsList = new List<Station>();
+
+	if (items[index] != NULL)
+	{
+		currentNode = items[index];
+		while (currentNode->next != NULL)
+		{
+			if (currentNode->key == key)
+				stationsList->add(currentNode->item);
+			currentNode = currentNode->next;
+		}
+		//return stationsList;
+	}
+	return stationsList;
+}
 
 template <class ItemType>
 bool Dictionary<ItemType>::isEmpty()
@@ -157,36 +159,25 @@ int Dictionary<ItemType>::getLength()
 }
 
 template <class ItemType>
-void Dictionary<ItemType>::print() //update this function
-{
-	for (int i = 0; i < MAX_SIZE; i++)
-	{
-		if (items[i] == NULL)
-			continue;
-		else
-		{
-			Node* currentNode = items[i];
-			while (true)
-			{
-				if (currentNode == NULL)
-					break;
-				else
-				{
-					cout << "Number: " << currentNode->item.getStationID() << endl;
-					cout << "Number: " << currentNode->item.getStationName() << endl;
-					cout << "Number: " << currentNode->item.getDistance() << endl;
-					currentNode = currentNode->next;
-				}
-			}
-		}
-	}
-	cout << "====================" << endl;
-}
-
-template <class ItemType>
 void Dictionary<ItemType>::printStationInformation(KeyType stationName)
 {
-	
+	List<Station>* stationsList = this->getStations(stationName);
+
+	if (stationsList->getSize() >= 1)
+	{
+		cout << endl;
+		cout << "\t" << "Line\t" << "StationID\t" << "StationName" << endl;
+		for (int i = 0; i < stationsList->getSize(); i++)
+		{
+			cout << "\t" << stationsList->get(i)->getLine()
+				 << "\t" << stationsList->get(i)->getStationID() 
+				 << "\t\t" << stationsList->get(i)->getStationName() << endl;
+		}
+		cout << endl;
+		//return;
+	}
+	else
+		cout << "No station named - " << stationName << endl;
 }
 
 //int Dictionary::charvalue(char c)

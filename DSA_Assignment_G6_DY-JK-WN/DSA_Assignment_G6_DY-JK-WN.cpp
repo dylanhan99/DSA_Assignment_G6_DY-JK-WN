@@ -34,7 +34,6 @@ bool ReadFile(string filename, List<string>* outList);
 int GetDistance(string stationID);
 int CountFileLines(string filename);
 void InitDictionary(List<string>* StationsList, Dictionary<Station>* outDictionary);
-//void InitDictionary(List* StationsList, Dictionary<Station>* outDictionary);
 void init();
 
 int main()
@@ -55,8 +54,7 @@ int main()
 	cout << "\n";
 
 	InitDictionary(StationsList, dic);
-	//cout << "len" << dic->getLength();
-	//dic->print();
+	cout << "len = " << StationsList->getSize() << endl;
 	string stationName;
 
 	int option = 0;
@@ -73,7 +71,7 @@ int main()
 		cout << "Select an option: ";
 
 		cin >> option;
-		cout << "\nOption selected: " << option << endl;
+		cout << "Option selected: " << option << "\n\n";
 
 		switch (option)
 		{
@@ -81,23 +79,17 @@ int main()
 				return 0;
 				break;
 			case 1:
-				break;
+				continue;
 			case 2:
 				cout << "Enter a station name: ";
-				cin >> stationName;
-
-				//Station station = dic->getStation(stationName);
-				//if (station != NULL)
-				//{
-				//
-				//}
-				//else
-				//	cout << "Station " << stationName << " does does not exist!";
-				break;
+				cin.ignore();			   // Kind of pauses for the input. Without this, programme continues without waiting for input
+				getline(cin, stationName); // Reads entire line instead of just the first word
+				dic->printStationInformation(stationName);
+				continue;
 			case 3:
-				break;
+				continue;
 			case 4:
-				break;
+				continue;
 			default:
 				break;
 		}
@@ -246,4 +238,3 @@ void init()
 	RoutesList = new List<string>();
 	StationsList = new List<string>();
 }
-
