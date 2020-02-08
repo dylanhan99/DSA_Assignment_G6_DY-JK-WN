@@ -24,20 +24,21 @@ string InterchangesPath = fullPath + "Interchanges.csv";
 string RoutesPath = fullPath + "Routes.csv";
 string StationsPath = fullPath + "Stations.csv";
 
-List<string>* FaresList;
-List<string>* InterchangesList;
-List<string>* RoutesList;
-List<string>* StationsList;
+vector<string>* FaresList;
+vector<string>* InterchangesList;
+vector<string>* RoutesList;
+vector<string>* StationsList;
 
 Queue* SplitQ(string str, char delimiter);
 List<string>* SplitL(string str, char delimiter);
-bool ReadFile(string filename, List<string>* outList);
+vector<string>* SplitV(string str, char delimiter);
+bool ReadFile(string filename, vector<string>* outList);
 int GetDistance(string stationID);
 int CountFileLines(string filename);
 int CalculateRoute(string source, string destination, Dictionary<Station> stationDict, ListDictionary<string> lineDict);
 int CalculateRouteDistance(vector<string> line, string source, string destination, Dictionary<Station> stationDict);
 int CalculateFares(int routeLength);
-void InitDictionary(List<string>* StationsList, Dictionary<Station>* outDictionary, ListDictionary<string>* outListDictionary);
+void InitDictionary(vector<string>* StationsList, Dictionary<Station>* outDictionary, ListDictionary<string>* outListDictionary);
 void init();
 
 int main()
@@ -116,15 +117,15 @@ int main()
 
 int CalculateFares(int routeLength)
 {
-	List<string> fares = *FaresList;
+	vector<string> fares = *FaresList;
 	int fare = 0;
 	double routeDistance = (double)routeLength / 1000;
 
-	for (int i = 0; i < fares.getSize(); i++)
+	for (int i = 0; i < fares.size(); i++)
 	{
-		List<string> itemList = *SplitL(*fares.get(i), ',');
-		double distance = stod(*itemList.get(0));
-		int price = stoi(*itemList.get(1));
+		vector<string> itemList = *SplitV(fares[i], ',');
+		double distance = stod(itemList[0]);
+		int price = stoi(itemList[1]);
 
 		if (routeDistance >= distance)
 		{
@@ -154,25 +155,25 @@ int CalculateRoute(string source, string destination, Dictionary<Station> statio
 		line = *lineDict.get(sourceLine);
 	}
 
-	//else
-	//{
-	//	List<string> availableInterchanges = List<string>();
-	//	for (int i = 0; i < InterchangesList->getSize(); i++)
-	//	{
-	//		List<string> interchange = *SplitL(*InterchangesList->get(0), ',');
-	//		for (int l = 0; l < interchange.getSize(); l++)
-	//		{
-	//			if (*interchange.get(l) == sourceLine)
-	//			{
-	//				availableInterchanges.add()
-	//			}
+	else
+	{
+		vector<vector<string>> availableInterchanges;
+		for (int i = 0; i < InterchangesList->size(); i++)
+		{
+			vector<string> interchange = *SplitV(InterchangesList->at(i), ',');
+			for (int l = 0; l < interchange.size(); l++)
+			{
+				if (interchange[i] == sourceLine)
+				{
+					availableInterchanges.push_back(interchange);
+				}
 
-	//		}
+			}
 
-	//	}
+		}
 
-	//}
-	//
+	}
+	
 	totalDistance = CalculateRouteDistance(line, source, destination, stationDict);
 
 	return totalDistance;
@@ -247,7 +248,26 @@ List<string>* SplitL(string str, char delimiter)
 	return internal;
 }
 
-bool ReadFile(string filename, List<string>* outList)
+vector<string>* SplitV(string str, char delimiter)
+{
+	// count number of delimiter in string to determine List size
+	int size = 0;
+	for (int i = 0; i < str.size(); i++)
+		if (str[i] == delimiter)
+			size++;
+
+	vector<string>* internal = new vector<string>();
+	stringstream ss(str); // Turn the string into a stream.
+	string tok;
+
+	while (getline(ss, tok, delimiter))
+		internal->push_back(tok);
+
+
+	return internal;
+}
+
+bool ReadFile(string filename, vector<string>* outList)
 {
 	ifstream myfile(filename);
 	//cout << "Filename = " << filename << endl;
@@ -257,7 +277,7 @@ bool ReadFile(string filename, List<string>* outList)
 		while (getline(myfile, line))
 		{
 			cout << line << endl;
-			outList->add(line);
+			outList->push_back(line);
 		}
 		myfile.close();
 		return true;
@@ -270,7 +290,7 @@ int GetDistance(string stationID)
 {
 	string line;
 	int rowIndex, columnIndex = 0;
-	for (int i = 0; i < RoutesList->getSize(); i++)
+	for (int i = 0; i < RoutesList->size(); i++)
 	{
 		rowIndex = i;
 		if (i % 2 != 0)
@@ -278,10 +298,10 @@ int GetDistance(string stationID)
 			//i++;
 			continue; 
 		}
-		line = RoutesList->get(rowIndex)->substr(0, 2); // Get first 2 letters in string to check line. EW/NS/DT/etc.
+		line = RoutesList->at(rowIndex).substr(0, 2); // Get first 2 letters in string to check line. EW/NS/DT/etc.
 		if (stationID.substr(0, 2) == line)
 		{
-			Queue* faresQueue = SplitQ(*RoutesList->get(rowIndex), ',');
+			Queue* faresQueue = SplitQ(RoutesList->at(rowIndex), ',');
 			while (!faresQueue->isEmpty())
 			{
 				string currentID;
@@ -292,7 +312,7 @@ int GetDistance(string stationID)
 					return -1;
 				columnIndex++;
 			}
-			faresQueue = SplitQ(*RoutesList->get(rowIndex + 1), ',');
+			faresQueue = SplitQ(RoutesList->at(rowIndex + 1), ',');
 			string fare;
 			faresQueue->getFront(fare); // if columnIndex == 0, fare will still have a value
 			for (int j = 0; i < columnIndex; i++)
@@ -327,15 +347,15 @@ int CountFileLines(string filename)
 	}
 }
 
-void InitDictionary(List<string>* StationsList, Dictionary<Station>* outDictionary, ListDictionary<string>* outListDictionary)
+void InitDictionary(vector<string>* StationsList, Dictionary<Station>* outDictionary, ListDictionary<string>* outListDictionary)
 //void InitDictionary(List* StationsList, Dictionary<Station>* outDictionary)
 {
 	//cout << "length" << StationsList->getSize() << endl;
 	string line = "";
 	vector<string> LineStationsList;
-	for (int i = 0; i < StationsList->getSize(); i++)
+	for (int i = 0; i < StationsList->size(); i++)
 	{
-		string currentStation = *StationsList->get(i);
+		string currentStation = StationsList->at(i);
 		Queue* currentStationInfo = SplitQ(currentStation, ',');
 
 		string currentStationID, currentStationName;
@@ -364,10 +384,10 @@ void InitDictionary(List<string>* StationsList, Dictionary<Station>* outDictiona
 
 void init()
 {
-	FaresList = new List<string>();
-	InterchangesList = new List<string>();
-	RoutesList = new List<string>();
-	StationsList = new List<string>();
+	FaresList = new vector<string>();
+	InterchangesList = new vector<string>();
+	RoutesList = new vector<string>();
+	StationsList = new vector<string>();
 
 	if (!ReadFile(FaresPath, FaresList))
 		cout << "Error init Fares..." << endl;
