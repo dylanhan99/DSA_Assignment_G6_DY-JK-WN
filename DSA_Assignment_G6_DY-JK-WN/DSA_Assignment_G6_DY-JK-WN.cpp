@@ -43,17 +43,7 @@ int main()
 
 	init();
 
-	if (ReadFile(FaresPath, FaresList))
-		cout << "Init Fares..." << endl;
-	if (ReadFile(InterchangesPath, InterchangesList))
-		cout << "Init Interchanges..." << endl;
-	if (ReadFile(RoutesPath, RoutesList))
-		cout << "Init Routes..." << endl;
-	if (ReadFile(StationsPath, StationsList))
-		cout << "Init Stations..." << endl;
-
 	cout << "\n";
-
 	InitDictionary(StationsList, dic, linesDict);
 	cout << "len = " << dic->getLength() << endl;
 	string stationName;
@@ -88,6 +78,9 @@ int main()
 				dic->printStationInformation(stationName);
 				continue;
 			case 3:
+				cout << "Enter new station name: ";
+				cin >> stationName;
+				cout << "\nEnter new station name: ";
 				continue;
 			case 4:
 				continue;
@@ -248,4 +241,13 @@ void init()
 	InterchangesList = new List<string>();
 	RoutesList = new List<string>();
 	StationsList = new List<string>();
+
+	if (!ReadFile(FaresPath, FaresList))
+		cout << "Error init Fares..." << endl;
+	if (!ReadFile(InterchangesPath, InterchangesList))
+		cout << "Error init Interchanges..." << endl;
+	if (!ReadFile(RoutesPath, RoutesList))
+		cout << "Error init Routes..." << endl;
+	if (!ReadFile(StationsPath, StationsList))
+		cout << "Error init Stations..." << endl;
 }
