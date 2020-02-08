@@ -27,7 +27,7 @@ List<string>* InterchangesList;
 List<string>* RoutesList;
 List<string>* StationsList;
 
-ArrayList* NorthSouthArrayList;
+
 
 Queue* SplitQ(string str, char delimiter);
 List<string>* SplitL(string str, char delimiter);
