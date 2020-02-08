@@ -9,6 +9,7 @@
 #include <vector>
 using namespace std;
 
+#include "Globals.h"
 #include "Dictionary.h"
 #include "List.h"
 #include "Queue.h"
@@ -54,7 +55,7 @@ int main()
 	cout << "\n";
 
 	InitDictionary(StationsList, dic);
-	cout << "len = " << StationsList->getSize() << endl;
+	cout << "len = " << dic->getLength() << endl;
 	string stationName;
 
 	int option = 0;

@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "Dictionary.h"
+#include "Globals.h"
 
 template <class ItemType>
 Dictionary<ItemType>::Dictionary()
@@ -35,23 +36,22 @@ template <class ItemType>
 bool Dictionary<ItemType>::add(KeyType newKey, string stationID, int distance) // key is station name eg Jurong East, Item is Station info
 {
 	Node* newNode = new Node();
-	newNode->key = newKey;
 	newNode->item = Station(newKey, stationID/*, distance*/);
 	newNode->item.SetDistance(distance);
 	newNode->next = NULL;
+	trimAll(&newKey);
+	newNode->key = newKey;
 
 	int index = hash(newKey);
 	if (items[index] == NULL)
 	{
 		items[index] = newNode;
-		size++;
-		return true;
 	}
 	else
 	{
 		Node* currentNode = items[index];
-		if (currentNode->key == newKey)
-			return false;
+		//if (currentNode->key == newKey)
+		//	return false;
 		while (currentNode->next != NULL)
 		{
 			currentNode = currentNode->next;
@@ -59,9 +59,9 @@ bool Dictionary<ItemType>::add(KeyType newKey, string stationID, int distance) /
 				return false;
 		}
 		currentNode->next = newNode;
-		size++;
-		return true;
 	}
+	size++;
+	return true;
 }
 
 template <class ItemType>
@@ -125,6 +125,7 @@ ItemType* Dictionary<ItemType>::get(KeyType key)
 template <class ItemType>
 List<Station>* Dictionary<ItemType>::getStations(KeyType key)
 {
+	trimAll(&key);
 	int index = hash(key);
 	Node* currentNode = NULL;
 	List<Station>* stationsList = new List<Station>();
@@ -132,7 +133,7 @@ List<Station>* Dictionary<ItemType>::getStations(KeyType key)
 	if (items[index] != NULL)
 	{
 		currentNode = items[index];
-		while (currentNode->next != NULL)
+		while (currentNode/*->next*/ != NULL)
 		{
 			if (currentNode->key == key)
 				stationsList->add(currentNode->item);
