@@ -157,26 +157,56 @@ int CalculateRoute(string source, string destination, Dictionary<Station> statio
 
 	else
 	{
-		vector<vector<string>> availableInterchanges;
-		for (int i = 0; i < InterchangesList->size(); i++)
-		{
-			vector<string> interchange = *SplitV(InterchangesList->at(i), ',');
-			for (int l = 0; l < interchange.size(); l++)
-			{
-				if (interchange[i] == sourceLine)
-				{
-					availableInterchanges.push_back(interchange);
-				}
 
-			}
-
-		}
 
 	}
 	
 	totalDistance = CalculateRouteDistance(line, source, destination, stationDict);
 
 	return totalDistance;
+
+}
+
+string FindInterchange(vector<string> line, string sourceLine, string source, string destinationLine, Dictionary<Station> stationDict)
+{
+	vector<vector<string>> availableInterchanges;
+	vector<string> lineInterchanges;
+	for (int i = 0; i < InterchangesList->size(); i++)
+	{
+		vector<string> interchange = *SplitV(InterchangesList->at(i), ',');
+		for (int l = 0; l < interchange.size(); l++)
+		{
+			if (interchange[i] == sourceLine)
+			{
+				availableInterchanges.push_back(interchange);
+				lineInterchanges.push_back(interchange[i]);
+
+			}
+
+		}
+
+	}
+
+	string nearestInterchange;
+	int shortestDistance = 0;
+	for (int i = 0; i < availableInterchanges.size(); i++)
+	{
+		vector<string> interchange = availableInterchanges[i];
+
+		int interchangeDistance = CalculateRouteDistance(line, source, lineInterchanges[i], stationDict);
+		if (shortestDistance == 0)
+			shortestDistance = interchangeDistance;
+
+		if (interchangeDistance < shortestDistance)
+		{
+			shortestDistance = interchangeDistance;
+			nearestInterchange = lineInterchanges[i];
+
+		}
+
+	}
+
+	return nearestInterchange;
 
 }
 
