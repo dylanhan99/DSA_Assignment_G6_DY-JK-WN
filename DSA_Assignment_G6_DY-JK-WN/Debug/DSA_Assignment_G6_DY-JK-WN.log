@@ -1,12 +1,8 @@
-﻿  Dictionary.cpp
+﻿  DSA_Assignment_G6_DY-JK-WN.cpp
+c:\users\wubz\documents\github\dsa_assignment_g6_dy-jk-wn\dsa_assignment_g6_dy-jk-wn\dsa_assignment_g6_dy-jk-wn.cpp(6): warning C4067: unexpected tokens following preprocessor directive - expected a newline
 c:\users\wubz\documents\github\dsa_assignment_g6_dy-jk-wn\dsa_assignment_g6_dy-jk-wn\list.h(4): warning C4067: unexpected tokens following preprocessor directive - expected a newline
-c:\users\wubz\documents\github\dsa_assignment_g6_dy-jk-wn\dsa_assignment_g6_dy-jk-wn\dictionary.cpp(24): warning C4018: '<': signed/unsigned mismatch
-  c:\users\wubz\documents\github\dsa_assignment_g6_dy-jk-wn\dsa_assignment_g6_dy-jk-wn\dictionary.cpp(21): note: while compiling class template member function 'int Dictionary<Station>::hash(KeyType)'
-  c:\users\wubz\documents\github\dsa_assignment_g6_dy-jk-wn\dsa_assignment_g6_dy-jk-wn\dictionary.cpp(220): note: see reference to class template instantiation 'Dictionary<Station>' being compiled
-  ListDictionary.cpp
-c:\users\wubz\documents\github\dsa_assignment_g6_dy-jk-wn\dsa_assignment_g6_dy-jk-wn\list.h(4): warning C4067: unexpected tokens following preprocessor directive - expected a newline
-c:\users\wubz\documents\github\dsa_assignment_g6_dy-jk-wn\dsa_assignment_g6_dy-jk-wn\listdictionary.cpp(23): warning C4018: '<': signed/unsigned mismatch
-  c:\users\wubz\documents\github\dsa_assignment_g6_dy-jk-wn\dsa_assignment_g6_dy-jk-wn\listdictionary.cpp(20): note: while compiling class template member function 'int ListDictionary<std::string>::hash(KeyType)'
-  c:\users\wubz\documents\github\dsa_assignment_g6_dy-jk-wn\dsa_assignment_g6_dy-jk-wn\listdictionary.cpp(159): note: see reference to class template instantiation 'ListDictionary<std::string>' being compiled
-  Generating Code...
+c:\users\wubz\documents\github\dsa_assignment_g6_dy-jk-wn\dsa_assignment_g6_dy-jk-wn\arraylist.h(3): warning C4067: unexpected tokens following preprocessor directive - expected a newline
+c:\users\wubz\documents\github\dsa_assignment_g6_dy-jk-wn\dsa_assignment_g6_dy-jk-wn\dsa_assignment_g6_dy-jk-wn.cpp(126): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+c:\users\wubz\documents\github\dsa_assignment_g6_dy-jk-wn\dsa_assignment_g6_dy-jk-wn\dsa_assignment_g6_dy-jk-wn.cpp(206): warning C4018: '<': signed/unsigned mismatch
+c:\users\wubz\documents\github\dsa_assignment_g6_dy-jk-wn\dsa_assignment_g6_dy-jk-wn\dsa_assignment_g6_dy-jk-wn.cpp(187): warning C4715: 'CalculateRoute': not all control paths return a value
   DSA_Assignment_G6_DY-JK-WN.vcxproj -> C:\Users\Wubz\Documents\GitHub\DSA_Assignment_G6_DY-JK-WN\Debug\DSA_Assignment_G6_DY-JK-WN.exe

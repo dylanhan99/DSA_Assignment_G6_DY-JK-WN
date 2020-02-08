@@ -35,6 +35,7 @@ bool ReadFile(string filename, List<string>* outList);
 int GetDistance(string stationID);
 int CountFileLines(string filename);
 int CalculateRoute(string source, string destination, Dictionary<Station> stationDict, ListDictionary<string> lineDict);
+int CalculateFares(int routeLength);
 void InitDictionary(List<string>* StationsList, Dictionary<Station>* outDictionary, ListDictionary<string>* outListDictionary);
 void init();
 
@@ -60,6 +61,7 @@ int main()
 	{
 		string source;
 		string destination;
+		int distance = 0;
 
 		//Display Menu
 		cout << "===============================\n";
@@ -100,13 +102,38 @@ int main()
 				getline(cin, destination);
 				cout << endl;
 
-				cout << "Distance: " << CalculateRoute(source, destination, *dic, *linesDict) << endl;
+				distance = CalculateRoute(source, destination, *dic, *linesDict);
+				cout << "Distance: " << distance << endl;
+				cout << "Fare: " << CalculateFares(distance) << endl;
 				continue;
 			default:
 				break;
 		}
 
 	}
+}
+
+int CalculateFares(int routeLength)
+{
+	List<string> fares = *FaresList;
+	int fare = 0;
+	double routeDistance = (double)routeLength / 1000;
+
+	for (int i = 0; i < fares.getSize(); i++)
+	{
+		List<string> itemList = *SplitL(*fares.get(i), ',');
+		double distance = stod(*itemList.get(0));
+		int price = stod(*itemList.get(1));
+
+		if (routeDistance >= distance)
+		{
+			fare = price;
+		}
+
+	}
+
+	return fare;
+
 }
 
 int CalculateRoute(string source, string destination, Dictionary<Station> stationDict, ListDictionary<string> lineDict)
@@ -145,15 +172,15 @@ int CalculateRoute(string source, string destination, Dictionary<Station> statio
 			int temp = end;
 			end = start;
 			start = temp;
-
-			for (int i = start; i <= end; i++)
-			{
-				distance += stationDict.get(*line.get(i))->getDistance();
-			}
-
-			return distance;
 			
 		}
+
+		for (int i = start; i < end; i++)
+		{
+			distance += stationDict.get(*line.get(i))->getDistance();
+		}
+
+		return distance;
 
 	}
 
