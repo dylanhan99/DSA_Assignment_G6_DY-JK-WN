@@ -139,8 +139,7 @@ bool ReadFile(string filename, List<string>* outList)
 		string line;
 		while (getline(myfile, line))
 		{
-			//cout << "test" << endl;
-			//cout << "line = " << line << endl;
+			cout << line << endl;
 			outList->add(line);
 		}
 		myfile.close();
