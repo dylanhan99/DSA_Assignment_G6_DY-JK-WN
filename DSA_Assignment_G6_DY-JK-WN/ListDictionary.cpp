@@ -102,6 +102,11 @@ List<ItemType>* ListDictionary<ItemType>::get(KeyType key)
 	if (items[index] != NULL)
 	{
 		currentNode = items[index];
+		if (currentNode->key == key)
+		{
+			return &currentNode->item;
+		}
+
 		while (currentNode->next != NULL)
 		{
 			if (currentNode->key == key)
@@ -112,7 +117,9 @@ List<ItemType>* ListDictionary<ItemType>::get(KeyType key)
 			{
 				currentNode = currentNode->next;
 			}
+
 		}
+		
 	}
 	return NULL;
 }

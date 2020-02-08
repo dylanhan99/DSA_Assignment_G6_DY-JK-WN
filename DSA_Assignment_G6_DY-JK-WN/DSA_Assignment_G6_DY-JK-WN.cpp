@@ -11,6 +11,7 @@ using namespace std;
 
 #include "Globals.h"
 #include "Queue.h"
+#include "Stack.h"
 #include "List.h"
 #include "ArrayList.h"
 #include "Dictionary.h"
@@ -33,6 +34,7 @@ List<string>* SplitL(string str, char delimiter);
 bool ReadFile(string filename, List<string>* outList);
 int GetDistance(string stationID);
 int CountFileLines(string filename);
+int CalculateRoute(string source, string destination, Dictionary<Station> stationDict, ListDictionary<string> lineDict);
 void InitDictionary(List<string>* StationsList, Dictionary<Station>* outDictionary, ListDictionary<string>* outListDictionary);
 void init();
 
@@ -58,9 +60,17 @@ int main()
 	cout << "len = " << dic->getLength() << endl;
 	string stationName;
 
+	//for (int i = 0; i < linesDict->get("NS")->getSize(); i++)
+	//{
+	//	cout << *(linesDict->get("NS")->get(i)) << endl;
+	//}
+
 	int option = 0;
 	while (true)
 	{
+		string source;
+		string destination;
+
 		//Display Menu
 		cout << "===============================\n";
 		cout << "1. Display all stations\n"; // Choose a line after selecting this option
@@ -90,12 +100,70 @@ int main()
 			case 3:
 				continue;
 			case 4:
+				cout << "Enter the source station: ";
+				cin.ignore();
+				getline(cin, source);
+				cout << "Enter the destination station: ";
+				getline(cin, destination);
+				cout << endl;
+
+				cout << "Distance: " << CalculateRoute(source, destination, *dic, *linesDict) << endl;
 				continue;
 			default:
 				break;
 		}
 
 	}
+}
+
+int CalculateRoute(string source, string destination, Dictionary<Station> stationDict, ListDictionary<string> lineDict)
+{
+	int distance = 0;
+	Station sourceStation = *stationDict.get(source);
+	Station destinationstation = *stationDict.get(destination);
+
+	string sourceID = sourceStation.getStationID();
+	string destinationID = destinationstation.getStationID();
+
+	List<string> line;
+
+	//Compare Lines
+	if (sourceID.substr(0, 2) == destinationID.substr(0, 2))
+	{
+		line = *lineDict.get(sourceID.substr(0, 2));
+	}
+
+	if (line.getSize() > 0)
+	{
+		int start;
+		int end;
+
+		for (int i = 0; i < line.getSize(); i++)
+		{
+			if (*line.get(i) == sourceStation.getStationName())
+				start = i;
+			if (*line.get(i) == destinationstation.getStationName())
+				end = i;
+
+		}
+
+		if (start - end > 0)
+		{
+			int temp = end;
+			end = start;
+			start = temp;
+
+			for (int i = start; i <= end; i++)
+			{
+				distance += stationDict.get(*line.get(i))->getDistance();
+			}
+
+			return distance;
+			
+		}
+
+	}
+
 }
 
 Queue* SplitQ(string str, char delimiter)
@@ -228,6 +296,9 @@ void InitDictionary(List<string>* StationsList, Dictionary<Station>* outDictiona
 		string currentLine = currentStationID.substr(0, 2);
 		if (currentLine != line)
 		{
+			if (line != "")
+				outListDictionary->add(line, LineStationsList);
+
 			line = currentLine;
 			LineStationsList = List<string>();
 		}

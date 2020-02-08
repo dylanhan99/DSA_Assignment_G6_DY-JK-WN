@@ -1,15 +1,14 @@
 // Stack.h (Pointer-based implementation)
 #include <iostream>
 using namespace std;
-
-typedef string ItemType;
+typedef int StackItemType;
 
 class Stack
 {
 private:
 	struct Node
 	{
-		ItemType item;
+		int item;
 		Node *next;
 	};
 
@@ -25,20 +24,21 @@ public:
 	bool isEmpty();
 
 	//push item on top of the stack
-	bool push(ItemType &item);
+	bool push(StackItemType item);
 
 	//pop item from top of stack
 	bool pop();
 
 	//retrieve and pop item from top of stack
-	bool pop(ItemType &item);
+	bool pop(StackItemType &item);
 
 	//retrieve item from top of stack
-	void getTop(ItemType &item);
+	void getTop(StackItemType &item);
 
 	//display items in stack in order
 	void displayInOrder();
 
 	//display items in stack in order of insertion
 	void displayInOrderOfInsertion();
-}
+
+};

@@ -107,6 +107,11 @@ ItemType* Dictionary<ItemType>::get(KeyType key)
 	if (items[index] != NULL)
 	{
 		currentNode = items[index];
+		if (currentNode->key == key)
+		{
+			return &currentNode->item;
+		}
+
 		while (currentNode->next != NULL)
 		{
 			if (currentNode->key == key)
@@ -117,7 +122,21 @@ ItemType* Dictionary<ItemType>::get(KeyType key)
 			{
 				currentNode = currentNode->next;
 			}
+
 		}
+
+		//currentNode = items[index];
+		//while (currentNode->next != NULL)
+		//{
+		//	if (currentNode->key == key)
+		//	{
+		//		return &currentNode->item;
+		//	}
+		//	else
+		//	{
+		//		currentNode = currentNode->next;
+		//	}
+		//}
 	}
 	return NULL;
 }
