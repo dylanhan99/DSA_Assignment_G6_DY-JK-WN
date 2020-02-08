@@ -7,7 +7,7 @@
 using namespace std;
 
 typedef string KeyType;
-const int LIST_DIC_MAX_SIZE = 101;
+const int LIST_DIC_MAX_SIZE = 600;
 
 template <class ItemType>
 class ListDictionary

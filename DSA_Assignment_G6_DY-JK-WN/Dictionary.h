@@ -6,7 +6,7 @@ using namespace std;
 #include "Station.h"
 
 typedef string KeyType;
-const int DIC_MAX_SIZE = 101;
+const int DIC_MAX_SIZE = 600;
 
 template <class ItemType>
 class Dictionary
