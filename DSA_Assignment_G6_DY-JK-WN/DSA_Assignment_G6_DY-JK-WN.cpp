@@ -35,6 +35,7 @@ bool ReadFile(string filename, List<string>* outList);
 int GetDistance(string stationID);
 int CountFileLines(string filename);
 int CalculateRoute(string source, string destination, Dictionary<Station> stationDict, ListDictionary<string> lineDict);
+int CalculateRouteDistance(vector<string> line, string source, string destination, Dictionary<Station> stationDict);
 int CalculateFares(int routeLength);
 void InitDictionary(List<string>* StationsList, Dictionary<Station>* outDictionary, ListDictionary<string>* outListDictionary);
 void init();
@@ -123,7 +124,7 @@ int CalculateFares(int routeLength)
 	{
 		List<string> itemList = *SplitL(*fares.get(i), ',');
 		double distance = stod(*itemList.get(0));
-		int price = stod(*itemList.get(1));
+		int price = stoi(*itemList.get(1));
 
 		if (routeDistance >= distance)
 		{
@@ -138,31 +139,60 @@ int CalculateFares(int routeLength)
 
 int CalculateRoute(string source, string destination, Dictionary<Station> stationDict, ListDictionary<string> lineDict)
 {
-	int distance = 0;
+	int totalDistance = 0;
 	Station sourceStation = *stationDict.get(source);
 	Station destinationstation = *stationDict.get(destination);
 
-	string sourceID = sourceStation.getStationID();
-	string destinationID = destinationstation.getStationID();
+	string sourceLine = sourceStation.getStationID().substr(0, 2);
+	string destinationLine = destinationstation.getStationID().substr(0, 2);
 
-	List<string> line;
+	vector<string> line;
 
 	//Compare Lines
-	if (sourceID.substr(0, 2) == destinationID.substr(0, 2))
+	if (sourceLine == destinationLine)
 	{
-		line = *lineDict.get(sourceID.substr(0, 2));
+		line = *lineDict.get(sourceLine);
 	}
 
-	if (line.getSize() > 0)
+	//else
+	//{
+	//	List<string> availableInterchanges = List<string>();
+	//	for (int i = 0; i < InterchangesList->getSize(); i++)
+	//	{
+	//		List<string> interchange = *SplitL(*InterchangesList->get(0), ',');
+	//		for (int l = 0; l < interchange.getSize(); l++)
+	//		{
+	//			if (*interchange.get(l) == sourceLine)
+	//			{
+	//				availableInterchanges.add()
+	//			}
+
+	//		}
+
+	//	}
+
+	//}
+	//
+	totalDistance = CalculateRouteDistance(line, source, destination, stationDict);
+
+	return totalDistance;
+
+}
+
+int CalculateRouteDistance(vector<string> line, string source, string destination, Dictionary<Station> stationDict)
+{
+	int distance = 0;
+	int lineLength = line.size();
+	if (lineLength > 0)
 	{
 		int start;
 		int end;
 
-		for (int i = 0; i < line.getSize(); i++)
+		for (int i = 0; i < lineLength; i++)
 		{
-			if (*line.get(i) == sourceStation.getStationName())
+			if (line[i] == source)
 				start = i;
-			if (*line.get(i) == destinationstation.getStationName())
+			if (line[i] == destination)
 				end = i;
 
 		}
@@ -172,18 +202,17 @@ int CalculateRoute(string source, string destination, Dictionary<Station> statio
 			int temp = end;
 			end = start;
 			start = temp;
-			
+
 		}
 
 		for (int i = start; i < end; i++)
 		{
-			distance += stationDict.get(*line.get(i))->getDistance();
+			distance += stationDict.get(line[i])->getDistance();
 		}
 
 		return distance;
 
 	}
-
 }
 
 Queue* SplitQ(string str, char delimiter)
@@ -303,7 +332,7 @@ void InitDictionary(List<string>* StationsList, Dictionary<Station>* outDictiona
 {
 	//cout << "length" << StationsList->getSize() << endl;
 	string line = "";
-	List<string> LineStationsList;
+	vector<string> LineStationsList;
 	for (int i = 0; i < StationsList->getSize(); i++)
 	{
 		string currentStation = *StationsList->get(i);
@@ -320,10 +349,10 @@ void InitDictionary(List<string>* StationsList, Dictionary<Station>* outDictiona
 				outListDictionary->add(line, LineStationsList);
 
 			line = currentLine;
-			LineStationsList = List<string>();
+			LineStationsList = vector<string>();
 		}
 		
-		LineStationsList.add(currentStationName);
+		LineStationsList.push_back(currentStationName);
 
 		//cout << "stationID = " << currentStationID << endl;
 		//cout << "stationName = " << currentStationName << endl;

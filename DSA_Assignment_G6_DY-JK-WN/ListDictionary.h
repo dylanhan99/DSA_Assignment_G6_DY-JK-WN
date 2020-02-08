@@ -2,7 +2,7 @@
 #pragma once
 #include<string>
 #include<iostream>
-#include "List.h"
+#include <vector>
 
 using namespace std;
 
@@ -15,7 +15,7 @@ class ListDictionary
 	struct Node
 	{
 		KeyType  key;   // search key
-		List<ItemType> item;	// data item
+		vector<ItemType> item;	// data item
 		Node     *next;	// pointer pointing to next item
 	};
 
@@ -29,13 +29,13 @@ public:
 	int hash(KeyType key);
 
 	// add a new item with the specified key to the Dictionary
-	bool add(KeyType newKey, List<ItemType> item);
+	bool add(KeyType newKey, vector<ItemType> item);
 
 	// remove an item with the specified key in the Dictionary
 	void remove(KeyType key);
 	
 	// get list
-	List<ItemType>* get(KeyType key);
+	vector<ItemType>* get(KeyType key);
 
 	// check if the Dictionary is empty
 	bool isEmpty();

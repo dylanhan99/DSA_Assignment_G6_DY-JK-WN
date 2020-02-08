@@ -5,7 +5,7 @@ template <class ItemType>
 ListDictionary<ItemType>::ListDictionary()
 {
 	size = 0;
-	for (int i = 0; i < MAX_SIZE; i++)
+	for (int i = 0; i < LIST_DIC_MAX_SIZE; i++)
 		items[i] = NULL; // setting all items to NULL on init so that lines like if (currentNode->next != NULL) work
 }
 
@@ -27,12 +27,12 @@ int ListDictionary<ItemType>::hash(KeyType key)
 			continue;
 		sum += (currentChar * 52 + charvalue(key[i + 1]));
 	}
-	sum %= MAX_SIZE;
+	sum %= LIST_DIC_MAX_SIZE;
 	return sum;
 }
 
 template <class ItemType>
-bool ListDictionary<ItemType>::add(KeyType newKey, List<ItemType> item)
+bool ListDictionary<ItemType>::add(KeyType newKey, std::vector<ItemType> item)
 {
 	Node* newNode = new Node();
 	newNode->item = item;
@@ -93,7 +93,7 @@ void ListDictionary<ItemType>::remove(KeyType key)
 
 //Station Dictionary::getStation(KeyType key)
 template <class ItemType>
-List<ItemType>* ListDictionary<ItemType>::get(KeyType key)
+vector<ItemType>* ListDictionary<ItemType>::get(KeyType key)
 {
 	int index = hash(key);
 	//Station returnItem;
