@@ -10,10 +10,11 @@
 using namespace std;
 
 #include "Globals.h"
-#include "Dictionary.h"
-#include "List.h"
 #include "Queue.h"
+#include "List.h"
 #include "ArrayList.h"
+#include "Dictionary.h"
+#include "ListDictionary.h"
 
 string fullPath = "full\\";
 
@@ -27,19 +28,18 @@ List<string>* InterchangesList;
 List<string>* RoutesList;
 List<string>* StationsList;
 
-
-
 Queue* SplitQ(string str, char delimiter);
 List<string>* SplitL(string str, char delimiter);
 bool ReadFile(string filename, List<string>* outList);
 int GetDistance(string stationID);
 int CountFileLines(string filename);
-void InitDictionary(List<string>* StationsList, Dictionary<Station>* outDictionary);
+void InitDictionary(List<string>* StationsList, Dictionary<Station>* outDictionary, ListDictionary<string>* outListDictionary);
 void init();
 
 int main()
 {
 	Dictionary<Station>* dic = new Dictionary<Station>();
+	ListDictionary<string>* linesDict = new ListDictionary<string>();
 
 	init();
 
@@ -54,7 +54,7 @@ int main()
 
 	cout << "\n";
 
-	InitDictionary(StationsList, dic);
+	InitDictionary(StationsList, dic, linesDict);
 	cout << "len = " << dic->getLength() << endl;
 	string stationName;
 
@@ -211,10 +211,12 @@ int CountFileLines(string filename)
 	}
 }
 
-void InitDictionary(List<string>* StationsList, Dictionary<Station>* outDictionary)
+void InitDictionary(List<string>* StationsList, Dictionary<Station>* outDictionary, ListDictionary<string>* outListDictionary)
 //void InitDictionary(List* StationsList, Dictionary<Station>* outDictionary)
 {
 	//cout << "length" << StationsList->getSize() << endl;
+	string line = "";
+	List<string> LineStationsList;
 	for (int i = 0; i < StationsList->getSize(); i++)
 	{
 		string currentStation = *StationsList->get(i);
@@ -223,6 +225,15 @@ void InitDictionary(List<string>* StationsList, Dictionary<Station>* outDictiona
 		string currentStationID, currentStationName;
 		currentStationInfo->dequeue(currentStationID);
 		currentStationInfo->dequeue(currentStationName);
+
+		string currentLine = currentStationID.substr(0, 2);
+		if (currentLine != line)
+		{
+			line = currentLine;
+			LineStationsList = List<string>();
+		}
+		
+		LineStationsList.add(currentStationName);
 
 		//cout << "stationID = " << currentStationID << endl;
 		//cout << "stationName = " << currentStationName << endl;

@@ -32,13 +32,11 @@ int ListDictionary<ItemType>::hash(KeyType key)
 }
 
 template <class ItemType>
-bool ListDictionary<ItemType>::add(KeyType newKey, string stationID, int distance) // key is station name eg Jurong East, Item is Station info
+bool ListDictionary<ItemType>::add(KeyType newKey, List<ItemType> item)
 {
 	Node* newNode = new Node();
-	newNode->item = Station(newKey, stationID/*, distance*/);
-	newNode->item.SetDistance(distance);
+	newNode->item = item;
 	newNode->next = NULL;
-	trimAll(&newKey);
 	newNode->key = newKey;
 
 	int index = hash(newKey);
@@ -49,8 +47,6 @@ bool ListDictionary<ItemType>::add(KeyType newKey, string stationID, int distanc
 	else
 	{
 		Node* currentNode = items[index];
-		//if (currentNode->key == newKey)
-		//	return false;
 		while (currentNode->next != NULL)
 		{
 			currentNode = currentNode->next;
@@ -134,28 +130,6 @@ template <class ItemType>
 int ListDictionary<ItemType>::getLength()
 {
 	return size;
-}
-
-template <class ItemType>
-void ListDictionary<ItemType>::printStationInformation(KeyType stationName)
-{
-	List<Station>* stationsList = this->getStations(stationName);
-
-	if (stationsList->getSize() >= 1)
-	{
-		cout << endl;
-		cout << "\t" << "Line\t" << "StationID\t" << "StationName" << endl;
-		for (int i = 0; i < stationsList->getSize(); i++)
-		{
-			cout << "\t" << stationsList->get(i)->getLine()
-				<< "\t" << stationsList->get(i)->getStationID()
-				<< "\t\t" << stationsList->get(i)->getStationName() << endl;
-		}
-		cout << endl;
-		//return;
-	}
-	else
-		cout << "No station named - " << stationName << endl;
 }
 
 //int Dictionary::charvalue(char c)
