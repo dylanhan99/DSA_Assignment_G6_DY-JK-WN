@@ -142,12 +142,12 @@ ItemType* Dictionary<ItemType>::get(KeyType key)
 }
 
 template <class ItemType>
-List<Station>* Dictionary<ItemType>::getStations(KeyType key)
+vector<Station>* Dictionary<ItemType>::getStations(KeyType key)
 {
 	trimAll(&key);
 	int index = hash(key);
 	Node* currentNode = NULL;
-	List<Station>* stationsList = new List<Station>();
+	vector<Station>* stationsList = new vector<Station>();
 
 	if (items[index] != NULL)
 	{
@@ -155,7 +155,7 @@ List<Station>* Dictionary<ItemType>::getStations(KeyType key)
 		while (currentNode/*->next*/ != NULL)
 		{
 			if (currentNode->key == key)
-				stationsList->add(currentNode->item);
+				stationsList->push_back(currentNode->item);
 			currentNode = currentNode->next;
 		}
 		//return stationsList;
@@ -181,17 +181,17 @@ int Dictionary<ItemType>::getLength()
 template <class ItemType>
 void Dictionary<ItemType>::printStationInformation(KeyType stationName)
 {
-	List<Station>* stationsList = this->getStations(stationName);
+	vector<Station>* stationsList = this->getStations(stationName);
 
-	if (stationsList->getSize() >= 1)
+	if (stationsList->size() >= 1)
 	{
 		cout << endl;
 		cout << "\t" << "Line\t" << "StationID\t" << "StationName" << endl;
-		for (int i = 0; i < stationsList->getSize(); i++)
+		for (int i = 0; i < stationsList->size(); i++)
 		{
-			cout << "\t" << stationsList->get(i)->getLine()
-				 << "\t" << stationsList->get(i)->getStationID() 
-				 << "\t\t" << stationsList->get(i)->getStationName() << endl;
+			cout << "\t" << stationsList->at(i).getLine()
+				 << "\t" << stationsList->at(i).getStationID() 
+				 << "\t\t" << stationsList->at(i).getStationName() << endl;
 		}
 		cout << endl;
 		//return;
