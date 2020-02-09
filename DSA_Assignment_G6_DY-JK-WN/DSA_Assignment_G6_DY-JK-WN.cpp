@@ -40,7 +40,7 @@ int CalculateFares(int routeLength);
 bool WriteIntoInterchanges(string stationID, string stationName, Dictionary<Station>* dic);
 bool WriteIntoRoutes(string stationID, string dist);
 bool WriteIntoStations(string stationID, string stationName, Dictionary<Station>* dic);
-bool AddNewStation(string stationID, string stationName, string distToNext);
+bool AddNewStation(string stationID, string stationName, string distToNext, Dictionary<Station>* dic);
 bool WriteFile(string filePath, string str);
 bool WriteFile(string filePath, string str, int line);
 void InitDictionary(vector<string>* StationsList, Dictionary<Station>* outDictionary, ListDictionary<string>* outListDictionary);
@@ -64,10 +64,9 @@ int main()
 		cout << stations->at(i).getStationName() << endl;
 	}
 
-	string stationName;
-
 	// Initialising variables
 	int lineNumber;
+	string stationID, stationName, dist;
 
 	//for (int i = 0; i < linesDict->get("NS")->getSize(); i++)
 	//{
@@ -130,7 +129,17 @@ int main()
 			case 3:
 				cout << "Enter new station name: ";
 				cin >> stationName;
-				cout << "\nEnter new station name: ";
+				cout << "\nEnter new station ID (Enter '-' if none): ";
+				cin >> stationID;
+				if (stationID == "-")
+					stationID = "";
+				if (AddNewStation(stationID, stationName, dist, dic))
+				{
+					cout << "New station added: " << endl;
+					cout << stationID << stationName << endl;
+				}
+				else
+					cout << "Unable to add new station." << endl;
 				continue;
 
 			// Find and display a route and its price, given the source and destination stations
@@ -479,10 +488,14 @@ bool WriteFile(string filePath, string str, int line)
 
 
 
-bool AddNewStation(string stationID, string stationName, string distToNext)
+bool AddNewStation(string stationID, string stationName, string distToNext, Dictionary<Station>* dic)
 {
 	//if stationID substr 0,2 is in lines list
 	//if stationID is correct format
+	if (WriteIntoStations(stationID, stationName, dic))
+	{
+		//run steps 2 and 3
+	}
 	return false;
 }
 
