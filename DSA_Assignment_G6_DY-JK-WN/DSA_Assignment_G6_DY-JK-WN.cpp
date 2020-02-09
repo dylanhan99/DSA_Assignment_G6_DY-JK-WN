@@ -191,7 +191,6 @@ string FindInterchange(vector<string> line, string sourceLine, string source, st
 	int shortestDistance = 0;
 	for (int i = 0; i < availableInterchanges.size(); i++)
 	{
-		vector<string> interchange = availableInterchanges[i];
 
 		int interchangeDistance = CalculateRouteDistance(line, source, lineInterchanges[i], stationDict);
 		if (shortestDistance == 0)
