@@ -1,10 +1,7 @@
 // Dictionary.h - - Specification of Dictionary ADT
 #pragma once
-#include<string>
-#include<iostream>
-#include <vector>
-
-using namespace std;
+#include "Globals.h"
+#include<vector>
 
 typedef string KeyType;
 const int LIST_DIC_MAX_SIZE = 600;

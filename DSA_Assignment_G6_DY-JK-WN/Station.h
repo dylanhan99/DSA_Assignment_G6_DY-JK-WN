@@ -1,6 +1,6 @@
 #pragma once
-#include "List.h"
-
+#include<string>
+using namespace std;
 class Station
 {
 private:

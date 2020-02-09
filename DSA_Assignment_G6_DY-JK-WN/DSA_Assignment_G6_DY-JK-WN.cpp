@@ -5,16 +5,12 @@
 #include <iostream>
 #include <string>
 #include <fstream>
-#include <sstream>  
+#include <sstream>
 #include <vector>
 #include <algorithm>
 using namespace std;
 
 #include "Globals.h"
-#include "Queue.h"
-#include "Stack.h"
-#include "List.h"
-#include "ArrayList.h"
 #include "Dictionary.h"
 #include "ListDictionary.h"
 
@@ -31,6 +27,8 @@ vector<string>* InterchangesList;
 vector<string>* RoutesList;
 vector<string>* StationsList;
 vector<string>* LineList;
+Dictionary<Station>* dic;
+ListDictionary<string>* linesDict;
 vector<string>* splitLineList;
 
 vector<string>* Split(string str, char delimiter);
@@ -46,21 +44,22 @@ bool WriteIntoStations(string stationID, string stationName, Dictionary<Station>
 bool AddNewStation(string stationID, string stationName, string distToNext, Dictionary<Station>* dic);
 bool WriteFile(string filePath, string str);
 bool WriteFile(string filePath, string str, int line);
-void InitDictionary(vector<string>* StationsList, Dictionary<Station>* outDictionary, ListDictionary<string>* outListDictionary);
+void InitDictionary();
 string FindInterchange(vector<string> sourceLineStations, string sourceLineName, string source, string destinationLineName, Dictionary<Station> stationDict);
 void printLinesOptions();
 void printStationsInLine(int lineNumber);
+void CalculateThreeRoutes(string source, string destination);
+vector<vector<Station>*>* CheckStation(int routeNum, string source, string destination,
+	vector<vector<Station>*>* routesList);
+vector<string>* getConnections(string stationName);
 void init();
 
 int main()
 {
-	Dictionary<Station>* dic = new Dictionary<Station>();
-	ListDictionary<string>* linesDict = new ListDictionary<string>();
-
 	init();
 
 	cout << "\n";
-	InitDictionary(StationsList, dic, linesDict);
+	InitDictionary();
 	cout << "len = " << dic->getLength() << endl;
 
 	// Initialising variables
@@ -85,7 +84,8 @@ int main()
 		cout << "2. Display station information\n"; // Ask for station name after selecting this option
 		cout << "3. Add new station\n"; // Add new station at specified line in file
 		cout << "4. Display route\n"; // Ask for source and destination stations. Display a route and price.
-		cout << "5. Add new line\n"; // Add a new line and then prompt to add new stations.
+		cout << "5. Display three routes\n"; // Ask for source and destination stations. Display 3 routes and price.
+		cout << "6. Add new line\n"; // Add a new line and then prompt to add new stations.
 		cout << "0. Quit\n"; // Exit
 		cout << "===============================\n";
 		cout << "Select an option: ";
@@ -94,7 +94,7 @@ int main()
 		cout << "Option selected: " << option << "\n\n";
 
 		switch (option)
-		{ 
+		{
 			// Exit
 			case 0:
 				return 0;
@@ -183,8 +183,21 @@ int main()
 
 				continue;
 
-			// Adding a new line
+			// Find and display a route and its price, given the source and destination stations
 			case 5:
+				//cout << "Enter the source station: ";
+				//cin.ignore();
+				//getline(cin, source);
+				//cout << "Enter the destination station: ";
+				//getline(cin, destination);
+				//cout << endl;
+				source = "Jurong East";
+				destination = "Clementi";
+				CalculateThreeRoutes(source, destination);
+
+				continue;
+			// Adding a new line
+			case 6:
 				cout << "\nEnter new line prefix: ";
 				cin >> linePrefix;
 				transform(linePrefix.begin(), linePrefix.end(), linePrefix.begin(), ::toupper); // uppercase
@@ -201,7 +214,7 @@ int main()
 				if (lineExists)
 					cout << "Line already exists." << endl << endl;
 				// If line does not exist
-				else 
+				else
 				{
 					LineList->push_back(linePrefix);
 					cout << "New line added: " << linePrefix << endl;
@@ -321,13 +334,13 @@ int CalculateRoute(string source, string destination, Dictionary<Station> statio
 		string interchange = interchangeStation.getStationName();
 		trimAll(&interchange);
 
-		totalDistance += CalculateRouteDistance(sourceLineStations, source, interchange, stationDict);	
+		totalDistance += CalculateRouteDistance(sourceLineStations, source, interchange, stationDict);
 
 		source = interchange;
 		sourceLineStations = destinationLineStations;
 
 	}
-	
+
 	totalDistance += CalculateRouteDistance(sourceLineStations, source, destination, stationDict);
 	return totalDistance;
 
@@ -501,7 +514,7 @@ int GetDistance(string stationID)
 		if (i % 2 != 0)
 		{
 			//i++;
-			continue; 
+			continue;
 		}
 		line = RoutesList->at(rowIndex).substr(0, 2); // Get first 2 letters in string to check line. EW/NS/DT/etc.
 		if (stationID.substr(0, 2) == line)
@@ -694,17 +707,17 @@ bool WriteIntoRoutes(string stationID, string dist)
 			// Deduct the distance from the previous position
 			if (i != 0)
 				distanceVector.at(i - 1) = to_string(stoi(distanceVector.at(i - 1)) - stoi(dist));
-			
+
 			// insert our distance in this current position
 			distanceVector.insert(distanceVector.begin() + i, dist);
 
 			break;
 		}
 
-		// Check if it is the last number 
+		// Check if it is the last number
 		if (i == stationIDVector.size() - 1 && stationIDNumber < stoi(stationID.substr(2, 2))) {
 			stationIDVector.push_back(stationID);
-			
+
 			// Calculate the distance between our current station ID and the previous station ID
 			distanceVector.at(i - 1) = to_string(stoi(distanceVector.at(i - 1)) - stoi(dist));
 			distanceVector.insert(distanceVector.begin() + i, dist);
@@ -792,11 +805,7 @@ bool AddNewStation(string stationID, string stationName, string distToNext, Dict
 		return false;
 }
 
-
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-
-void InitDictionary(vector<string>* StationsList, Dictionary<Station>* outDictionary, ListDictionary<string>* outListDictionary)
+void InitDictionary()
 //void InitDictionary(List* StationsList, Dictionary<Station>* outDictionary)
 {
 	//cout << "length" << StationsList->getSize() << endl;
@@ -817,25 +826,146 @@ void InitDictionary(vector<string>* StationsList, Dictionary<Station>* outDictio
 		if (currentLine != line)
 		{
 			if (line != "")
-				outListDictionary->add(line, LineStationsList);
+				linesDict->add(line, LineStationsList);
 
 			line = currentLine;
 			LineStationsList = vector<string>();
 		}
-		
+
 		LineStationsList.push_back(currentStationName);
 
 		//cout << "stationID = " << currentStationID << endl;
 		//cout << "stationName = " << currentStationName << endl;
 
-		outDictionary->add(currentStationName, currentStationID, GetDistance(currentStationID));
+		dic->add(currentStationName, currentStationID, GetDistance(currentStationID));
 		//cout << "added to dic" << endl;
 	}
 }
 
+void CalculateThreeRoutes(string source, string destination)
+{
+	//trimAll(&source);
+	//trimAll(&destination);
 
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	vector<vector<Station>*>* routesList = new vector<vector<Station>*>();
+	vector<Station>* firstRoute = new vector<Station>();
+	Station* front = dic->get(source);
+	firstRoute->push_back(*front);
+	routesList->push_back(firstRoute);
 
+	CheckStation(0, source, destination, routesList);
+	cout << endl;
+	/*
+	1. get source and destination
+	2. Literally recurse through every station starting from source
+	3. if station is interchange, branch off (another loop in that direction)
+	4. with each station youre at, update a dictionary(?) of stations chained together
+	*/
+}
+
+vector<vector<Station>*>* CheckStation(int routeNum, string source, string destination,
+	vector<vector<Station>*>* routesList)
+{
+	int count = 0;
+	for (int i = 0; i < routesList->size(); i++) // checking how many of the routes so far has reached its destination
+	{
+		if (routesList->at(i)->front().getStationName() == source &&
+			routesList->at(i)->back().getStationName() == destination)
+			count++;
+	}
+	if (count >= 3) // Success condition
+		return routesList;
+	else // still havent 3 routes
+	{
+		vector<string>* connections = getConnections(source);
+		if (connections != NULL)
+		{
+			for (int i = 0; i < connections->size(); i++) // removes the last visited station from connections
+			{
+				if (connections->at(i) == routesList->at(routeNum)->back().getStationName())
+				{
+					connections->erase(connections->begin() + i);
+					continue;
+				}
+			}
+			for (int i = 0; i < connections->size(); i++)
+			{
+				vector<Station>* stations = dic->getStations(connections->at(i));
+				for (int j = 0; j < stations->size(); j++) // if this connection im checking is on my current route's line
+				{
+					//Station* newStation = &stations->front();
+
+					Station* newStation = NULL;
+					for (int l = 0; l < stations->size(); l++)
+					{
+						vector<Station>* st = dic->getStations(source);
+						for (int m = 0; m < st->size(); m++)
+						{
+							if (stations->at(l).getLine() == st->at(m).getLine().substr(0, 2))
+								newStation = &stations->front();
+						}
+					}
+					routesList->at(routeNum)->push_back(*newStation);
+					if (stations->at(j).getLine() == dic->get(source)->getLine())
+						CheckStation(routeNum, connections->at(i), destination, routesList);
+					else // create new route. While doing so, copy current route path to new route.
+					{
+						vector<Station>* newRoute = new vector<Station>();
+						for (int k = 0; k < routesList->at(routeNum)->size(); k++) //copyign current path to new path
+							newRoute->push_back(routesList->at(routeNum)->at(k));
+
+						CheckStation(routesList->size() - 1, connections->at(i), destination, routesList);
+					}
+				}
+			}
+		}
+	}
+	// check if routesList has 3 complete routes. (get front and back)
+	// if yes,
+		//return routesList
+
+	//else
+		//if source NOT interchange,
+			//
+
+		//else (is interchange)
+			// create new vector<station> and copy current route's statoins into the new one.
+			// parse new
+}
+
+vector<string>* getConnections(string stationName)
+{
+	vector<Station>* stations = dic->getStations(stationName);
+	vector<string>* connections = new vector<string>();
+	if (stations->size() > 0)
+	{
+		for (int i = 0; i < stations->size(); i++)
+		{
+			string line = stations->at(i).getLine();
+			vector<string>* lineVec = linesDict->get(line);
+			for (int j = 0; j < lineVec->size(); j++)
+			{
+				if (lineVec->at(j) == stationName)
+				{
+					if ((j - 1 >= 0) && (j + 1 < lineVec->size()))
+					{
+						connections->push_back(lineVec->at(j - 1));
+						connections->push_back(lineVec->at(j + 1));
+					}
+					else
+					{
+						if (j - 1 <= 0) // if station is the first one, just add the second name
+							connections->push_back(lineVec->at(j + 1));
+						if (j + 1 >= lineVec->size()) //if station is the last one, just add the second last name
+							connections->push_back(lineVec->at(j - 1));
+					}
+				}
+			}
+		}
+		return connections;
+	}
+	return NULL;
+}
 
 void init()
 {
@@ -844,6 +974,8 @@ void init()
 	RoutesList = new vector<string>();
 	StationsList = new vector<string>();
 	LineList = new vector<string>();
+	dic = new Dictionary<Station>();
+	linesDict = new ListDictionary<string>();
 
 	if (!ReadFile(FaresPath, FaresList))
 		cout << "Error init Fares..." << endl;
@@ -865,4 +997,10 @@ void init()
 }
 
 
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	for (int i = 0; i < StationsList->size(); i++) {
+		if ((StationsList->at(i)).find(splitList->at(0)) != -1)
+			cout << StationsList->at(i) << endl;
+	}
+
+	cout << endl;
+}

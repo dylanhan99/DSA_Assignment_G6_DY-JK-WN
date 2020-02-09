@@ -1,6 +1,5 @@
 #include "pch.h"
 #include "Dictionary.h"
-#include "Globals.h"
 
 template <class ItemType>
 Dictionary<ItemType>::Dictionary()
@@ -19,6 +18,8 @@ Dictionary<ItemType>::~Dictionary()
 template <class ItemType>
 int Dictionary<ItemType>::hash(KeyType key)
 {
+	trimAll(&key);
+
 	//horner's rule
 	int sum = 0;
 	for (int i = 0; i < key.length(); i++)
@@ -39,10 +40,9 @@ bool Dictionary<ItemType>::add(KeyType newKey, string stationID, int distance) /
 	newNode->item = Station(newKey, stationID/*, distance*/);
 	newNode->item.SetDistance(distance);
 	newNode->next = NULL;
-	trimAll(&newKey);
-	newNode->key = newKey;
-
+	//trimAll(&newKey);
 	int index = hash(newKey) % DIC_MAX_SIZE;
+	newNode->key = newKey;
 	if (items[index] == NULL)
 	{
 		items[index] = newNode;
@@ -274,7 +274,7 @@ bool Dictionary<ItemType>::contains(KeyType key)
 template <class ItemType>
 vector<Station>* Dictionary<ItemType>::getStations(KeyType key)
 {
-	trimAll(&key);
+	//trimAll(&key);
 	int index = hash(key) % DIC_MAX_SIZE;
 	Node* currentNode = NULL;
 	vector<Station>* stationsList = new vector<Station>();
