@@ -36,6 +36,8 @@ public:
 	// add a new item with the specified key to the Dictionary
 	bool add(KeyType newKey, string stationID, int distance);
 
+	vector<ItemType>* getAll();
+
 	// remove an item with the specified key in the Dictionary
 	void remove(KeyType key);
 
