@@ -1,8 +1,9 @@
 ﻿  Dictionary.cpp
-c:\users\hanwei\desktop\dsa_assignment_g6_dy-jk-wn\dsa_assignment_g6_dy-jk-wn\list.h(4): warning C4067: unexpected tokens following preprocessor directive - expected a newline
-c:\users\hanwei\desktop\dsa_assignment_g6_dy-jk-wn\dsa_assignment_g6_dy-jk-wn\dictionary.cpp(24): warning C4018: '<': signed/unsigned mismatch
-  c:\users\hanwei\desktop\dsa_assignment_g6_dy-jk-wn\dsa_assignment_g6_dy-jk-wn\dictionary.cpp(21): note: while compiling class template member function 'int Dictionary<Station>::hash(KeyType)'
-  c:\users\hanwei\desktop\dsa_assignment_g6_dy-jk-wn\dsa_assignment_g6_dy-jk-wn\dictionary.cpp(220): note: see reference to class template instantiation 'Dictionary<Station>' being compiled
-c:\users\hanwei\desktop\dsa_assignment_g6_dy-jk-wn\dsa_assignment_g6_dy-jk-wn\dictionary.cpp(190): warning C4018: '<': signed/unsigned mismatch
-  c:\users\hanwei\desktop\dsa_assignment_g6_dy-jk-wn\dsa_assignment_g6_dy-jk-wn\dictionary.cpp(183): note: while compiling class template member function 'void Dictionary<Station>::printStationInformation(KeyType)'
-  DSA_Assignment_G6_DY-JK-WN.vcxproj -> C:\Users\HanWei\Desktop\DSA_Assignment_G6_DY-JK-WN\Debug\DSA_Assignment_G6_DY-JK-WN.exe
+c:\users\wubz\documents\github\dsa_assignment_g6_dy-jk-wn\dsa_assignment_g6_dy-jk-wn\list.h(4): warning C4067: unexpected tokens following preprocessor directive - expected a newline
+c:\users\wubz\documents\github\dsa_assignment_g6_dy-jk-wn\dsa_assignment_g6_dy-jk-wn\dictionary.cpp(24): warning C4018: '<': signed/unsigned mismatch
+  c:\users\wubz\documents\github\dsa_assignment_g6_dy-jk-wn\dsa_assignment_g6_dy-jk-wn\dictionary.cpp(21): note: while compiling class template member function 'int Dictionary<Station>::hash(KeyType)'
+  c:\users\wubz\documents\github\dsa_assignment_g6_dy-jk-wn\dsa_assignment_g6_dy-jk-wn\dictionary.cpp(252): note: see reference to class template instantiation 'Dictionary<Station>' being compiled
+c:\users\wubz\documents\github\dsa_assignment_g6_dy-jk-wn\dsa_assignment_g6_dy-jk-wn\dictionary.cpp(222): warning C4018: '<': signed/unsigned mismatch
+  c:\users\wubz\documents\github\dsa_assignment_g6_dy-jk-wn\dsa_assignment_g6_dy-jk-wn\dictionary.cpp(215): note: while compiling class template member function 'void Dictionary<Station>::printStationInformation(KeyType)'
+c:\users\wubz\documents\github\dsa_assignment_g6_dy-jk-wn\dsa_assignment_g6_dy-jk-wn\dictionary.cpp(95): warning C4172: returning address of local variable or temporary: stationsList
+  DSA_Assignment_G6_DY-JK-WN.vcxproj -> C:\Users\Wubz\Documents\GitHub\DSA_Assignment_G6_DY-JK-WN\Debug\DSA_Assignment_G6_DY-JK-WN.exe

@@ -50,6 +50,12 @@ int main()
 	cout << "\n";
 	InitDictionary(StationsList, dic, linesDict);
 	cout << "len = " << dic->getLength() << endl;
+	vector<Station>* stations = dic->getAll();
+	for (int i = 0; i < stations->size(); i++)
+	{
+		cout << stations->at(i).getStationName() << endl;
+	}
+
 	string stationName;
 
 	//for (int i = 0; i < linesDict->get("NS")->getSize(); i++)

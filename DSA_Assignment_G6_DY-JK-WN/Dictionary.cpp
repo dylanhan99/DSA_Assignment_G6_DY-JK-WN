@@ -6,7 +6,7 @@ template <class ItemType>
 Dictionary<ItemType>::Dictionary()
 {
 	size = 0;
-	for (int i = 0; i < MAX_SIZE; i++)
+	for (int i = 0; i < DIC_MAX_SIZE; i++)
 		items[i] = NULL; // setting all items to NULL on init so that lines like if (currentNode->next != NULL) work
 }
 
@@ -28,7 +28,7 @@ int Dictionary<ItemType>::hash(KeyType key)
 			continue;
 		sum += (currentChar * 52 + charvalue(key[i + 1]));
 	}
-	sum %= MAX_SIZE;
+	//sum %= MAX_SIZE;
 	return sum;
 }
 
@@ -42,7 +42,7 @@ bool Dictionary<ItemType>::add(KeyType newKey, string stationID, int distance) /
 	trimAll(&newKey);
 	newNode->key = newKey;
 
-	int index = hash(newKey);
+	int index = hash(newKey) % DIC_MAX_SIZE;
 	if (items[index] == NULL)
 	{
 		items[index] = newNode;
@@ -52,6 +52,22 @@ bool Dictionary<ItemType>::add(KeyType newKey, string stationID, int distance) /
 		Node* currentNode = items[index];
 		//if (currentNode->key == newKey)
 		//	return false;
+		int x = 0;
+		while (currentNode->key != newKey)
+		{
+			x += 1;
+			index = (hash(newKey) + x) % DIC_MAX_SIZE;
+
+			if (items[index] == NULL)
+			{
+				items[index] = newNode;
+				size++;
+				return true;
+			}
+			currentNode = items[index];
+
+		}
+
 		while (currentNode->next != NULL)
 		{
 			currentNode = currentNode->next;
@@ -65,9 +81,25 @@ bool Dictionary<ItemType>::add(KeyType newKey, string stationID, int distance) /
 }
 
 template <class ItemType>
+vector<ItemType>* Dictionary<ItemType>::getAll()
+{
+	vector<ItemType> stationsList;
+	for (int i = 0; i < DIC_MAX_SIZE; i++)
+	{
+		if (items[i] != NULL)
+		{
+			Node* node = items[i];
+			stationsList.push_back(node->item);
+		}
+	}
+	return &stationsList;
+
+}
+
+template <class ItemType>
 void Dictionary<ItemType>::remove(KeyType key)
 {
-	int index = hash(key);
+	int index = hash(key) % DIC_MAX_SIZE;
 	Node* currentNode = NULL;
 	Node* deleteNode = NULL;
 
@@ -100,7 +132,7 @@ void Dictionary<ItemType>::remove(KeyType key)
 template <class ItemType>
 ItemType* Dictionary<ItemType>::get(KeyType key)
 {
-	int index = hash(key);
+	int index = hash(key) % DIC_MAX_SIZE;
 	//Station returnItem;
 	Node* currentNode = NULL;
 
@@ -145,7 +177,7 @@ template <class ItemType>
 vector<Station>* Dictionary<ItemType>::getStations(KeyType key)
 {
 	trimAll(&key);
-	int index = hash(key);
+	int index = hash(key) % DIC_MAX_SIZE;
 	Node* currentNode = NULL;
 	vector<Station>* stationsList = new vector<Station>();
 
