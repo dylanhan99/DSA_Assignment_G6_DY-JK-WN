@@ -238,6 +238,23 @@ bool Dictionary<ItemType>::contains(KeyType key)
 			return true;
 		}
 
+		int x = 0;
+		while (currentNode->key != key)
+		{
+			x += 1;
+			index = (hash(key) + x) % DIC_MAX_SIZE;
+			if (items[index != NULL])
+			{
+				currentNode = items[index];
+
+				if (currentNode->key == key)
+				{
+					return true;
+				}
+			}
+
+		}
+
 		while (currentNode->next != NULL)
 		{
 			if (currentNode->key == key)
