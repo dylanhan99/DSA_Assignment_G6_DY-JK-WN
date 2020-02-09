@@ -5,6 +5,7 @@
 using namespace std;
 
 #include "Station.h"
+#include "Globals.h"
 
 typedef string KeyType;
 const int DIC_MAX_SIZE = 139;
