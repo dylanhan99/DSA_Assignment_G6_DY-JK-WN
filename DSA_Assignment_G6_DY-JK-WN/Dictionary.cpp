@@ -81,7 +81,7 @@ bool Dictionary<ItemType>::add(KeyType newKey, string stationID, int distance) /
 }
 
 template <class ItemType>
-vector<ItemType>* Dictionary<ItemType>::getAll()
+vector<ItemType> Dictionary<ItemType>::getAll()
 {
 	vector<ItemType> stationsList;
 	for (int i = 0; i < DIC_MAX_SIZE; i++)
@@ -92,7 +92,7 @@ vector<ItemType>* Dictionary<ItemType>::getAll()
 			stationsList.push_back(node->item);
 		}
 	}
-	return &stationsList;
+	return stationsList;
 
 }
 
@@ -171,6 +171,70 @@ ItemType* Dictionary<ItemType>::get(KeyType key)
 		//}
 	}
 	return NULL;
+}
+
+template <class ItemType>
+bool Dictionary<ItemType>::get(KeyType key, ItemType* item)
+{
+	int index = hash(key) % DIC_MAX_SIZE;
+	//Station returnItem;
+	Node* currentNode = NULL;
+
+	if (items[index] != NULL)
+	{
+		currentNode = items[index];
+		if (currentNode->key == key)
+		{
+			item = &currentNode->item;
+			return true;
+		}
+
+		while (currentNode->next != NULL)
+		{
+			if (currentNode->key == key)
+			{
+				item = &currentNode->item;
+				return true;
+			}
+			else
+			{
+				currentNode = currentNode->next;
+			}
+
+		}
+	}
+	return false;
+}
+
+template <class ItemType>
+bool Dictionary<ItemType>::contains(KeyType key)
+{
+	int index = hash(key) % DIC_MAX_SIZE;
+	//Station returnItem;
+	Node* currentNode = NULL;
+
+	if (items[index] != NULL)
+	{
+		currentNode = items[index];
+		if (currentNode->key == key)
+		{
+			return true;
+		}
+
+		while (currentNode->next != NULL)
+		{
+			if (currentNode->key == key)
+			{
+				return true;
+			}
+			else
+			{
+				currentNode = currentNode->next;
+			}
+
+		}
+	}
+	return false;
 }
 
 template <class ItemType>

@@ -55,11 +55,11 @@ int main()
 	cout << "\n";
 	InitDictionary(StationsList, dic, linesDict);
 	cout << "len = " << dic->getLength() << endl;
-	vector<Station>* stations = dic->getAll();
-	for (int i = 0; i < stations->size(); i++)
-	{
-		cout << stations->at(i).getStationName() << endl;
-	}
+	//vector<Station> stations = dic->getAll();
+	//for (int i = 0; i < stations.size(); i++)
+	//{
+	//	cout << stations.at(i).getStationName() << endl;
+	//}
 
 	string stationName;
 
@@ -115,8 +115,16 @@ int main()
 				cout << endl;
 
 				distance = CalculateRoute(source, destination, *dic, *linesDict);
-				cout << "Distance: " << distance << endl;
-				cout << "Fare: " << CalculateFares(distance) << endl;
+				if (distance > 0)
+				{
+					cout << "Distance: " << distance << endl;
+					cout << "Fare: " << CalculateFares(distance) << endl;
+				}
+				else
+				{
+					cout << "Invalid Query" << endl;
+				}
+
 				continue;
 			default:
 				break;
@@ -151,11 +159,37 @@ int CalculateFares(int routeLength)
 int CalculateRoute(string source, string destination, Dictionary<Station> stationDict, ListDictionary<string> lineDict)
 {
 	int totalDistance = 0;
-	Station sourceStation = *stationDict.get(source);
-	Station destinationstation = *stationDict.get(destination);
+	trimAll(&source);
+	trimAll(&destination);
+
+	Station sourceStation;
+	Station destinationStation;
+
+	bool isSourceExists = stationDict.contains(source);
+	bool isDestinationExists = stationDict.contains(destination);
+
+	if (isSourceExists && isDestinationExists)
+	{
+		sourceStation = *stationDict.get(source);
+		destinationStation = *stationDict.get(destination);
+	}
+	else
+	{
+		if (!isSourceExists)
+			cout << "Source Station does not exist." << endl;
+		if (!isDestinationExists)
+			cout << "Destination Station does not exist." << endl;
+		return 0;
+	}
+
+	//if (!stationDict.get(source, &sourceStation) || !stationDict.get(source, &destinationstation))
+	//{
+	//	cout << "Station does not exist." << endl;
+	//	return 0;
+	//}
 
 	string sourceLine = sourceStation.getStationID().substr(0, 2);
-	string destinationLine = destinationstation.getStationID().substr(0, 2);
+	string destinationLine = destinationStation.getStationID().substr(0, 2);
 
 	vector<string> line;
 

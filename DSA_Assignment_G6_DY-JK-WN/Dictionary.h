@@ -7,7 +7,7 @@ using namespace std;
 #include "Station.h"
 
 typedef string KeyType;
-const int DIC_MAX_SIZE = 600;
+const int DIC_MAX_SIZE = 139;
 
 template <class ItemType>
 class Dictionary
@@ -36,7 +36,7 @@ public:
 	// add a new item with the specified key to the Dictionary
 	bool add(KeyType newKey, string stationID, int distance);
 
-	vector<ItemType>* getAll();
+	vector<ItemType> getAll();
 
 	// remove an item with the specified key in the Dictionary
 	void remove(KeyType key);
@@ -47,6 +47,8 @@ public:
 	// get all stations with the same name (the key)
 	//List<Station>* getStations(KeyType key);
 	ItemType* get(KeyType key);
+	bool get(KeyType key, ItemType* item);
+	bool contains(KeyType key);
 
 	vector<Station>* getStations(KeyType stationName);
 
