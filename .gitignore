@@ -4,3 +4,13 @@
 *.ilk
 *.pdb
 *.obj
+*.db
+*.opendb
+*.ipch
+*.tlog
+*.log
+*.enc
+*.pch
+*.idb
+.vs/DSA_Assignment_G6_DY-JK-WN/v15/.suo
+.vs/DSA_Assignment_G6_DY-JK-WN/v15/Browse.VC.db

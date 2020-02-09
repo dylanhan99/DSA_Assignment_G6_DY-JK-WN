@@ -7,6 +7,7 @@
 #include <fstream>
 #include <sstream>
 #include <vector>
+#include <algorithm>
 using namespace std;
 
 #include "Globals.h"
@@ -14,6 +15,7 @@ using namespace std;
 #include "ListDictionary.h"
 
 string fullPath = "full\\";
+//string simplePath = "simple\\";
 
 string FaresPath = fullPath + "Fares.csv";
 string InterchangesPath = fullPath + "Interchanges.csv";
@@ -27,6 +29,7 @@ vector<string>* StationsList;
 vector<string>* LineList;
 Dictionary<Station>* dic;
 ListDictionary<string>* linesDict;
+vector<string>* splitLineList;
 
 vector<string>* Split(string str, char delimiter);
 bool ReadFile(string filename, vector<string>* outList);
@@ -35,10 +38,10 @@ int CountFileLines(string filename);
 int CalculateRoute(string source, string destination, Dictionary<Station> stationDict, ListDictionary<string> lineDict);
 int CalculateRouteDistance(vector<string> line, string source, string destination, Dictionary<Station> stationDict);
 int CalculateFares(int routeLength);
-bool WriteIntoInterchanges(string stationID, string stationName, Dictionary<Station>* dic);
+void WriteIntoInterchanges(string stationID, string stationName, Dictionary<Station>* dic);
 bool WriteIntoRoutes(string stationID, string dist);
 bool WriteIntoStations(string stationID, string stationName, Dictionary<Station>* dic);
-bool AddNewStation(string stationID, string stationName, string distToNext);
+bool AddNewStation(string stationID, string stationName, string distToNext, Dictionary<Station>* dic);
 bool WriteFile(string filePath, string str);
 bool WriteFile(string filePath, string str, int line);
 void InitDictionary();
@@ -58,21 +61,12 @@ int main()
 	cout << "\n";
 	InitDictionary();
 	cout << "len = " << dic->getLength() << endl;
-	//vector<Station> stations = dic->getAll();
-	//for (int i = 0; i < stations.size(); i++)
-	//{
-	//	cout << stations.at(i).getStationName() << endl;
-	//}
-
-	string stationName;
 
 	// Initialising variables
 	int lineNumber;
-
-	//for (int i = 0; i < linesDict->get("NS")->getSize(); i++)
-	//{
-	//	cout << *(linesDict->get("NS")->get(i)) << endl;
-	//}
+	string stationID, stationName, dist;
+	string linePrefix;
+	bool lineExists = false;
 
 	// while loop
 	int option = 0;
@@ -81,6 +75,7 @@ int main()
 		string source;
 		string destination;
 		int distance = 0;
+		int lineIndex;
 
 		//Display Menu
 		cout << "MAIN MENU\n";
@@ -90,6 +85,7 @@ int main()
 		cout << "3. Add new station\n"; // Add new station at specified line in file
 		cout << "4. Display route\n"; // Ask for source and destination stations. Display a route and price.
 		cout << "5. Display three routes\n"; // Ask for source and destination stations. Display 3 routes and price.
+		cout << "6. Add new line\n"; // Add a new line and then prompt to add new stations.
 		cout << "0. Quit\n"; // Exit
 		cout << "===============================\n";
 		cout << "Select an option: ";
@@ -106,11 +102,7 @@ int main()
 
 			// Display all stations in a given line
 			case 1:
-				cout << "Available MRT Lines: \n";
-				cout << "===============================\n";
 				printLinesOptions();
-				cout << "===============================\n";
-				cout << "Choose a line: ";
 				cin.ignore();
 				cin >> lineNumber;
 
@@ -129,9 +121,44 @@ int main()
 
 			// Add and save a new station on a given line
 			case 3:
-				cout << "Enter new station name: ";
-				cin >> stationName;
+				// Prompt users to choose a line to add a new station to
+				printLinesOptions();
+				cin.ignore();
+				cin >> lineNumber;
+				// Print all stations in the current line
+				cout << "\nCurrent stations in ";
+				printStationsInLine(lineNumber);
+
 				cout << "\nEnter new station name: ";
+				cin.ignore();
+				getline(cin, stationName);
+
+				// Users can input `station ID: -` if it is the last station,
+				// and `station ID: 2~` if it is in between and there are no stations at current ID.
+				lineIndex = lineNumber - 1;
+				cout << "Enter new station ID (Enter '-' if it is the last station): " << LineList->at(lineIndex);
+				cin >> stationID;
+				stationID = LineList->at(lineIndex) + stationID; // Prepending the station prefix in front of ID
+
+				// If it is the last station
+				if (stationID == "-")
+					stationID = "";
+
+				// We want to calculate the distance here.
+				// The distance recorded is between the current station and the previous station.
+				if (stationID != "0") {
+					cout << "Distance to previous station: ";
+					cin >> dist;
+ 				}
+
+				// Add a new station
+				if (AddNewStation(stationID, stationName, dist, dic))
+				{
+					cout << "New station added: ";
+					cout << stationID << ", " << stationName << endl << endl;
+				}
+				else
+					cout << "Unable to add new station." << endl << endl;
 				continue;
 
 			// Find and display a route and its price, given the source and destination stations
@@ -169,6 +196,61 @@ int main()
 				CalculateThreeRoutes(source, destination);
 
 				continue;
+			// Adding a new line
+			case 6:
+				cout << "\nEnter new line prefix: ";
+				cin >> linePrefix;
+				transform(linePrefix.begin(), linePrefix.end(), linePrefix.begin(), ::toupper); // uppercase
+
+				// Add a new line
+				// Check if line prefix already exists
+				for (int i = 0; i < StationsList->size(); i++) {
+					if (StationsList->at(i).substr(2, 2) == linePrefix)
+						lineExists = true;
+				}
+
+
+				// If line exists
+				if (lineExists)
+					cout << "Line already exists." << endl << endl;
+				// If line does not exist
+				else
+				{
+					LineList->push_back(linePrefix);
+					cout << "New line added: " << linePrefix << endl;
+					cout << "Please add some new stations..." << endl;
+
+					// ADDING A NEW STATION
+					cout << "\nEnter new station name: ";
+					cin.ignore();
+					getline(cin, stationName);
+
+					// Users can input `station ID: -` if it is the last station,
+					// and `station ID: 2~` if it is in between and there are no stations at current ID.
+					cout << "Enter new station ID (Enter '-' if it is the last station): " << linePrefix;
+					cin >> stationID;
+					stationID = linePrefix + stationID; // Prepending the station prefix in front of ID
+
+					// If it is the last station
+					if (stationID == "-")
+						stationID = "";
+
+					// We want to calculate the distance here.
+					// The distance recorded is between the current station and the previous station.
+					if (stationID != "0") {
+						cout << "Distance to previous station: ";
+						cin >> dist;
+					}
+
+					// Add a new station
+					if (AddNewStation(stationID, stationName, dist, dic))
+					{
+						cout << "New station added: ";
+						cout << stationID << ", " << stationName << endl << endl;
+					}
+					else
+						cout << "Unable to add new station." << endl << endl;
+				}
 
 			default:
 				break;
@@ -348,6 +430,42 @@ int CalculateRouteDistance(vector<string> line, string source, string destinatio
 	}
 }
 
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+// [1] Print menu of all lines
+void printLinesOptions()
+{
+	cout << "Available MRT Lines: \n";
+	cout << "===============================\n";
+
+	for (int i = 0; i < LineList->size(); i++) {
+		cout << i + 1 << ". " << LineList->at(i) << endl;
+	}
+
+	cout << "===============================\n";
+	cout << "Choose a line: ";
+}
+
+// [1] Display all stations in selected line
+void printStationsInLine(int lineNumber)
+{
+	int lineIndex = lineNumber - 1;
+	cout << LineList->at(lineIndex) << "..." << endl;
+
+	for (int i = 0; i < StationsList->size(); i++) {
+		if ((StationsList->at(i)).find(LineList->at(lineIndex)) != -1)
+			cout << StationsList->at(i) << endl;
+	}
+
+	cout << endl;
+}
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
 vector<string>* Split(string str, char delimiter)
 {
 	// count number of delimiter in string to determine List size
@@ -450,59 +568,9 @@ int CountFileLines(string filename)
 	}
 }
 
-bool WriteIntoInterchanges(string stationID, string stationName, Dictionary<Station>* dic) // step 3
-{
-	vector<Station>* stations = dic->getStations(stationName);
-	if (stations->size() >= 0)
-	{
-		//write to interchagne.csv
-	}
-	cout << stationName << " will not be an interchange" << endl;
-	return false;
-}
 
-bool WriteIntoRoutes(string stationID, string dist) // step 2
-{
-	// check if station exists.
-	// if it dosnt, add at that id
-	// else (it exists), return error msg
-	return false;
-}
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-bool WriteIntoStations(string stationID, string stationName, Dictionary<Station>* dic) // step 1, once this is passed, the other two can run.
-{
-	// check if station exists.
-	// if it dosnt, add at that id
-	// else (it exists), return error msg
-
-	vector<Station>* stations = dic->getStations(stationName);
-	if (stations->size() > 0) //station exists, so check if the line already exists (cannot add station of same name on same line)
-	{
-		for (int i = 0; i < stations->size(); i++)
-		{
-			if (stations->at(i).getLine() == stationID.substr(0, 2)) // station already exists on line
-				return false;
-		}
-	}
-	// station does not exist on line yet
-	// is the stationID available?
-	for (int i = 0; i < StationsList->size(); i++)
-	{
-		string str = StationsList->at(i);
-		vector<string>* split = Split(str, ','); // pass by value. i dont want to alter StationsList
-		if (split->front() == stationID) //if the stationID user entered already exists, fail
-			return false;
-	}
-	// Name and ID are available on that line.
-	// Proceed to add into csv
-	// station dont need to be in order so can just add to the end.
-	// routes need to be in order so must adjust
-	// interchanges also need
-	string strToWrite = stationID + "," + stationName;
-	WriteFile(StationsPath, strToWrite);
-
-	return true;
-}
 
 bool WriteFile(string filePath, string str) // adds to end of file
 {
@@ -542,12 +610,199 @@ bool WriteFile(string filePath, string str, int line)
 }
 
 
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-bool AddNewStation(string stationID, string stationName, string distToNext)
+
+// [3]  Step 1: Check if station ID and station name are valid
+bool WriteIntoStations(string stationID, string stationName, Dictionary<Station>* dic)
 {
-	//if stationID substr 0,2 is in lines list
-	//if stationID is correct format
+	// Check if station entered exists in the same line
+	// If it doesnt, add the station at that ID
+	// Else (it exists), return error message
+	vector<Station>* stations = dic->getStations(stationName);
+	if (stations->size() > 0) // station exists, so check if the line already exists (cannot add station of same name on same line)
+	{
+		for (int i = 0; i < stations->size(); i++)
+		{
+			if (stations->at(i).getLine() == stationID.substr(0, 2)) // station already exists on line
+				return false;
+		}
+	}
+
+	// Station does not exist on line yet
+	// Check if stationID is not taken
+	for (int i = 0; i < StationsList->size(); i++)
+	{
+		string str = StationsList->at(i); // this returns station code + name (e.g. DT2,Cashew)
+		vector<string>* split = Split(str, ','); // Pass by value. No alteration to StationsList
+		if (split->front() == stationID) // if the stationID user entered already exists, fail
+			return false;
+	}
+
+	// Name and ID are available on that line, add into CSV files
+	// Station dont need to be in order so can just add to the end
+	// Routes need to be in order so must adjust
+	// Interchanges also need
+	string strToWrite = stationID + "," + stationName;
+	WriteFile(StationsPath, strToWrite);
+
+	return true;
+}
+
+// [3]
+// Step 2, writing into routes
+bool WriteIntoRoutes(string stationID, string dist)
+{
+	vector<string> stationIDVector, distanceVector;
+	int rowNumber = 0;
+	string stationIDString, distanceString;
+
+	for (int i = 0; i < RoutesList->size(); i++) {
+		string row = RoutesList->at(i);
+
+		// Getting the stationID row
+		if (i % 2 == 0) {
+			stringstream ss(row);
+
+			// Get the prefix of the SECOND element in the routes list, and then compares it to the prefix of the one we want to add
+			if (row.substr(row.find(",") + 1, 2) == stationID.substr(0, 2)) {
+				// Retrieve all stationIDs of the row here
+				while (ss.good())
+				{
+					string substr;
+					getline(ss, substr, ',');
+					stationIDVector.push_back(substr); // stationIDVector contains every stationID in the row (e.g. EW1, EW2, EW3...)
+					rowNumber = i;
+				}
+			}
+		}
+	}
+
+	// Getting a vector of distance strings
+	stringstream ss(RoutesList->at(rowNumber + 1));
+	while (ss.good())
+	{
+		string substr;
+		getline(ss, substr, ',');
+		distanceVector.push_back(substr); // distanceVector contains the distances corresponding to stationIDVector
+	}
+
+	// Compare the numbers here
+	for (int i = 0; i < stationIDVector.size(); i++) {
+		int stationIDNumber;
+
+		if (stationIDVector.at(i).length() > 2)
+			stationIDNumber = stoi(stationIDVector.at(i).substr(2, 2));
+		else
+			stationIDNumber = 0;
+
+		// If station ID number is greater than that of the one you're adding (e.g. EW14 > EW12)
+		// insert our new stationID inside the stationIDVector at the current position
+		// Available range here: First number until (last - 1)
+		if (stationIDNumber > stoi(stationID.substr(2, 2))) {
+			stationIDVector.insert(stationIDVector.begin() + i, stationID);
+
+			// Calculate the distances here!!!
+			// Check if it is not the first number
+			// Deduct the distance from the previous position
+			if (i != 0)
+				distanceVector.at(i - 1) = to_string(stoi(distanceVector.at(i - 1)) - stoi(dist));
+
+			// insert our distance in this current position
+			distanceVector.insert(distanceVector.begin() + i, dist);
+
+			break;
+		}
+
+		// Check if it is the last number
+		if (i == stationIDVector.size() - 1 && stationIDNumber < stoi(stationID.substr(2, 2))) {
+			stationIDVector.push_back(stationID);
+
+			// Calculate the distance between our current station ID and the previous station ID
+			distanceVector.at(i - 1) = to_string(stoi(distanceVector.at(i - 1)) - stoi(dist));
+			distanceVector.insert(distanceVector.begin() + i, dist);
+			break;
+		}
+	}
+
+	for (int i = 0; i < stationIDVector.size(); i++) {
+		//cout << stationIDVector.at(i) << endl;
+		stationIDString.append(stationIDVector.at(i) + ",");
+	}
+	for (int i = 0; i < distanceVector.size(); i++) {
+		//cout << distanceVector.at(i) << endl;
+		distanceString.append(distanceVector.at(i) + ",");
+	}
+	stationIDString.pop_back();
+	distanceString.pop_back();
+
+	cout << stationIDString << endl;
+	cout << distanceString << endl;
+
+	// Convert our vector into a string & write into file
+	WriteFile(RoutesPath, stationIDString, rowNumber);
+	WriteFile(RoutesPath, distanceString, rowNumber + 1);
+
 	return false;
+}
+
+// [3]
+// Step 3, writing into interchanges
+void WriteIntoInterchanges(string stationID, string stationName, Dictionary<Station>* dic) // step 3
+{
+	string interchangeString;
+	int rowNumber;
+
+	// Check (INTERCHANGE)
+	// 1. If the station is located at an interchange, i.e. if there is a station with the same name located on different lines
+	vector<Station>* stations = dic->getStations(stationName);
+	if (stations->size() >= 0)
+	{
+		// Store all the stations into a string
+		for (int i = 0; i < stations->size(); i++) {
+			interchangeString.append(stations->at(i).getStationID() + ",");
+		}
+
+		// If it is a new interchange
+		if (stations->size() < 2) {
+			int i = 0;
+			while (i != stations->size()) {
+				// write to Interchange.csv
+				interchangeString.append(stationID);
+
+				WriteFile(InterchangesPath, interchangeString);
+				break;
+			}
+			i++;
+		}
+		// If the interchange already exists in the file
+		else {
+			for (int i = 0; i < stations->size(); i++) {
+				string row = InterchangesList->at(i);
+				if ((stations->at(i).getStationID()).find(row.substr(0, 4))) {
+					WriteFile(InterchangesPath, interchangeString, i);
+				}
+			}
+		}
+	}
+	else
+		cout << stationName << " will not be an interchange" << endl;
+}
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+// [3] Adding a new station to dictionary
+bool AddNewStation(string stationID, string stationName, string distToNext, Dictionary<Station>* dic)
+{
+	if (WriteIntoStations(stationID, stationName, dic))
+	{
+		WriteIntoRoutes(stationID, distToNext);
+		WriteIntoInterchanges(stationID, stationName, dic);
+	}
+	else
+		return false;
 }
 
 void InitDictionary()
@@ -722,14 +977,6 @@ void init()
 	dic = new Dictionary<Station>();
 	linesDict = new ListDictionary<string>();
 
-	LineList->push_back("EW,East-West Line");
-	LineList->push_back("NS,North-South Line");
-	LineList->push_back("CC,Circle Line");
-	LineList->push_back("DT,Downtown Line");
-	LineList->push_back("NE,North-East Line");
-	LineList->push_back("CG,East-West Branch Line");
-	LineList->push_back("CE,Circle Branch Line");
-
 	if (!ReadFile(FaresPath, FaresList))
 		cout << "Error init Fares..." << endl;
 	if (!ReadFile(InterchangesPath, InterchangesList))
@@ -738,26 +985,17 @@ void init()
 		cout << "Error init Routes..." << endl;
 	if (!ReadFile(StationsPath, StationsList))
 		cout << "Error init Stations..." << endl;
-}
 
-// [1] Print menu of all lines
-void printLinesOptions()
-{
-	for (int i = 0; i < LineList->size(); i++) {
-		vector<string>* splitList;
-		splitList = Split(LineList->at(i), ',');
-		cout << i + 1 << ". " << splitList->at(1) << " (" << splitList->at(0) << ")" << endl;
+	// Adding all prefixes to LineList ("EW","NS",...)
+	for (int i = 0; i < RoutesList->size(); i++) {
+		// Read every alternate row
+		if (i % 2 == 0) {
+			string row = RoutesList->at(i);
+			LineList->push_back(row.substr(row.find(",") + 1, 2));
+		}
 	}
 }
 
-// [1] Display all stations in selected line
-void printStationsInLine(int lineNumber)
-{
-	int lineIndex = lineNumber - 1;
-	vector<string>* splitList;
-	splitList = Split(LineList->at(lineIndex), ',');
-
-	cout << splitList->at(1) << " (" << splitList->at(0) << ")..." << endl;
 
 	for (int i = 0; i < StationsList->size(); i++) {
 		if ((StationsList->at(i)).find(splitList->at(0)) != -1)
