@@ -3,7 +3,7 @@
 
 #include "pch.h"
 #include <iostream>
-#include <string>;
+#include <string>
 #include <fstream>
 #include <sstream>  
 #include <vector>
@@ -28,6 +28,7 @@ vector<string>* FaresList;
 vector<string>* InterchangesList;
 vector<string>* RoutesList;
 vector<string>* StationsList;
+vector<string>* LineList;
 
 vector<string>* Split(string str, char delimiter);
 bool ReadFile(string filename, vector<string>* outList);
@@ -43,6 +44,8 @@ bool AddNewStation(string stationID, string stationName, string distToNext);
 bool WriteFile(string filePath, string str);
 bool WriteFile(string filePath, string str, int line);
 void InitDictionary(vector<string>* StationsList, Dictionary<Station>* outDictionary, ListDictionary<string>* outListDictionary);
+void printLinesOptions();
+void printStationsInLine(int lineNumber);
 void init();
 
 int main()
@@ -63,11 +66,15 @@ int main()
 
 	string stationName;
 
+	// Initialising variables
+	int lineNumber;
+
 	//for (int i = 0; i < linesDict->get("NS")->getSize(); i++)
 	//{
 	//	cout << *(linesDict->get("NS")->get(i)) << endl;
 	//}
 
+	// while loop
 	int option = 0;
 	while (true)
 	{
@@ -76,6 +83,7 @@ int main()
 		int distance = 0;
 
 		//Display Menu
+		cout << "MAIN MENU\n";
 		cout << "===============================\n";
 		cout << "1. Display all stations\n"; // Choose a line after selecting this option
 		cout << "2. Display station information\n"; // Ask for station name after selecting this option
@@ -90,22 +98,42 @@ int main()
 
 		switch (option)
 		{
-			case 0: // Exit
+			// Exit
+			case 0:
 				return 0;
 				break;
+
+			// Display all stations in a given line
 			case 1:
+				cout << "Available MRT Lines: \n";
+				cout << "===============================\n";
+				printLinesOptions();
+				cout << "===============================\n";
+				cout << "Choose a line: ";
+				cin.ignore();
+				cin >> lineNumber;
+
+				cout << "\nDisplaying stations in ";
+				// Printing stations in a line
+				printStationsInLine(lineNumber);
 				continue;
+
+			// Display station information for a given station name
 			case 2:
 				cout << "Enter a station name: ";
 				cin.ignore();			   // Kind of pauses for the input. Without this, programme continues without waiting for input
 				getline(cin, stationName); // Reads entire line instead of just the first word
 				dic->printStationInformation(stationName);
 				continue;
+
+			// Add and save a new station on a given line
 			case 3:
 				cout << "Enter new station name: ";
 				cin >> stationName;
 				cout << "\nEnter new station name: ";
 				continue;
+
+			// Find and display a route and its price, given the source and destination stations
 			case 4:
 				cout << "Enter the source station: ";
 				cin.ignore();
@@ -126,6 +154,7 @@ int main()
 				}
 
 				continue;
+
 			default:
 				break;
 		}
@@ -534,6 +563,15 @@ void init()
 	InterchangesList = new vector<string>();
 	RoutesList = new vector<string>();
 	StationsList = new vector<string>();
+	LineList = new vector<string>();
+
+	LineList->push_back("EW,East-West Line");
+	LineList->push_back("NS,North-South Line");
+	LineList->push_back("CC,Circle Line");
+	LineList->push_back("DT,Downtown Line");
+	LineList->push_back("NE,North-East Line");
+	LineList->push_back("CG,East-West Branch Line");
+	LineList->push_back("CE,Circle Branch Line");
 
 	if (!ReadFile(FaresPath, FaresList))
 		cout << "Error init Fares..." << endl;
@@ -543,4 +581,31 @@ void init()
 		cout << "Error init Routes..." << endl;
 	if (!ReadFile(StationsPath, StationsList))
 		cout << "Error init Stations..." << endl;
+}
+
+// [1] Print menu of all lines
+void printLinesOptions()
+{
+	for (int i = 0; i < LineList->size(); i++) {
+		vector<string>* splitList;
+		splitList = Split(LineList->at(i), ',');
+		cout << i + 1 << ". " << splitList->at(1) << " (" << splitList->at(0) << ")" << endl;
+	}
+}
+
+// [1] Display all stations in selected line
+void printStationsInLine(int lineNumber)
+{
+	int lineIndex = lineNumber - 1;
+	vector<string>* splitList;
+	splitList = Split(LineList->at(lineIndex), ',');
+
+	cout << splitList->at(1) << " (" << splitList->at(0) << ")..." << endl;
+
+	for (int i = 0; i < StationsList->size(); i++) {
+		if ((StationsList->at(i)).find(splitList->at(0)) != -1)
+			cout << StationsList->at(i) << endl;
+	}
+
+	cout << endl;
 }
