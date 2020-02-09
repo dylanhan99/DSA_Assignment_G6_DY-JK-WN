@@ -7,6 +7,7 @@
 #include <fstream>
 #include <sstream>  
 #include <vector>
+#include <algorithm>
 using namespace std;
 
 #include "Globals.h"
@@ -18,12 +19,12 @@ using namespace std;
 #include "ListDictionary.h"
 
 string fullPath = "full\\";
-string simplePath = "simple\\";
+//string simplePath = "simple\\";
 
-string FaresPath = simplePath + "Fares.csv";
-string InterchangesPath = simplePath + "Interchanges.csv";
-string RoutesPath = simplePath + "Routes.csv";
-string StationsPath = simplePath + "Stations.csv";
+string FaresPath = fullPath + "Fares.csv";
+string InterchangesPath = fullPath + "Interchanges.csv";
+string RoutesPath = fullPath + "Routes.csv";
+string StationsPath = fullPath + "Stations.csv";
 
 vector<string>* FaresList;
 vector<string>* InterchangesList;
@@ -61,20 +62,12 @@ int main()
 	cout << "\n";
 	InitDictionary(StationsList, dic, linesDict);
 	cout << "len = " << dic->getLength() << endl;
-	//vector<Station> stations = dic->getAll();
-	//for (int i = 0; i < stations.size(); i++)
-	//{
-	//	cout << stations.at(i).getStationName() << endl;
-	//}
 
 	// Initialising variables
 	int lineNumber;
 	string stationID, stationName, dist;
-
-	//for (int i = 0; i < linesDict->get("NS")->getSize(); i++)
-	//{
-	//	cout << *(linesDict->get("NS")->get(i)) << endl;
-	//}
+	string linePrefix;
+	bool lineExists = false;
 
 	// while loop
 	int option = 0;
@@ -92,6 +85,7 @@ int main()
 		cout << "2. Display station information\n"; // Ask for station name after selecting this option
 		cout << "3. Add new station\n"; // Add new station at specified line in file
 		cout << "4. Display route\n"; // Ask for source and destination stations. Display a route and price.
+		cout << "5. Add new line\n"; // Add a new line and then prompt to add new stations.
 		cout << "0. Quit\n"; // Exit
 		cout << "===============================\n";
 		cout << "Select an option: ";
@@ -188,6 +182,62 @@ int main()
 				}
 
 				continue;
+
+			// Adding a new line
+			case 5:
+				cout << "\nEnter new line prefix: ";
+				cin >> linePrefix;
+				transform(linePrefix.begin(), linePrefix.end(), linePrefix.begin(), ::toupper); // uppercase
+
+				// Add a new line
+				// Check if line prefix already exists
+				for (int i = 0; i < StationsList->size(); i++) {
+					if (StationsList->at(i).substr(2, 2) == linePrefix)
+						lineExists = true;
+				}
+
+
+				// If line exists
+				if (lineExists)
+					cout << "Line already exists." << endl << endl;
+				// If line does not exist
+				else 
+				{
+					LineList->push_back(linePrefix);
+					cout << "New line added: " << linePrefix << endl;
+					cout << "Please add some new stations..." << endl;
+
+					// ADDING A NEW STATION
+					cout << "\nEnter new station name: ";
+					cin.ignore();
+					getline(cin, stationName);
+
+					// Users can input `station ID: -` if it is the last station,
+					// and `station ID: 2~` if it is in between and there are no stations at current ID.
+					cout << "Enter new station ID (Enter '-' if it is the last station): " << linePrefix;
+					cin >> stationID;
+					stationID = linePrefix + stationID; // Prepending the station prefix in front of ID
+
+					// If it is the last station
+					if (stationID == "-")
+						stationID = "";
+
+					// We want to calculate the distance here.
+					// The distance recorded is between the current station and the previous station.
+					if (stationID != "0") {
+						cout << "Distance to previous station: ";
+						cin >> dist;
+					}
+
+					// Add a new station
+					if (AddNewStation(stationID, stationName, dist, dic))
+					{
+						cout << "New station added: ";
+						cout << stationID << ", " << stationName << endl << endl;
+					}
+					else
+						cout << "Unable to add new station." << endl << endl;
+				}
 
 			default:
 				break;
@@ -707,7 +757,6 @@ void WriteIntoInterchanges(string stationID, string stationName, Dictionary<Stat
 				// write to Interchange.csv
 				interchangeString.append(stationID);
 
-				cout << "AYY: " << interchangeString << endl;
 				WriteFile(InterchangesPath, interchangeString);
 				break;
 			}
@@ -720,8 +769,6 @@ void WriteIntoInterchanges(string stationID, string stationName, Dictionary<Stat
 				if ((stations->at(i).getStationID()).find(row.substr(0, 4))) {
 					WriteFile(InterchangesPath, interchangeString, i);
 				}
-
-				cout << "NOO: " << interchangeString << endl;
 			}
 		}
 	}
