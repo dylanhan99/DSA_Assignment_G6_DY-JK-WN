@@ -1,17 +1,18 @@
 ﻿  DSA_Assignment_G6_DY-JK-WN.cpp
-c:\users\wubz\documents\github\dsa_assignment_g6_dy-jk-wn\dsa_assignment_g6_dy-jk-wn\dsa_assignment_g6_dy-jk-wn.cpp(6): warning C4067: unexpected tokens following preprocessor directive - expected a newline
 c:\users\wubz\documents\github\dsa_assignment_g6_dy-jk-wn\dsa_assignment_g6_dy-jk-wn\globals.h(40): warning C4018: '<': signed/unsigned mismatch
 c:\users\wubz\documents\github\dsa_assignment_g6_dy-jk-wn\dsa_assignment_g6_dy-jk-wn\list.h(4): warning C4067: unexpected tokens following preprocessor directive - expected a newline
 c:\users\wubz\documents\github\dsa_assignment_g6_dy-jk-wn\dsa_assignment_g6_dy-jk-wn\arraylist.h(3): warning C4067: unexpected tokens following preprocessor directive - expected a newline
-c:\users\wubz\documents\github\dsa_assignment_g6_dy-jk-wn\dsa_assignment_g6_dy-jk-wn\dsa_assignment_g6_dy-jk-wn.cpp(142): warning C4018: '<': signed/unsigned mismatch
-c:\users\wubz\documents\github\dsa_assignment_g6_dy-jk-wn\dsa_assignment_g6_dy-jk-wn\dsa_assignment_g6_dy-jk-wn.cpp(218): warning C4018: '<': signed/unsigned mismatch
-c:\users\wubz\documents\github\dsa_assignment_g6_dy-jk-wn\dsa_assignment_g6_dy-jk-wn\dsa_assignment_g6_dy-jk-wn.cpp(221): warning C4018: '<': signed/unsigned mismatch
-c:\users\wubz\documents\github\dsa_assignment_g6_dy-jk-wn\dsa_assignment_g6_dy-jk-wn\dsa_assignment_g6_dy-jk-wn.cpp(236): warning C4018: '<': signed/unsigned mismatch
-c:\users\wubz\documents\github\dsa_assignment_g6_dy-jk-wn\dsa_assignment_g6_dy-jk-wn\dsa_assignment_g6_dy-jk-wn.cpp(296): warning C4018: '<': signed/unsigned mismatch
-c:\users\wubz\documents\github\dsa_assignment_g6_dy-jk-wn\dsa_assignment_g6_dy-jk-wn\dsa_assignment_g6_dy-jk-wn.cpp(334): warning C4018: '<': signed/unsigned mismatch
-c:\users\wubz\documents\github\dsa_assignment_g6_dy-jk-wn\dsa_assignment_g6_dy-jk-wn\dsa_assignment_g6_dy-jk-wn.cpp(422): warning C4018: '<': signed/unsigned mismatch
-c:\users\wubz\documents\github\dsa_assignment_g6_dy-jk-wn\dsa_assignment_g6_dy-jk-wn\dsa_assignment_g6_dy-jk-wn.cpp(430): warning C4018: '<': signed/unsigned mismatch
-c:\users\wubz\documents\github\dsa_assignment_g6_dy-jk-wn\dsa_assignment_g6_dy-jk-wn\dsa_assignment_g6_dy-jk-wn.cpp(472): warning C4018: '<': signed/unsigned mismatch
-c:\users\wubz\documents\github\dsa_assignment_g6_dy-jk-wn\dsa_assignment_g6_dy-jk-wn\dsa_assignment_g6_dy-jk-wn.cpp(500): warning C4018: '<': signed/unsigned mismatch
-c:\users\wubz\documents\github\dsa_assignment_g6_dy-jk-wn\dsa_assignment_g6_dy-jk-wn\dsa_assignment_g6_dy-jk-wn.cpp(290): warning C4715: 'CalculateRouteDistance': not all control paths return a value
+c:\users\wubz\documents\github\dsa_assignment_g6_dy-jk-wn\dsa_assignment_g6_dy-jk-wn\dsa_assignment_g6_dy-jk-wn.cpp(172): warning C4018: '<': signed/unsigned mismatch
+c:\users\wubz\documents\github\dsa_assignment_g6_dy-jk-wn\dsa_assignment_g6_dy-jk-wn\dsa_assignment_g6_dy-jk-wn.cpp(255): warning C4018: '<': signed/unsigned mismatch
+c:\users\wubz\documents\github\dsa_assignment_g6_dy-jk-wn\dsa_assignment_g6_dy-jk-wn\dsa_assignment_g6_dy-jk-wn.cpp(258): warning C4018: '<': signed/unsigned mismatch
+c:\users\wubz\documents\github\dsa_assignment_g6_dy-jk-wn\dsa_assignment_g6_dy-jk-wn\dsa_assignment_g6_dy-jk-wn.cpp(273): warning C4018: '<': signed/unsigned mismatch
+c:\users\wubz\documents\github\dsa_assignment_g6_dy-jk-wn\dsa_assignment_g6_dy-jk-wn\dsa_assignment_g6_dy-jk-wn.cpp(339): warning C4018: '<': signed/unsigned mismatch
+c:\users\wubz\documents\github\dsa_assignment_g6_dy-jk-wn\dsa_assignment_g6_dy-jk-wn\dsa_assignment_g6_dy-jk-wn.cpp(377): warning C4018: '<': signed/unsigned mismatch
+c:\users\wubz\documents\github\dsa_assignment_g6_dy-jk-wn\dsa_assignment_g6_dy-jk-wn\dsa_assignment_g6_dy-jk-wn.cpp(465): warning C4018: '<': signed/unsigned mismatch
+c:\users\wubz\documents\github\dsa_assignment_g6_dy-jk-wn\dsa_assignment_g6_dy-jk-wn\dsa_assignment_g6_dy-jk-wn.cpp(473): warning C4018: '<': signed/unsigned mismatch
+c:\users\wubz\documents\github\dsa_assignment_g6_dy-jk-wn\dsa_assignment_g6_dy-jk-wn\dsa_assignment_g6_dy-jk-wn.cpp(515): warning C4018: '<': signed/unsigned mismatch
+c:\users\wubz\documents\github\dsa_assignment_g6_dy-jk-wn\dsa_assignment_g6_dy-jk-wn\dsa_assignment_g6_dy-jk-wn.cpp(543): warning C4018: '<': signed/unsigned mismatch
+c:\users\wubz\documents\github\dsa_assignment_g6_dy-jk-wn\dsa_assignment_g6_dy-jk-wn\dsa_assignment_g6_dy-jk-wn.cpp(603): warning C4018: '<': signed/unsigned mismatch
+c:\users\wubz\documents\github\dsa_assignment_g6_dy-jk-wn\dsa_assignment_g6_dy-jk-wn\dsa_assignment_g6_dy-jk-wn.cpp(619): warning C4018: '<': signed/unsigned mismatch
+c:\users\wubz\documents\github\dsa_assignment_g6_dy-jk-wn\dsa_assignment_g6_dy-jk-wn\dsa_assignment_g6_dy-jk-wn.cpp(333): warning C4715: 'CalculateRouteDistance': not all control paths return a value
   DSA_Assignment_G6_DY-JK-WN.vcxproj -> C:\Users\Wubz\Documents\GitHub\DSA_Assignment_G6_DY-JK-WN\Debug\DSA_Assignment_G6_DY-JK-WN.exe
