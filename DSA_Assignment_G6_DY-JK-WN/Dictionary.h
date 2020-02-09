@@ -1,6 +1,7 @@
 // Dictionary.h - - Specification of Dictionary ADT
 #include<string>
 #include<iostream>
+#include<vector>
 using namespace std;
 
 #include "Station.h"
@@ -45,7 +46,7 @@ public:
 	//List<Station>* getStations(KeyType key);
 	ItemType* get(KeyType key);
 
-	List<Station>* getStations(KeyType stationName);
+	vector<Station>* getStations(KeyType stationName);
 
 	// check if the Dictionary is empty
 	bool isEmpty();

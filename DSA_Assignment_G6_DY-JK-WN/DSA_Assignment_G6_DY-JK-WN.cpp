@@ -30,8 +30,7 @@ vector<string>* RoutesList;
 vector<string>* StationsList;
 
 Queue* SplitQ(string str, char delimiter);
-List<string>* SplitL(string str, char delimiter);
-vector<string>* SplitV(string str, char delimiter);
+vector<string>* Split(string str, char delimiter);
 bool ReadFile(string filename, vector<string>* outList);
 int GetDistance(string stationID);
 int CountFileLines(string filename);
@@ -123,7 +122,7 @@ int CalculateFares(int routeLength)
 
 	for (int i = 0; i < fares.size(); i++)
 	{
-		vector<string> itemList = *SplitV(fares[i], ',');
+		vector<string> itemList = *Split(fares[i], ',');
 		double distance = stod(itemList[0]);
 		int price = stoi(itemList[1]);
 
@@ -173,7 +172,7 @@ string FindInterchange(vector<string> line, string sourceLine, string source, st
 	vector<string> lineInterchanges;
 	for (int i = 0; i < InterchangesList->size(); i++)
 	{
-		vector<string> interchange = *SplitV(InterchangesList->at(i), ',');
+		vector<string> interchange = *Split(InterchangesList->at(i), ',');
 		for (int l = 0; l < interchange.size(); l++)
 		{
 			if (interchange[i] == sourceLine)
@@ -258,26 +257,7 @@ Queue* SplitQ(string str, char delimiter)
 	return internal;
 }
 
-List<string>* SplitL(string str, char delimiter)
-{
-	// count number of delimiter in string to determine List size
-	int size = 0;
-	for (int i = 0; i < str.size(); i++)
-		if (str[i] == delimiter) 
-			size++;
-
-	List<string>* internal = new List<string>();
-	stringstream ss(str); // Turn the string into a stream.
-	string tok;
-
-	while (getline(ss, tok, delimiter))
-		internal->add(tok);
-
-
-	return internal;
-}
-
-vector<string>* SplitV(string str, char delimiter)
+vector<string>* Split(string str, char delimiter)
 {
 	// count number of delimiter in string to determine List size
 	int size = 0;
