@@ -223,28 +223,30 @@ int CalculateRoute(string source, string destination, Dictionary<Station> statio
 
 	vector<string> sourceLineStations;
 	vector<string> destinationLineStations;
+	//vector<string> interchangeLineStations;
 
 	//Compare Lines
 	sourceLineStations = *lineDict.get(sourceLineName);
+	destinationLineStations = *lineDict.get(destinationLineName);
+
 	if (sourceLineName != destinationLineName)
 	{
 		string nearestInterchange = FindInterchange(sourceLineStations, sourceLineName, source, destinationLineName, stationDict);
-		destinationLineStations = *lineDict.get(nearestInterchange.substr(0, 2));
+		//interchangeLineStations = *lineDict.get(nearestInterchange.substr(0, 2));
 
-		destinationStation = stationDict.getByID(nearestInterchange);
-		string interchange = destinationStation.getStationName();
+		Station interchangeStation = stationDict.getByID(nearestInterchange);
+		string interchange = interchangeStation.getStationName();
+		trimAll(&interchange);
 
-		totalDistance += CalculateRouteDistance(destinationLineStations, nearestInterchange, interchange, stationDict);
+		totalDistance += CalculateRouteDistance(sourceLineStations, source, interchange, stationDict);	
+
+		source = interchange;
+		sourceLineStations = destinationLineStations;
+
 	}
 	
-	if (!sourceLineStations.empty())
-	{
-		totalDistance = CalculateRouteDistance(sourceLineStations, source, destination, stationDict);
-		return totalDistance;
-	}
-	else {
-		return 0;
-	}
+	totalDistance += CalculateRouteDistance(sourceLineStations, source, destination, stationDict);
+	return totalDistance;
 
 }
 
