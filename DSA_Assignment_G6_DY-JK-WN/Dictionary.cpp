@@ -398,7 +398,7 @@ void Dictionary<ItemType>::printStationInformation(KeyType stationName)
 			cout << "\t" << stationsList->at(i).getLine()
 				<< "\t" << stationsList->at(i).getStationID()
 				<< "\t\t" << stationsList->at(i).getStationName()
-				<< "\t\t" << stationsList->at(i).getDistance();
+				<< "\t" << stationsList->at(i).getDistance() << endl;
 		}
 		cout << endl;
 		//return;

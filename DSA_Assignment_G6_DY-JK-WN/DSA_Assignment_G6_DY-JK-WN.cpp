@@ -185,14 +185,12 @@ int main()
 
 			// Find and display a route and its price, given the source and destination stations
 			case 5:
-				//cout << "Enter the source station: ";
-				//cin.ignore();
-				//getline(cin, source);
-				//cout << "Enter the destination station: ";
-				//getline(cin, destination);
-				//cout << endl;
-				source = "Jurong East";
-				destination = "Clementi";
+				cout << "Enter the source station: ";
+				cin.ignore();
+				getline(cin, source);
+				cout << "Enter the destination station: ";
+				getline(cin, destination);
+				cout << endl;
 				CalculateThreeRoutes(source, destination);
 
 				continue;
