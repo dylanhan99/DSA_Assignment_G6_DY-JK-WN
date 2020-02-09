@@ -53,6 +53,8 @@ public:
 
 	vector<Station>* getStations(KeyType stationName);
 
+	ItemType getByID(string id);
+
 	// check if the Dictionary is empty
 	bool isEmpty();
 
