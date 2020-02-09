@@ -29,7 +29,6 @@ vector<string>* InterchangesList;
 vector<string>* RoutesList;
 vector<string>* StationsList;
 
-Queue* SplitQ(string str, char delimiter);
 vector<string>* Split(string str, char delimiter);
 bool ReadFile(string filename, vector<string>* outList);
 int GetDistance(string stationID);
@@ -37,6 +36,12 @@ int CountFileLines(string filename);
 int CalculateRoute(string source, string destination, Dictionary<Station> stationDict, ListDictionary<string> lineDict);
 int CalculateRouteDistance(vector<string> line, string source, string destination, Dictionary<Station> stationDict);
 int CalculateFares(int routeLength);
+bool WriteIntoInterchanges(string stationID, string stationName, Dictionary<Station>* dic);
+bool WriteIntoRoutes(string stationID, string dist);
+bool WriteIntoStations(string stationID, string stationName, Dictionary<Station>* dic);
+bool AddNewStation(string stationID, string stationName, string distToNext);
+bool WriteFile(string filePath, string str);
+bool WriteFile(string filePath, string str, int line);
 void InitDictionary(vector<string>* StationsList, Dictionary<Station>* outDictionary, ListDictionary<string>* outListDictionary);
 void init();
 
@@ -250,19 +255,6 @@ int CalculateRouteDistance(vector<string> line, string source, string destinatio
 	}
 }
 
-Queue* SplitQ(string str, char delimiter)
-{
-	Queue* internal = new Queue();
-	stringstream ss(str); // Turn the string into a stream.
-	string tok;
-
-	while (getline(ss, tok, delimiter))
-		internal->enqueue(tok);
-
-
-	return internal;
-}
-
 vector<string>* Split(string str, char delimiter)
 {
 	// count number of delimiter in string to determine List size
@@ -316,23 +308,26 @@ int GetDistance(string stationID)
 		line = RoutesList->at(rowIndex).substr(0, 2); // Get first 2 letters in string to check line. EW/NS/DT/etc.
 		if (stationID.substr(0, 2) == line)
 		{
-			Queue* faresQueue = SplitQ(RoutesList->at(rowIndex), ',');
-			while (!faresQueue->isEmpty())
+			vector<string>* faresList = Split(RoutesList->at(rowIndex), ',');
+			while (faresList->size() > 0)
 			{
 				string currentID;
-				faresQueue->dequeue(currentID);
+				currentID = faresList->front();
+				faresList->erase(faresList->begin());
 				if (currentID == stationID)
 					break;
-				if (faresQueue->isEmpty())
+				if (faresList->size() <= 0)
 					return -1;
 				columnIndex++;
 			}
-			faresQueue = SplitQ(RoutesList->at(rowIndex + 1), ',');
+			faresList = Split(RoutesList->at(rowIndex + 1), ',');
 			string fare;
-			faresQueue->getFront(fare); // if columnIndex == 0, fare will still have a value
+			fare = faresList->front(); // if columnIndex == 0, fare will still have a value
 			for (int j = 0; i < columnIndex; i++)
-				faresQueue->dequeue(fare);
-
+			{
+				fare = faresList->front();
+				faresList->erase(faresList->begin());
+			}
 			return stoi(fare); //converts the string fare into int
 		}
 		else
@@ -362,6 +357,106 @@ int CountFileLines(string filename)
 	}
 }
 
+bool WriteIntoInterchanges(string stationID, string stationName, Dictionary<Station>* dic) // step 3
+{
+	vector<Station>* stations = dic->getStations(stationName);
+	if (stations->size() >= 0)
+	{
+		//write to interchagne.csv
+	}
+	cout << stationName << " will not be an interchange" << endl;
+	return false;
+}
+
+bool WriteIntoRoutes(string stationID, string dist) // step 2
+{
+	// check if station exists.
+	// if it dosnt, add at that id
+	// else (it exists), return error msg
+	return false;
+}
+
+bool WriteIntoStations(string stationID, string stationName, Dictionary<Station>* dic) // step 1, once this is passed, the other two can run.
+{
+	// check if station exists.
+	// if it dosnt, add at that id
+	// else (it exists), return error msg
+
+	vector<Station>* stations = dic->getStations(stationName);
+	if (stations->size() > 0) //station exists, so check if the line already exists (cannot add station of same name on same line)
+	{
+		for (int i = 0; i < stations->size(); i++)
+		{
+			if (stations->at(i).getLine() == stationID.substr(0, 2)) // station already exists on line
+				return false;
+		}
+	}
+	// station does not exist on line yet
+	// is the stationID available?
+	for (int i = 0; i < StationsList->size(); i++)
+	{
+		string str = StationsList->at(i);
+		vector<string>* split = Split(str, ','); // pass by value. i dont want to alter StationsList
+		if (split->front() == stationID) //if the stationID user entered already exists, fail
+			return false; 
+	}
+	// Name and ID are available on that line.
+	// Proceed to add into csv
+	// station dont need to be in order so can just add to the end. 
+	// routes need to be in order so must adjust
+	// interchanges also need
+	string strToWrite = stationID + "," + stationName;
+	WriteFile(StationsPath, strToWrite);
+
+	return true;
+}
+
+bool WriteFile(string filePath, string str) // adds to end of file
+{
+	ofstream myfile(filePath);
+	if (myfile.is_open())
+	{
+		myfile << str << "\n";
+		myfile.close();
+		return true;
+	}
+	cout << "Unable to open file";
+	return false;
+
+}
+
+bool WriteFile(string filePath, string str, int line)
+{
+	vector<string>* fileData = new vector<string>();
+	ReadFile(filePath, fileData);
+
+	fileData->at(line) = str; // replacing old line with new
+
+	ofstream myfile(filePath);
+	if (myfile.is_open())
+	{
+		for (int i = 0; i < fileData->size(); i++)
+		{
+			myfile << fileData->front() << "\n";
+			fileData->erase(fileData->begin());
+		}
+
+		myfile.close();
+		return true;
+	}
+	cout << "Unable to open file";
+	return false;
+}
+
+
+
+bool AddNewStation(string stationID, string stationName, string distToNext)
+{
+	//if stationID substr 0,2 is in lines list
+	//if stationID is correct format
+	return false;
+}
+
 void InitDictionary(vector<string>* StationsList, Dictionary<Station>* outDictionary, ListDictionary<string>* outListDictionary)
 //void InitDictionary(List* StationsList, Dictionary<Station>* outDictionary)
 {
@@ -371,11 +466,13 @@ void InitDictionary(vector<string>* StationsList, Dictionary<Station>* outDictio
 	for (int i = 0; i < StationsList->size(); i++)
 	{
 		string currentStation = StationsList->at(i);
-		Queue* currentStationInfo = SplitQ(currentStation, ',');
+		vector<string>* currentStationInfo = Split(currentStation, ',');
 
 		string currentStationID, currentStationName;
-		currentStationInfo->dequeue(currentStationID);
-		currentStationInfo->dequeue(currentStationName);
+		currentStationName = currentStationInfo->back();
+		currentStationInfo->pop_back();
+		currentStationID = currentStationInfo->back();
+		currentStationInfo->pop_back();
 
 		string currentLine = currentStationID.substr(0, 2);
 		if (currentLine != line)
