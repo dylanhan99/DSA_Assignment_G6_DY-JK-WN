@@ -60,7 +60,7 @@ int main()
 
 	cout << "\n";
 	InitDictionary();
-	cout << "len = " << dic->getLength() << endl;
+	//cout << "len = " << dic->getLength() << endl;
 
 	// Initialising variables
 	int lineNumber;
@@ -259,6 +259,11 @@ int main()
 	}
 }
 
+
+// Lee Jia Keat
+// 10177804G
+// Group 6
+// The route fare is calculated and returned based on the routeLength parsed in.
 int CalculateFares(int routeLength)
 {
 	vector<string> fares = *FaresList;
@@ -282,6 +287,10 @@ int CalculateFares(int routeLength)
 
 }
 
+// Lee Jia Keat
+// 10177804G
+// Group 6
+// The shortest distance from source to destination station is calculated by refering to the stationsDict and lineDict.
 int CalculateRoute(string source, string destination, Dictionary<Station> stationDict, ListDictionary<string> lineDict)
 {
 	int totalDistance = 0;
@@ -346,6 +355,10 @@ int CalculateRoute(string source, string destination, Dictionary<Station> statio
 
 }
 
+// Lee Jia Keat
+// 10177804G
+// Group 6
+// Closest interchange is returned by using a list of stations on the source and destination lines.
 string FindInterchange(vector<string> sourceLineStations, string sourceLineName, string source, string destinationLineName, Dictionary<Station> stationDict)
 {
 	vector<vector<string>> availableInterchanges;
@@ -388,6 +401,10 @@ string FindInterchange(vector<string> sourceLineStations, string sourceLineName,
 
 }
 
+// Lee Jia Keat
+// 10177804G
+// Group 6
+// Route distance is calculated using the line vector and dicitonary of staitons to get the distance between each station
 int CalculateRouteDistance(vector<string> line, string source, string destination, Dictionary<Station> stationDict)
 {
 	int distance = 0;
@@ -430,10 +447,9 @@ int CalculateRouteDistance(vector<string> line, string source, string destinatio
 	}
 }
 
-
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-
+// Lim Wan Ning
+// 10177683K
+// Group 6
 // [1] Print menu of all lines
 void printLinesOptions()
 {
@@ -448,6 +464,9 @@ void printLinesOptions()
 	cout << "Choose a line: ";
 }
 
+// Lim Wan Ning
+// 10177683K
+// Group 6
 // [1] Display all stations in selected line
 void printStationsInLine(int lineNumber)
 {
@@ -462,10 +481,10 @@ void printStationsInLine(int lineNumber)
 	cout << endl;
 }
 
-
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-
+// Han Wei Dylan
+// 10178483G
+// Group 6
+// Split the string entered at the delimiter and return a vector of each element in the newly split string
 vector<string>* Split(string str, char delimiter)
 {
 	// count number of delimiter in string to determine List size
@@ -485,6 +504,10 @@ vector<string>* Split(string str, char delimiter)
 	return internal;
 }
 
+// Han Wei Dylan
+// 10178483G
+// Group 6
+// Read file of file path entered and fill the outlist with every line.
 bool ReadFile(string filename, vector<string>* outList)
 {
 	ifstream myfile(filename);
@@ -494,7 +517,7 @@ bool ReadFile(string filename, vector<string>* outList)
 		string line;
 		while (getline(myfile, line))
 		{
-			cout << line << endl;
+			//cout << line << endl;
 			outList->push_back(line);
 		}
 		myfile.close();
@@ -504,6 +527,10 @@ bool ReadFile(string filename, vector<string>* outList)
 	return false;
 }
 
+// Han Wei Dylan
+// 10178483G
+// Group 6
+// Get the distance between the staiton id entered and the next
 int GetDistance(string stationID)
 {
 	string line;
@@ -548,6 +575,10 @@ int GetDistance(string stationID)
 	return -1;
 }
 
+// Han Wei Dylan
+// 10178483G
+// Group 6
+// Count the number of lines in a file
 int CountFileLines(string filename)
 {
 	int number_of_lines = 0;
@@ -568,10 +599,10 @@ int CountFileLines(string filename)
 	}
 }
 
-
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-
+// Han Wei Dylan
+// 10178483G
+// Group 6
+// Write a new str at the end of the file
 bool WriteFile(string filePath, string str) // adds to end of file
 {
 	ofstream myfile(filePath);
@@ -586,6 +617,10 @@ bool WriteFile(string filePath, string str) // adds to end of file
 
 }
 
+// Han Wei Dylan
+// 10178483G
+// Group 6
+// Write a new str at a specified line (row number)
 bool WriteFile(string filePath, string str, int line)
 {
 	vector<string>* fileData = new vector<string>();
@@ -609,11 +644,10 @@ bool WriteFile(string filePath, string str, int line)
 	return false;
 }
 
-
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-
-// [3]  Step 1: Check if station ID and station name are valid
+// Lim Wan Ning
+// 10177683K
+// Group 6
+// [3]  Step 1: Check if station ID and station name are valid. If they are, update file with variables.
 bool WriteIntoStations(string stationID, string stationName, Dictionary<Station>* dic)
 {
 	// Check if station entered exists in the same line
@@ -649,6 +683,9 @@ bool WriteIntoStations(string stationID, string stationName, Dictionary<Station>
 	return true;
 }
 
+// Lim Wan Ning
+// 10177683K
+// Group 6
 // [3]
 // Step 2, writing into routes
 bool WriteIntoRoutes(string stationID, string dist)
@@ -746,6 +783,9 @@ bool WriteIntoRoutes(string stationID, string dist)
 	return false;
 }
 
+// Lim Wan Ning
+// 10177683K
+// Group 6
 // [3]
 // Step 3, writing into interchanges
 void WriteIntoInterchanges(string stationID, string stationName, Dictionary<Station>* dic) // step 3
@@ -789,10 +829,9 @@ void WriteIntoInterchanges(string stationID, string stationName, Dictionary<Stat
 		cout << stationName << " will not be an interchange" << endl;
 }
 
-
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-
+// Lim Wan Ning
+// 10177683K
+// Group 6
 // [3] Adding a new station to dictionary
 bool AddNewStation(string stationID, string stationName, string distToNext, Dictionary<Station>* dic)
 {
@@ -805,6 +844,10 @@ bool AddNewStation(string stationID, string stationName, string distToNext, Dict
 		return false;
 }
 
+// Han Wei Dylan
+// 10178483G
+// Group 6
+// Instantiating the Dictionary of stations
 void InitDictionary()
 //void InitDictionary(List* StationsList, Dictionary<Station>* outDictionary)
 {
@@ -842,6 +885,10 @@ void InitDictionary()
 	}
 }
 
+// Han Wei Dylan
+// 10178483G
+// Group 6
+// Getting a three routes from source to destination stations
 void CalculateThreeRoutes(string source, string destination)
 {
 	//trimAll(&source);
@@ -863,6 +910,10 @@ void CalculateThreeRoutes(string source, string destination)
 	*/
 }
 
+// Han Wei Dylan
+// 10178483G
+// Group 6
+// Recursive function that checks each stations connections and updates the routes in the list accordingly.
 vector<vector<Station>*>* CheckStation(int routeNum, string source, string destination,
 	vector<vector<Station>*>* routesList)
 {
@@ -933,6 +984,10 @@ vector<vector<Station>*>* CheckStation(int routeNum, string source, string desti
 			// parse new
 }
 
+// Han Wei Dylan
+// 10178483G
+// Group 6
+// Get a list of connecting stations of the station specified
 vector<string>* getConnections(string stationName)
 {
 	vector<Station>* stations = dic->getStations(stationName);
@@ -967,6 +1022,10 @@ vector<string>* getConnections(string stationName)
 	return NULL;
 }
 
+// Han Wei Dylan
+// 10178483G
+// Group 6
+// General instantiating function. Used mainly to set new vectors
 void init()
 {
 	FaresList = new vector<string>();
@@ -994,13 +1053,4 @@ void init()
 			LineList->push_back(row.substr(row.find(",") + 1, 2));
 		}
 	}
-}
-
-
-	for (int i = 0; i < StationsList->size(); i++) {
-		if ((StationsList->at(i)).find(splitList->at(0)) != -1)
-			cout << StationsList->at(i) << endl;
-	}
-
-	cout << endl;
 }

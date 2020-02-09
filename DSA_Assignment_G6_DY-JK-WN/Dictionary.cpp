@@ -1,6 +1,10 @@
 #include "pch.h"
 #include "Dictionary.h"
 
+// Han Wei Dylan
+// 10178483G
+// Group 6
+// Dictionary constructor
 template <class ItemType>
 Dictionary<ItemType>::Dictionary()
 {
@@ -9,12 +13,19 @@ Dictionary<ItemType>::Dictionary()
 		items[i] = NULL; // setting all items to NULL on init so that lines like if (currentNode->next != NULL) work
 }
 
-
+// Han Wei Dylan
+// 10178483G
+// Group 6
+// Dictionary destructor
 template <class ItemType>
 Dictionary<ItemType>::~Dictionary()
 {
 }
 
+// Han Wei Dylan
+// 10178483G
+// Group 6
+// Hash function to calculate which index the object should be assigned to
 template <class ItemType>
 int Dictionary<ItemType>::hash(KeyType key)
 {
@@ -33,6 +44,10 @@ int Dictionary<ItemType>::hash(KeyType key)
 	return sum;
 }
 
+// Han Wei Dylan
+// 10178483G
+// Group 6
+// Add new stations into dictionary
 template <class ItemType>
 bool Dictionary<ItemType>::add(KeyType newKey, string stationID, int distance) // key is station name eg Jurong East, Item is Station info
 {
@@ -80,6 +95,10 @@ bool Dictionary<ItemType>::add(KeyType newKey, string stationID, int distance) /
 	return true;
 }
 
+// Lee Jia Keat
+// 10177804G
+// Group 6
+// Get all the stations in the dictionary into the dictionary
 template <class ItemType>
 vector<ItemType> Dictionary<ItemType>::getAll()
 {
@@ -93,9 +112,12 @@ vector<ItemType> Dictionary<ItemType>::getAll()
 		}
 	}
 	return stationsList;
-
 }
 
+// Han Wei Dylan
+// 10178483G
+// Group 6
+// Remove staitons from the dictionary using the key to locate the staiton
 template <class ItemType>
 void Dictionary<ItemType>::remove(KeyType key)
 {
@@ -128,6 +150,10 @@ void Dictionary<ItemType>::remove(KeyType key)
 	}
 }
 
+// Lee Jia Keat
+// 10177804G
+// Group 6
+// Get a pointer to the station object specified using the key
 //Station Dictionary::getStation(KeyType key)
 template <class ItemType>
 ItemType* Dictionary<ItemType>::get(KeyType key)
@@ -190,6 +216,10 @@ ItemType* Dictionary<ItemType>::get(KeyType key)
 	return NULL;
 }
 
+// Lee Jia Keat
+// 10177804G
+// Group 6
+// Get a pointer to the station object specified using the key
 template <class ItemType>
 bool Dictionary<ItemType>::get(KeyType key, ItemType* item)
 {
@@ -223,6 +253,10 @@ bool Dictionary<ItemType>::get(KeyType key, ItemType* item)
 	return false;
 }
 
+// Lee Jia Keat
+// 10177804G
+// Group 6
+// Check if dictionary contains the station specified
 template <class ItemType>
 bool Dictionary<ItemType>::contains(KeyType key)
 {
@@ -271,6 +305,10 @@ bool Dictionary<ItemType>::contains(KeyType key)
 	return false;
 }
 
+// Han Wei Dylan
+// 10178483G
+// Group 6
+// Get all stations of a specified key and name.
 template <class ItemType>
 vector<Station>* Dictionary<ItemType>::getStations(KeyType key)
 {
@@ -293,6 +331,10 @@ vector<Station>* Dictionary<ItemType>::getStations(KeyType key)
 	return stationsList;
 }
 
+// Lee Jia Keat
+// 10177804G
+// Group 6
+// Find station object in dictionary with the entered id
 template <class ItemType>
 ItemType Dictionary<ItemType>::getByID(string id)
 {
@@ -315,6 +357,10 @@ ItemType Dictionary<ItemType>::getByID(string id)
 	}
 }
 
+// Han Wei Dylan
+// 10178483G
+// Group 6
+// Get all stations of a specified key and name.
 template <class ItemType>
 bool Dictionary<ItemType>::isEmpty()
 {
@@ -324,12 +370,20 @@ bool Dictionary<ItemType>::isEmpty()
 		return true;
 }
 
+// Han Wei Dylan
+// 10178483G
+// Group 6
+// Get current number of objects in this dictionary
 template <class ItemType>
 int Dictionary<ItemType>::getLength()
 {
 	return size;
 }
 
+// Han Wei Dylan
+// 10178483G
+// Group 6
+// Print station information of specified station
 template <class ItemType>
 void Dictionary<ItemType>::printStationInformation(KeyType stationName)
 {
@@ -338,12 +392,13 @@ void Dictionary<ItemType>::printStationInformation(KeyType stationName)
 	if (stationsList->size() >= 1)
 	{
 		cout << endl;
-		cout << "\t" << "Line\t" << "StationID\t" << "StationName" << endl;
+		cout << "\t" << "Line\t" << "StationID\t" << "StationName\t" << "Distance to next" << endl;
 		for (int i = 0; i < stationsList->size(); i++)
 		{
 			cout << "\t" << stationsList->at(i).getLine()
-				 << "\t" << stationsList->at(i).getStationID() 
-				 << "\t\t" << stationsList->at(i).getStationName() << endl;
+				<< "\t" << stationsList->at(i).getStationID()
+				<< "\t\t" << stationsList->at(i).getStationName()
+				<< "\t\t" << stationsList->at(i).getDistance();
 		}
 		cout << endl;
 		//return;
@@ -352,6 +407,10 @@ void Dictionary<ItemType>::printStationInformation(KeyType stationName)
 		cout << "No station named - " << stationName << endl;
 }
 
+// Han Wei Dylan
+// 10178483G
+// Group 6
+// Determine the char alphabet integer value
 //int Dictionary::charvalue(char c)
 template <class ItemType>
 int Dictionary<ItemType>::charvalue(char c)

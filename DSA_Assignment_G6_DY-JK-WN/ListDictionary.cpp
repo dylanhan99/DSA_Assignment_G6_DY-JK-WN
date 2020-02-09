@@ -1,6 +1,10 @@
 #include "pch.h"
 #include "ListDictionary.h"
 
+// Lee Jia Keat
+// 10177804G
+// Group 6
+// Constructor for ListDictionary
 template <class ItemType>
 ListDictionary<ItemType>::ListDictionary()
 {
@@ -15,6 +19,10 @@ ListDictionary<ItemType>::~ListDictionary()
 {
 }
 
+// Lee Jia Keat
+// 10177804G
+// Group 6
+// Hash function to calculate which index the object should be assigned to
 template <class ItemType>
 int ListDictionary<ItemType>::hash(KeyType key)
 {
@@ -31,6 +39,10 @@ int ListDictionary<ItemType>::hash(KeyType key)
 	return sum;
 }
 
+// Lee Jia Keat
+// 10177804G
+// Group 6
+// Add vector of string into dictionary using the station prefix as the key
 template <class ItemType>
 bool ListDictionary<ItemType>::add(KeyType newKey, std::vector<ItemType> item)
 {
@@ -59,6 +71,10 @@ bool ListDictionary<ItemType>::add(KeyType newKey, std::vector<ItemType> item)
 	return true;
 }
 
+// Lee Jia Keat
+// 10177804G
+// Group 6
+// Remove vector from the dictionary using the key to locate the vector
 template <class ItemType>
 void ListDictionary<ItemType>::remove(KeyType key)
 {
@@ -91,6 +107,10 @@ void ListDictionary<ItemType>::remove(KeyType key)
 	}
 }
 
+// Lee Jia Keat
+// 10177804G
+// Group 6
+// Get a pointer to the vector specified using the key
 //Station Dictionary::getStation(KeyType key)
 template <class ItemType>
 vector<ItemType>* ListDictionary<ItemType>::get(KeyType key)
@@ -124,6 +144,10 @@ vector<ItemType>* ListDictionary<ItemType>::get(KeyType key)
 	return NULL;
 }
 
+// Lee Jia Keat
+// 10177804G
+// Group 6
+// Get all stations of a specified key and name.
 template <class ItemType>
 bool ListDictionary<ItemType>::isEmpty()
 {
@@ -133,12 +157,20 @@ bool ListDictionary<ItemType>::isEmpty()
 		return true;
 }
 
+// Lee Jia Keat
+// 10177804G
+// Group 6
+// Get current number of objects in this dictionary
 template <class ItemType>
 int ListDictionary<ItemType>::getLength()
 {
 	return size;
 }
 
+// Lee Jia Keat
+// 10177804G
+// Group 6
+// Determine the char alphabet integer value
 //int Dictionary::charvalue(char c)
 template <class ItemType>
 int ListDictionary<ItemType>::charvalue(char c)
