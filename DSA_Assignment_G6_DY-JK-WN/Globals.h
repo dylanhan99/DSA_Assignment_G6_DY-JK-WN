@@ -32,3 +32,12 @@ static void trimAll(string* str)
 {
 	str->erase(remove_if(str->begin(), str->end(), isspace), str->end());
 }
+
+//Remove white space and convert to lower case.
+static void trimAllLower(string* str)
+{
+	trimAll(str);
+	for (int i = 0; i < str->length(); i++)
+		str[i] = tolower(str->at(i));
+
+}

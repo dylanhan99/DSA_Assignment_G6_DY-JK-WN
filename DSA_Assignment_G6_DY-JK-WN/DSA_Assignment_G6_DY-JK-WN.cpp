@@ -46,6 +46,7 @@ bool AddNewStation(string stationID, string stationName, string distToNext, Dict
 bool WriteFile(string filePath, string str);
 bool WriteFile(string filePath, string str, int line);
 void InitDictionary(vector<string>* StationsList, Dictionary<Station>* outDictionary, ListDictionary<string>* outListDictionary);
+string FindInterchange(vector<string> sourceLineStations, string sourceLineName, string source, string destinationLineName, Dictionary<Station> stationDict);
 void printLinesOptions();
 void printStationsInLine(int lineNumber);
 void init();
@@ -60,11 +61,11 @@ int main()
 	cout << "\n";
 	InitDictionary(StationsList, dic, linesDict);
 	cout << "len = " << dic->getLength() << endl;
-	vector<Station>* stations = dic->getAll();
-	for (int i = 0; i < stations->size(); i++)
-	{
-		cout << stations->at(i).getStationName() << endl;
-	}
+	//vector<Station> stations = dic->getAll();
+	//for (int i = 0; i < stations.size(); i++)
+	//{
+	//	cout << stations.at(i).getStationName() << endl;
+	//}
 
 	// Initialising variables
 	int lineNumber;
@@ -176,8 +177,16 @@ int main()
 				cout << endl;
 
 				distance = CalculateRoute(source, destination, *dic, *linesDict);
-				cout << "Distance: " << distance << endl;
-				cout << "Fare: " << CalculateFares(distance) << endl;
+				if (distance > 0)
+				{
+					cout << "Distance: " << distance << endl;
+					cout << "Fare: " << CalculateFares(distance) << endl;
+				}
+				else
+				{
+					cout << "Invalid Query" << endl;
+				}
+
 				continue;
 
 			default:
@@ -213,45 +222,80 @@ int CalculateFares(int routeLength)
 int CalculateRoute(string source, string destination, Dictionary<Station> stationDict, ListDictionary<string> lineDict)
 {
 	int totalDistance = 0;
-	Station sourceStation = *stationDict.get(source);
-	Station destinationstation = *stationDict.get(destination);
+	trimAll(&source);
+	trimAll(&destination);
 
-	string sourceLine = sourceStation.getStationID().substr(0, 2);
-	string destinationLine = destinationstation.getStationID().substr(0, 2);
+	Station sourceStation;
+	Station destinationStation;
 
-	vector<string> line;
+	bool isSourceExists = stationDict.contains(source);
+	bool isDestinationExists = stationDict.contains(destination);
 
-	//Compare Lines
-	if (sourceLine == destinationLine)
+	if (isSourceExists && isDestinationExists)
 	{
-		line = *lineDict.get(sourceLine);
+		sourceStation = *stationDict.get(source);
+		destinationStation = *stationDict.get(destination);
 	}
-
 	else
 	{
+		if (!isSourceExists)
+			cout << "Source Station does not exist." << endl;
+		if (!isDestinationExists)
+			cout << "Destination Station does not exist." << endl;
+		return 0;
+	}
 
+	//if (!stationDict.get(source, &sourceStation) || !stationDict.get(source, &destinationstation))
+	//{
+	//	cout << "Station does not exist." << endl;
+	//	return 0;
+	//}
+
+	string sourceLineName = sourceStation.getStationID().substr(0, 2);
+	string destinationLineName = destinationStation.getStationID().substr(0, 2);
+
+	vector<string> sourceLineStations;
+	vector<string> destinationLineStations;
+	//vector<string> interchangeLineStations;
+
+	//Compare Lines
+	sourceLineStations = *lineDict.get(sourceLineName);
+	destinationLineStations = *lineDict.get(destinationLineName);
+
+	if (sourceLineName != destinationLineName)
+	{
+		string nearestInterchange = FindInterchange(sourceLineStations, sourceLineName, source, destinationLineName, stationDict);
+		//interchangeLineStations = *lineDict.get(nearestInterchange.substr(0, 2));
+
+		Station interchangeStation = stationDict.getByID(nearestInterchange);
+		string interchange = interchangeStation.getStationName();
+		trimAll(&interchange);
+
+		totalDistance += CalculateRouteDistance(sourceLineStations, source, interchange, stationDict);	
+
+		source = interchange;
+		sourceLineStations = destinationLineStations;
 
 	}
 	
-	totalDistance = CalculateRouteDistance(line, source, destination, stationDict);
-
+	totalDistance += CalculateRouteDistance(sourceLineStations, source, destination, stationDict);
 	return totalDistance;
 
 }
 
-string FindInterchange(vector<string> line, string sourceLine, string source, string destinationLine, Dictionary<Station> stationDict)
+string FindInterchange(vector<string> sourceLineStations, string sourceLineName, string source, string destinationLineName, Dictionary<Station> stationDict)
 {
 	vector<vector<string>> availableInterchanges;
 	vector<string> lineInterchanges;
 	for (int i = 0; i < InterchangesList->size(); i++)
 	{
 		vector<string> interchange = *Split(InterchangesList->at(i), ',');
-		for (int l = 0; l < interchange.size(); l++)
+		for (int n = 0; n < interchange.size(); n++)
 		{
-			if (interchange[i] == sourceLine)
+			if (interchange[n].substr(0, 2) == sourceLineName)
 			{
 				availableInterchanges.push_back(interchange);
-				lineInterchanges.push_back(interchange[i]);
+				lineInterchanges.push_back(interchange[n]);
 
 			}
 
@@ -260,15 +304,15 @@ string FindInterchange(vector<string> line, string sourceLine, string source, st
 	}
 
 	string nearestInterchange;
-	int shortestDistance = 0;
+	int shortestDistance = -1;
 	for (int i = 0; i < availableInterchanges.size(); i++)
 	{
+		Station destStation = stationDict.getByID(lineInterchanges[i]);
+		string destination = destStation.getStationName();
+		trimAll(&destination);
 
-		int interchangeDistance = CalculateRouteDistance(line, source, lineInterchanges[i], stationDict);
-		if (shortestDistance == 0)
-			shortestDistance = interchangeDistance;
-
-		if (interchangeDistance < shortestDistance)
+		int interchangeDistance = CalculateRouteDistance(sourceLineStations, source, destination, stationDict);
+		if (shortestDistance < 0 || interchangeDistance < shortestDistance)
 		{
 			shortestDistance = interchangeDistance;
 			nearestInterchange = lineInterchanges[i];
@@ -292,9 +336,12 @@ int CalculateRouteDistance(vector<string> line, string source, string destinatio
 
 		for (int i = 0; i < lineLength; i++)
 		{
-			if (line[i] == source)
+			string stationName = line[i];
+			trimAll(&stationName);
+
+			if (stationName  == source)
 				start = i;
-			if (line[i] == destination)
+			if (stationName == destination)
 				end = i;
 
 		}
@@ -309,7 +356,10 @@ int CalculateRouteDistance(vector<string> line, string source, string destinatio
 
 		for (int i = start; i < end; i++)
 		{
-			distance += stationDict.get(line[i])->getDistance();
+			string stationName = line[i];
+			trimAll(&stationName);
+
+			distance += stationDict.get(stationName)->getDistance();
 		}
 
 		return distance;
