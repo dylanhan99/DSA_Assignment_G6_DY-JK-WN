@@ -14,7 +14,7 @@ using namespace std;
 #include "Dictionary.h"
 #include "ListDictionary.h"
 
-string fullPath = "full\\";
+string fullPath = "Demo\\";
 //string simplePath = "simple\\";
 
 string FaresPath = fullPath + "Fares.csv";
@@ -203,7 +203,7 @@ int main()
 				// Add a new line
 				// Check if line prefix already exists
 				for (int i = 0; i < StationsList->size(); i++) {
-					if (StationsList->at(i).substr(2, 2) == linePrefix)
+					if (StationsList->at(i).substr(0, 1) == linePrefix)
 						lineExists = true;
 				}
 
@@ -321,8 +321,8 @@ int CalculateRoute(string source, string destination, Dictionary<Station> statio
 	//	return 0;
 	//}
 
-	string sourceLineName = sourceStation.getStationID().substr(0, 2);
-	string destinationLineName = destinationStation.getStationID().substr(0, 2);
+	string sourceLineName = sourceStation.getStationID().substr(0, 1);
+	string destinationLineName = destinationStation.getStationID().substr(0, 1);
 
 	vector<string> sourceLineStations;
 	vector<string> destinationLineStations;
@@ -366,7 +366,7 @@ string FindInterchange(vector<string> sourceLineStations, string sourceLineName,
 		vector<string> interchange = *Split(InterchangesList->at(i), ',');
 		for (int n = 0; n < interchange.size(); n++)
 		{
-			if (interchange[n].substr(0, 2) == sourceLineName)
+			if (interchange[n].substr(0, 1) == sourceLineName)
 			{
 				availableInterchanges.push_back(interchange);
 				lineInterchanges.push_back(interchange[n]);
@@ -541,8 +541,8 @@ int GetDistance(string stationID)
 			//i++;
 			continue;
 		}
-		line = RoutesList->at(rowIndex).substr(0, 2); // Get first 2 letters in string to check line. EW/NS/DT/etc.
-		if (stationID.substr(0, 2) == line)
+		line = RoutesList->at(rowIndex).substr(0, 1); // Get first 2 letters in string to check line. EW/NS/DT/etc.
+		if (stationID.substr(0, 1) == line)
 		{
 			vector<string>* faresList = Split(RoutesList->at(rowIndex), ',');
 			while (faresList->size() > 0)
@@ -656,7 +656,7 @@ bool WriteIntoStations(string stationID, string stationName, Dictionary<Station>
 	{
 		for (int i = 0; i < stations->size(); i++)
 		{
-			if (stations->at(i).getLine() == stationID.substr(0, 2)) // station already exists on line
+			if (stations->at(i).getLine() == stationID.substr(0, 1)) // station already exists on line
 				return false;
 		}
 	}
@@ -700,7 +700,7 @@ bool WriteIntoRoutes(string stationID, string dist)
 			stringstream ss(row);
 
 			// Get the prefix of the SECOND element in the routes list, and then compares it to the prefix of the one we want to add
-			if (row.substr(row.find(",") + 1, 2) == stationID.substr(0, 2)) {
+			if (row.substr(row.find(",") + 1, 2) == stationID.substr(0, 1)) {
 				// Retrieve all stationIDs of the row here
 				while (ss.good())
 				{
@@ -727,14 +727,14 @@ bool WriteIntoRoutes(string stationID, string dist)
 		int stationIDNumber;
 
 		if (stationIDVector.at(i).length() > 2)
-			stationIDNumber = stoi(stationIDVector.at(i).substr(2, 2));
+			stationIDNumber = stoi(stationIDVector.at(i).substr(1, 2));
 		else
 			stationIDNumber = 0;
 
 		// If station ID number is greater than that of the one you're adding (e.g. EW14 > EW12)
 		// insert our new stationID inside the stationIDVector at the current position
 		// Available range here: First number until (last - 1)
-		if (stationIDNumber > stoi(stationID.substr(2, 2))) {
+		if (stationIDNumber > stoi(stationID.substr(1, 2))) {
 			stationIDVector.insert(stationIDVector.begin() + i, stationID);
 
 			// Calculate the distances here!!!
@@ -750,7 +750,7 @@ bool WriteIntoRoutes(string stationID, string dist)
 		}
 
 		// Check if it is the last number
-		if (i == stationIDVector.size() - 1 && stationIDNumber < stoi(stationID.substr(2, 2))) {
+		if (i == stationIDVector.size() - 1 && stationIDNumber < stoi(stationID.substr(1, 2))) {
 			stationIDVector.push_back(stationID);
 
 			// Calculate the distance between our current station ID and the previous station ID
@@ -817,7 +817,7 @@ void WriteIntoInterchanges(string stationID, string stationName, Dictionary<Stat
 		else {
 			for (int i = 0; i < stations->size(); i++) {
 				string row = InterchangesList->at(i);
-				if ((stations->at(i).getStationID()).find(row.substr(0, 4))) {
+				if ((stations->at(i).getStationID()).find(row.substr(0, 3))) {
 					WriteFile(InterchangesPath, interchangeString, i);
 				}
 			}
@@ -863,7 +863,7 @@ void InitDictionary()
 		currentStationID = currentStationInfo->back();
 		currentStationInfo->pop_back();
 
-		string currentLine = currentStationID.substr(0, 2);
+		string currentLine = currentStationID.substr(0, 1);
 		if (currentLine != line)
 		{
 			if (line != "")
@@ -877,7 +877,6 @@ void InitDictionary()
 
 		//cout << "stationID = " << currentStationID << endl;
 		//cout << "stationName = " << currentStationName << endl;
-
 		dic->add(currentStationName, currentStationID, GetDistance(currentStationID));
 		//cout << "added to dic" << endl;
 	}
@@ -950,7 +949,7 @@ vector<vector<Station>*>* CheckStation(int routeNum, string source, string desti
 						vector<Station>* st = dic->getStations(source);
 						for (int m = 0; m < st->size(); m++)
 						{
-							if (stations->at(l).getLine() == st->at(m).getLine().substr(0, 2))
+							if (stations->at(l).getLine() == st->at(m).getLine().substr(0, 1))
 								newStation = &stations->front();
 						}
 					}
@@ -1048,7 +1047,7 @@ void init()
 		// Read every alternate row
 		if (i % 2 == 0) {
 			string row = RoutesList->at(i);
-			LineList->push_back(row.substr(row.find(",") + 1, 2));
+			LineList->push_back(row.substr(row.find(",") + 1, 1));
 		}
 	}
 }

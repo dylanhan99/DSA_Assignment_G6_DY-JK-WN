@@ -8,7 +8,7 @@ using namespace std;
 #include "Globals.h"
 
 typedef string KeyType;
-const int DIC_MAX_SIZE = 139;
+const int DIC_MAX_SIZE = 200;
 
 template <class ItemType>
 class Dictionary
