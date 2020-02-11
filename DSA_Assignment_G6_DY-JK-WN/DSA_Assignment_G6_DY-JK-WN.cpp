@@ -181,7 +181,7 @@ int main()
 					if (distance < 0)
 						cout << "Error finding route." << endl;
 					else
-						cout << "Invalid Query" << endl;
+						cout << "Invalid Query" << endl << endl;
 				}
 
 				continue;
