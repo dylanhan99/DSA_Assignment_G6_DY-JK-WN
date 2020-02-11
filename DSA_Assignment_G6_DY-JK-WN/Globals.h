@@ -39,5 +39,24 @@ static void trimAllLower(string* str)
 	trimAll(str);
 	for (int i = 0; i < str->length(); i++)
 		str[i] = tolower(str->at(i));
+}
 
+static string GetLine(string str)
+{
+	string returnString = "";
+	for (int i = 0; i < str.length(); i++)
+	{
+		if (isalpha(str[i]))
+			returnString += str[i];
+		// If not char, break
+		else
+			break;
+	}
+	return returnString;
+}
+
+static string GetNum(string str)
+{
+	string line = GetLine(str);
+	return str.substr(line.length(), str.length() - 1);
 }

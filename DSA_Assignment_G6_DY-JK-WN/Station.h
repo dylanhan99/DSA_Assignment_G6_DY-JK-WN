@@ -1,5 +1,7 @@
 #pragma once
 #include<string>
+#include"Globals.h"
+
 using namespace std;
 class Station
 {
