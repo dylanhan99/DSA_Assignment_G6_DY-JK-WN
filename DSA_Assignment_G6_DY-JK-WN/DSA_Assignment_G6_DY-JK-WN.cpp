@@ -178,7 +178,10 @@ int main()
 				}
 				else
 				{
-					cout << "Invalid Query" << endl;
+					if (distance < 0)
+						cout << "Error finding route." << endl;
+					else
+						cout << "Invalid Query" << endl;
 				}
 
 				continue;
@@ -335,6 +338,10 @@ int CalculateRoute(string source, string destination, Dictionary<Station> statio
 	if (sourceLineName != destinationLineName)
 	{
 		string nearestInterchange = FindInterchange(sourceLineStations, sourceLineName, source, destinationLineName, stationDict);
+		if (nearestInterchange == "")
+		{
+			return -1;
+		}
 		//interchangeLineStations = *lineDict.get(nearestInterchange.substr(0, 2));
 
 		Station interchangeStation = stationDict.getByID(nearestInterchange);
@@ -359,17 +366,18 @@ int CalculateRoute(string source, string destination, Dictionary<Station> statio
 // Closest interchange is returned by using a list of stations on the source and destination lines.
 string FindInterchange(vector<string> sourceLineStations, string sourceLineName, string source, string destinationLineName, Dictionary<Station> stationDict)
 {
-	vector<vector<string>> availableInterchanges;
-	vector<string> lineInterchanges;
+	vector<Station> availableInterchanges;
+	vector<string> interchanges;
+	string nearestInterchange;
+
 	for (int i = 0; i < InterchangesList->size(); i++)
 	{
 		vector<string> interchange = *Split(InterchangesList->at(i), ',');
 		for (int n = 0; n < interchange.size(); n++)
 		{
-			if (interchange[n].substr(0, 1) == sourceLineName)
+			if (interchange[n].substr(0, 1) == destinationLineName)
 			{
-				availableInterchanges.push_back(interchange);
-				lineInterchanges.push_back(interchange[n]);
+				interchanges.push_back(interchange[n]);
 
 			}
 
@@ -377,22 +385,41 @@ string FindInterchange(vector<string> sourceLineStations, string sourceLineName,
 
 	}
 
-	string nearestInterchange;
-	int shortestDistance = -1;
-	for (int i = 0; i < availableInterchanges.size(); i++)
+	for (int i = 0; i < interchanges.size(); i++)
 	{
-		Station destStation = stationDict.getByID(lineInterchanges[i]);
-		string destination = destStation.getStationName();
-		trimAll(&destination);
+		Station station = stationDict.getByID(interchanges[i]);
+		vector<Station> interchangeStations = *stationDict.getStations(station.getStationName());
 
-		int interchangeDistance = CalculateRouteDistance(sourceLineStations, source, destination, stationDict);
-		if (shortestDistance < 0 || interchangeDistance < shortestDistance)
+		for (int s = 0; i < interchangeStations.size(); i++)
 		{
-			shortestDistance = interchangeDistance;
-			nearestInterchange = lineInterchanges[i];
+			station = interchangeStations[s];
+			if (station.getStationID().substr(0, 1) == sourceLineName)
+			{
+				availableInterchanges.push_back(station);
+			}
 
 		}
 
+	}
+
+	if (availableInterchanges.size() > 0)
+	{
+		int shortestDistance = -1;
+		for (int i = 0; i < availableInterchanges.size(); i++)
+		{
+			Station destStation = availableInterchanges[i];
+			string destination = destStation.getStationName();
+			trimAll(&destination);
+
+			int interchangeDistance = CalculateRouteDistance(sourceLineStations, source, destination, stationDict);
+			if (shortestDistance < 0 || interchangeDistance < shortestDistance)
+			{
+				shortestDistance = interchangeDistance;
+				nearestInterchange = destination;
+
+			}
+
+		}
 	}
 
 	return nearestInterchange;
