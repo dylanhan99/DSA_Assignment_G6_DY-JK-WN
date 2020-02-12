@@ -153,8 +153,7 @@ int main()
 				// Add a new station
 				if (AddNewStation(stationID, stationName, dist, dic))
 				{
-					cout << "New station added: ";
-					cout << stationID << ", " << stationName << endl << endl;
+					cout << "Your station, " << stationName << " has been added." << endl << endl;
 				}
 				else
 					cout << "Unable to add new station." << endl << endl;
@@ -201,7 +200,6 @@ int main()
 			case 6:
 				cout << "\nEnter new line prefix: ";
 				cin >> linePrefix;
-				//transform(linePrefix.begin(), linePrefix.end(), linePrefix.begin(), ::toupper); // uppercase
 
 				// Add a new line
 				// Check if line prefix already exists
@@ -209,7 +207,6 @@ int main()
 					if (GetLine(StationsList->at(i)) == linePrefix)
 						lineExists = true;
 				}
-
 
 				// If line exists
 				if (lineExists)
@@ -764,6 +761,35 @@ bool WriteFile(string filePath, string str, int line)
 // Lim Wan Ning
 // 10177683K
 // Group 6
+// Insert a str at specified line in file
+bool WriteFileInsert(string filePath, string str, int line)
+{
+	vector<string>* fileData = new vector<string>();
+	ReadFile(filePath, fileData);
+
+	fileData->insert(fileData->begin() + line, str); // replacing old line with new
+
+	ofstream myfile(filePath);
+	if (myfile.is_open())
+	{
+		cout << fileData->size() << endl;
+		while (fileData->size() > 0)
+		{
+			myfile << fileData->front() << "\n";
+			fileData->erase(fileData->begin());
+		}
+
+		myfile.close();
+		return true;
+	}
+	cout << "Unable to open file";
+	return false;
+}
+
+
+// Lim Wan Ning
+// 10177683K
+// Group 6
 // [3]  Step 1: Check if station ID and station name are valid. If they are, update file with variables.
 bool WriteIntoStations(string stationID, string stationName, Dictionary<Station>* dic)
 {
@@ -796,6 +822,7 @@ bool WriteIntoStations(string stationID, string stationName, Dictionary<Station>
 		
 		// Find the line of the stationID (GetLine) and compare it with that in the file
 		int rowNumber = 0;
+		// Find row number when line number starts in excel
 		for (int i = 0; i < StationsList->size(); i++) {
 			string row = StationsList->at(i);
 			rowNumber += 1;
@@ -803,6 +830,7 @@ bool WriteIntoStations(string stationID, string stationName, Dictionary<Station>
 				break;
 			}
 		}
+		// find row to append the stationID in
 		for (int i = 0; i < StationsList->size(); i++) {
 			string row = StationsList->at(i);
 			rowNumber += 1;
@@ -811,7 +839,7 @@ bool WriteIntoStations(string stationID, string stationName, Dictionary<Station>
 			}
 		}
 
-		WriteFile(StationsPath, strToWrite, rowNumber-2);
+		WriteFileInsert(StationsPath, strToWrite, rowNumber-2);
 	}
 	else 
 	{
@@ -839,7 +867,6 @@ bool WriteIntoStations(string stationID, string stationName, Dictionary<Station>
 		}
 
 		string newStationID = GetLine(stationID) + to_string(stoi(GetNum(stationIDVector.back())) + 1);
-
 		string strToWrite = newStationID + "," + stationName;
 
 		// Find the line of the stationID (GetLine) and compare it with that in the file
@@ -853,9 +880,8 @@ bool WriteIntoStations(string stationID, string stationName, Dictionary<Station>
 			}
 		}
 
-		rowNumber += stoi(GetNum(stationIDVector.back()));
-		cout << rowNumber << endl;
-		//WriteFile(StationsPath, strToWrite, rowNumber);
+		rowNumber = rowNumber + stoi(GetNum(stationIDVector.back())) - 2;
+		WriteFileInsert(StationsPath, strToWrite, rowNumber);
 	}
 	return true;
 }
@@ -974,7 +1000,6 @@ bool WriteIntoRoutes(string stationID, string dist)
 		// Convert our vector into a string & write into file
 		WriteFile(RoutesPath, stationIDString, rowNumber);
 		WriteFile(RoutesPath, distanceString, rowNumber + 1);
-
 	}
 
 	return false;
@@ -1042,9 +1067,6 @@ bool AddNewStation(string stationID, string stationName, string distToNext, Dict
 		return false;
 }
 
-//bool AddNewRoute(string stationID, string stationName, string dist) {
-//
-//}
 
 // Han Wei Dylan
 // 10178483G
