@@ -71,6 +71,6 @@ string Station::getStationName()
 // return the line prefix of this station
 string Station::getLine()
 {
-	string line = stationID.substr(0, 1);
+	string line = GetLine(stationID);
 	return line;
 }
