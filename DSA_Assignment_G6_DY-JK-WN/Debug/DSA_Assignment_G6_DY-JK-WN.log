@@ -1,7 +1,7 @@
 ﻿  DSA_Assignment_G6_DY-JK-WN.cpp
 C:\Users\HanWei\Desktop\DSA_Assignment_G6_DY-JK-WN\DSA_Assignment_G6_DY-JK-WN\Globals.h(40,20): warning C4018: '<': signed/unsigned mismatch
 C:\Users\HanWei\Desktop\DSA_Assignment_G6_DY-JK-WN\DSA_Assignment_G6_DY-JK-WN\Globals.h(47,20): warning C4018: '<': signed/unsigned mismatch
-C:\Users\HanWei\Desktop\DSA_Assignment_G6_DY-JK-WN\DSA_Assignment_G6_DY-JK-WN\DSA_Assignment_G6_DY-JK-WN.cpp(207,23): warning C4018: '<': signed/unsigned mismatch
+C:\Users\HanWei\Desktop\DSA_Assignment_G6_DY-JK-WN\DSA_Assignment_G6_DY-JK-WN\DSA_Assignment_G6_DY-JK-WN.cpp(210,23): warning C4018: '<': signed/unsigned mismatch
 C:\Users\HanWei\Desktop\DSA_Assignment_G6_DY-JK-WN\DSA_Assignment_G6_DY-JK-WN\DSA_Assignment_G6_DY-JK-WN.cpp(276,20): warning C4018: '<': signed/unsigned mismatch
 C:\Users\HanWei\Desktop\DSA_Assignment_G6_DY-JK-WN\DSA_Assignment_G6_DY-JK-WN\DSA_Assignment_G6_DY-JK-WN.cpp(368,20): warning C4018: '<': signed/unsigned mismatch
 C:\Users\HanWei\Desktop\DSA_Assignment_G6_DY-JK-WN\DSA_Assignment_G6_DY-JK-WN\DSA_Assignment_G6_DY-JK-WN.cpp(371,21): warning C4018: '<': signed/unsigned mismatch
@@ -12,29 +12,32 @@ C:\Users\HanWei\Desktop\DSA_Assignment_G6_DY-JK-WN\DSA_Assignment_G6_DY-JK-WN\DS
 C:\Users\HanWei\Desktop\DSA_Assignment_G6_DY-JK-WN\DSA_Assignment_G6_DY-JK-WN\DSA_Assignment_G6_DY-JK-WN.cpp(540,20): warning C4018: '<': signed/unsigned mismatch
 C:\Users\HanWei\Desktop\DSA_Assignment_G6_DY-JK-WN\DSA_Assignment_G6_DY-JK-WN\DSA_Assignment_G6_DY-JK-WN.cpp(662,21): warning C4018: '<': signed/unsigned mismatch
 C:\Users\HanWei\Desktop\DSA_Assignment_G6_DY-JK-WN\DSA_Assignment_G6_DY-JK-WN\DSA_Assignment_G6_DY-JK-WN.cpp(671,20): warning C4018: '<': signed/unsigned mismatch
-C:\Users\HanWei\Desktop\DSA_Assignment_G6_DY-JK-WN\DSA_Assignment_G6_DY-JK-WN\DSA_Assignment_G6_DY-JK-WN.cpp(700,20): warning C4018: '<': signed/unsigned mismatch
+C:\Users\HanWei\Desktop\DSA_Assignment_G6_DY-JK-WN\DSA_Assignment_G6_DY-JK-WN\DSA_Assignment_G6_DY-JK-WN.cpp(691,21): warning C4018: '<': signed/unsigned mismatch
 C:\Users\HanWei\Desktop\DSA_Assignment_G6_DY-JK-WN\DSA_Assignment_G6_DY-JK-WN\DSA_Assignment_G6_DY-JK-WN.cpp(732,20): warning C4018: '<': signed/unsigned mismatch
-C:\Users\HanWei\Desktop\DSA_Assignment_G6_DY-JK-WN\DSA_Assignment_G6_DY-JK-WN\DSA_Assignment_G6_DY-JK-WN.cpp(767,20): warning C4018: '<': signed/unsigned mismatch
-C:\Users\HanWei\Desktop\DSA_Assignment_G6_DY-JK-WN\DSA_Assignment_G6_DY-JK-WN\DSA_Assignment_G6_DY-JK-WN.cpp(771,20): warning C4018: '<': signed/unsigned mismatch
-C:\Users\HanWei\Desktop\DSA_Assignment_G6_DY-JK-WN\DSA_Assignment_G6_DY-JK-WN\DSA_Assignment_G6_DY-JK-WN.cpp(804,21): warning C4018: '<': signed/unsigned mismatch
-C:\Users\HanWei\Desktop\DSA_Assignment_G6_DY-JK-WN\DSA_Assignment_G6_DY-JK-WN\DSA_Assignment_G6_DY-JK-WN.cpp(822,22): warning C4018: '<': signed/unsigned mismatch
-C:\Users\HanWei\Desktop\DSA_Assignment_G6_DY-JK-WN\DSA_Assignment_G6_DY-JK-WN\DSA_Assignment_G6_DY-JK-WN.cpp(796,6): warning C4101: 'rowNumber': unreferenced local variable
-C:\Users\HanWei\Desktop\DSA_Assignment_G6_DY-JK-WN\DSA_Assignment_G6_DY-JK-WN\DSA_Assignment_G6_DY-JK-WN.cpp(859,20): warning C4018: '<': signed/unsigned mismatch
-C:\Users\HanWei\Desktop\DSA_Assignment_G6_DY-JK-WN\DSA_Assignment_G6_DY-JK-WN\DSA_Assignment_G6_DY-JK-WN.cpp(922,20): warning C4018: '<': signed/unsigned mismatch
-C:\Users\HanWei\Desktop\DSA_Assignment_G6_DY-JK-WN\DSA_Assignment_G6_DY-JK-WN\DSA_Assignment_G6_DY-JK-WN.cpp(935,22): warning C4018: '<': signed/unsigned mismatch
-C:\Users\HanWei\Desktop\DSA_Assignment_G6_DY-JK-WN\DSA_Assignment_G6_DY-JK-WN\DSA_Assignment_G6_DY-JK-WN.cpp(943,22): warning C4018: '<': signed/unsigned mismatch
-C:\Users\HanWei\Desktop\DSA_Assignment_G6_DY-JK-WN\DSA_Assignment_G6_DY-JK-WN\DSA_Assignment_G6_DY-JK-WN.cpp(946,23): warning C4018: '<': signed/unsigned mismatch
-C:\Users\HanWei\Desktop\DSA_Assignment_G6_DY-JK-WN\DSA_Assignment_G6_DY-JK-WN\DSA_Assignment_G6_DY-JK-WN.cpp(951,24): warning C4018: '<': signed/unsigned mismatch
-C:\Users\HanWei\Desktop\DSA_Assignment_G6_DY-JK-WN\DSA_Assignment_G6_DY-JK-WN\DSA_Assignment_G6_DY-JK-WN.cpp(954,25): warning C4018: '<': signed/unsigned mismatch
-C:\Users\HanWei\Desktop\DSA_Assignment_G6_DY-JK-WN\DSA_Assignment_G6_DY-JK-WN\DSA_Assignment_G6_DY-JK-WN.cpp(967,25): warning C4018: '<': signed/unsigned mismatch
-C:\Users\HanWei\Desktop\DSA_Assignment_G6_DY-JK-WN\DSA_Assignment_G6_DY-JK-WN\DSA_Assignment_G6_DY-JK-WN.cpp(999,21): warning C4018: '<': signed/unsigned mismatch
-C:\Users\HanWei\Desktop\DSA_Assignment_G6_DY-JK-WN\DSA_Assignment_G6_DY-JK-WN\DSA_Assignment_G6_DY-JK-WN.cpp(1003,22): warning C4018: '<': signed/unsigned mismatch
-C:\Users\HanWei\Desktop\DSA_Assignment_G6_DY-JK-WN\DSA_Assignment_G6_DY-JK-WN\DSA_Assignment_G6_DY-JK-WN.cpp(1007,33): warning C4018: '<': signed/unsigned mismatch
-C:\Users\HanWei\Desktop\DSA_Assignment_G6_DY-JK-WN\DSA_Assignment_G6_DY-JK-WN\DSA_Assignment_G6_DY-JK-WN.cpp(1016,17): warning C4018: '>=': signed/unsigned mismatch
-C:\Users\HanWei\Desktop\DSA_Assignment_G6_DY-JK-WN\DSA_Assignment_G6_DY-JK-WN\DSA_Assignment_G6_DY-JK-WN.cpp(1050,20): warning C4018: '<': signed/unsigned mismatch
-C:\Users\HanWei\Desktop\DSA_Assignment_G6_DY-JK-WN\DSA_Assignment_G6_DY-JK-WN\DSA_Assignment_G6_DY-JK-WN.cpp(1059,21): warning C4018: '<': signed/unsigned mismatch
-C:\Users\HanWei\Desktop\DSA_Assignment_G6_DY-JK-WN\DSA_Assignment_G6_DY-JK-WN\DSA_Assignment_G6_DY-JK-WN.cpp(1068,20): warning C4018: '<': signed/unsigned mismatch
+C:\Users\HanWei\Desktop\DSA_Assignment_G6_DY-JK-WN\DSA_Assignment_G6_DY-JK-WN\DSA_Assignment_G6_DY-JK-WN.cpp(766,21): warning C4018: '<': signed/unsigned mismatch
+C:\Users\HanWei\Desktop\DSA_Assignment_G6_DY-JK-WN\DSA_Assignment_G6_DY-JK-WN\DSA_Assignment_G6_DY-JK-WN.cpp(801,21): warning C4018: '<': signed/unsigned mismatch
+C:\Users\HanWei\Desktop\DSA_Assignment_G6_DY-JK-WN\DSA_Assignment_G6_DY-JK-WN\DSA_Assignment_G6_DY-JK-WN.cpp(805,21): warning C4018: '<': signed/unsigned mismatch
+C:\Users\HanWei\Desktop\DSA_Assignment_G6_DY-JK-WN\DSA_Assignment_G6_DY-JK-WN\DSA_Assignment_G6_DY-JK-WN.cpp(827,21): warning C4018: '<': signed/unsigned mismatch
+C:\Users\HanWei\Desktop\DSA_Assignment_G6_DY-JK-WN\DSA_Assignment_G6_DY-JK-WN\DSA_Assignment_G6_DY-JK-WN.cpp(831,21): warning C4018: '<': signed/unsigned mismatch
+C:\Users\HanWei\Desktop\DSA_Assignment_G6_DY-JK-WN\DSA_Assignment_G6_DY-JK-WN\DSA_Assignment_G6_DY-JK-WN.cpp(865,21): warning C4018: '<': signed/unsigned mismatch
+C:\Users\HanWei\Desktop\DSA_Assignment_G6_DY-JK-WN\DSA_Assignment_G6_DY-JK-WN\DSA_Assignment_G6_DY-JK-WN.cpp(883,22): warning C4018: '<': signed/unsigned mismatch
+C:\Users\HanWei\Desktop\DSA_Assignment_G6_DY-JK-WN\DSA_Assignment_G6_DY-JK-WN\DSA_Assignment_G6_DY-JK-WN.cpp(857,6): warning C4101: 'rowNumber': unreferenced local variable
+C:\Users\HanWei\Desktop\DSA_Assignment_G6_DY-JK-WN\DSA_Assignment_G6_DY-JK-WN\DSA_Assignment_G6_DY-JK-WN.cpp(920,20): warning C4018: '<': signed/unsigned mismatch
+C:\Users\HanWei\Desktop\DSA_Assignment_G6_DY-JK-WN\DSA_Assignment_G6_DY-JK-WN\DSA_Assignment_G6_DY-JK-WN.cpp(983,20): warning C4018: '<': signed/unsigned mismatch
+C:\Users\HanWei\Desktop\DSA_Assignment_G6_DY-JK-WN\DSA_Assignment_G6_DY-JK-WN\DSA_Assignment_G6_DY-JK-WN.cpp(996,22): warning C4018: '<': signed/unsigned mismatch
+C:\Users\HanWei\Desktop\DSA_Assignment_G6_DY-JK-WN\DSA_Assignment_G6_DY-JK-WN\DSA_Assignment_G6_DY-JK-WN.cpp(1004,22): warning C4018: '<': signed/unsigned mismatch
+C:\Users\HanWei\Desktop\DSA_Assignment_G6_DY-JK-WN\DSA_Assignment_G6_DY-JK-WN\DSA_Assignment_G6_DY-JK-WN.cpp(1007,23): warning C4018: '<': signed/unsigned mismatch
+C:\Users\HanWei\Desktop\DSA_Assignment_G6_DY-JK-WN\DSA_Assignment_G6_DY-JK-WN\DSA_Assignment_G6_DY-JK-WN.cpp(1012,24): warning C4018: '<': signed/unsigned mismatch
+C:\Users\HanWei\Desktop\DSA_Assignment_G6_DY-JK-WN\DSA_Assignment_G6_DY-JK-WN\DSA_Assignment_G6_DY-JK-WN.cpp(1015,25): warning C4018: '<': signed/unsigned mismatch
+C:\Users\HanWei\Desktop\DSA_Assignment_G6_DY-JK-WN\DSA_Assignment_G6_DY-JK-WN\DSA_Assignment_G6_DY-JK-WN.cpp(1028,25): warning C4018: '<': signed/unsigned mismatch
+C:\Users\HanWei\Desktop\DSA_Assignment_G6_DY-JK-WN\DSA_Assignment_G6_DY-JK-WN\DSA_Assignment_G6_DY-JK-WN.cpp(1060,21): warning C4018: '<': signed/unsigned mismatch
+C:\Users\HanWei\Desktop\DSA_Assignment_G6_DY-JK-WN\DSA_Assignment_G6_DY-JK-WN\DSA_Assignment_G6_DY-JK-WN.cpp(1064,22): warning C4018: '<': signed/unsigned mismatch
+C:\Users\HanWei\Desktop\DSA_Assignment_G6_DY-JK-WN\DSA_Assignment_G6_DY-JK-WN\DSA_Assignment_G6_DY-JK-WN.cpp(1068,33): warning C4018: '<': signed/unsigned mismatch
+C:\Users\HanWei\Desktop\DSA_Assignment_G6_DY-JK-WN\DSA_Assignment_G6_DY-JK-WN\DSA_Assignment_G6_DY-JK-WN.cpp(1077,17): warning C4018: '>=': signed/unsigned mismatch
+C:\Users\HanWei\Desktop\DSA_Assignment_G6_DY-JK-WN\DSA_Assignment_G6_DY-JK-WN\DSA_Assignment_G6_DY-JK-WN.cpp(1119,20): warning C4018: '<': signed/unsigned mismatch
+C:\Users\HanWei\Desktop\DSA_Assignment_G6_DY-JK-WN\DSA_Assignment_G6_DY-JK-WN\DSA_Assignment_G6_DY-JK-WN.cpp(1128,21): warning C4018: '<': signed/unsigned mismatch
+C:\Users\HanWei\Desktop\DSA_Assignment_G6_DY-JK-WN\DSA_Assignment_G6_DY-JK-WN\DSA_Assignment_G6_DY-JK-WN.cpp(1137,20): warning C4018: '<': signed/unsigned mismatch
 C:\Users\HanWei\Desktop\DSA_Assignment_G6_DY-JK-WN\DSA_Assignment_G6_DY-JK-WN\DSA_Assignment_G6_DY-JK-WN.cpp(450): warning C4715: 'CalculateRouteDistance': not all control paths return a value
-C:\Users\HanWei\Desktop\DSA_Assignment_G6_DY-JK-WN\DSA_Assignment_G6_DY-JK-WN\DSA_Assignment_G6_DY-JK-WN.cpp(847): warning C4715: 'AddNewStation': not all control paths return a value
-C:\Users\HanWei\Desktop\DSA_Assignment_G6_DY-JK-WN\DSA_Assignment_G6_DY-JK-WN\DSA_Assignment_G6_DY-JK-WN.cpp(987): warning C4715: 'CheckStation': not all control paths return a value
+C:\Users\HanWei\Desktop\DSA_Assignment_G6_DY-JK-WN\DSA_Assignment_G6_DY-JK-WN\DSA_Assignment_G6_DY-JK-WN.cpp(908): warning C4715: 'AddNewStation': not all control paths return a value
+C:\Users\HanWei\Desktop\DSA_Assignment_G6_DY-JK-WN\DSA_Assignment_G6_DY-JK-WN\DSA_Assignment_G6_DY-JK-WN.cpp(1048): warning C4715: 'CheckStation': not all control paths return a value
   DSA_Assignment_G6_DY-JK-WN.vcxproj -> C:\Users\HanWei\Desktop\DSA_Assignment_G6_DY-JK-WN\Debug\DSA_Assignment_G6_DY-JK-WN.exe

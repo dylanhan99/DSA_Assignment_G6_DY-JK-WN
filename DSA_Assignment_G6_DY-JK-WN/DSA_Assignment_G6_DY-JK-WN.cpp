@@ -56,10 +56,10 @@ void init();
 
 int main()
 {
-	init();
-
-	cout << "\n";
-	InitDictionary();
+	//init();
+	//
+	//cout << "\n";
+	//InitDictionary();
 	//cout << "len = " << dic->getLength() << endl;
 
 	// Initialising variables
@@ -72,6 +72,9 @@ int main()
 	int option = 0;
 	while (true)
 	{
+		init();
+		InitDictionary();
+
 		string source;
 		string destination;
 		int distance = 0;
@@ -253,11 +256,9 @@ int main()
 				}
 				continue;
 
-			case 7:
-				cout << trim(asd).length() << endl;
-
 			default:
-				break;
+				cout << "No option - " << option << endl;
+				continue;
 		}
 	}
 }
@@ -680,9 +681,41 @@ bool WriteIntoStations(string stationID, string stationName, Dictionary<Station>
 	// Station dont need to be in order so can just add to the end
 	// Routes need to be in order so must adjust
 	// Interchanges also need
-	string strToWrite = stationID + "," + stationName;
-	WriteFile(StationsPath, strToWrite);
+	if (GetNum(stationID) != "-") {
+		string strToWrite = stationID + "," + stationName;
+		WriteFile(StationsPath, strToWrite);
+	}
+	else{
+		vector<string> stationIDVector;
+		int rowNumber = 0;
 
+		for (int i = 0; i < RoutesList->size(); i++) {
+			string row = RoutesList->at(i);
+
+			// Getting the stationID row
+			if (i % 2 == 0) {
+				stringstream ss(row);
+
+				// Get the prefix of the SECOND element in the routes list, and then compares it to the prefix of the one we want to add
+				//if (row.substr(row.find(",") + 1, 2) == stationID.substr(0, 1)) {
+				if (GetLine(row) == GetLine(stationID)) {
+					// Retrieve all stationIDs of the row here
+					while (ss.good())
+					{
+						string substr;
+						getline(ss, substr, ',');
+						stationIDVector.push_back(substr); // stationIDVector contains every stationID in the row (e.g. EW1, EW2, EW3...)
+						rowNumber = i;
+					}
+				}
+			}
+		}
+
+		string newStationID = GetLine(stationID) + to_string(stoi(GetNum(stationIDVector.back())) + 1);
+
+		string strToWrite = newStationID + "," + stationName;
+		WriteFile(StationsPath, strToWrite);
+	}
 	return true;
 }
 
@@ -728,60 +761,89 @@ bool WriteIntoRoutes(string stationID, string dist)
 		distanceVector.push_back(substr); // distanceVector contains the distances corresponding to stationIDVector
 	}
 
-	// Compare the numbers here
-	for (int i = 0; i < stationIDVector.size(); i++) {
-		int stationIDNumber;
-		if (stationIDVector.at(i).length() > 2)
-			stationIDNumber = stoi(GetNum(stationIDVector.at(i)));
-		else
-			stationIDNumber = 0;
+	if (GetNum(stationID) != "-")
+	{
+		// Compare the numbers here
+		for (int i = 0; i < stationIDVector.size(); i++) {
+			int stationIDNumber;
+			if (stationIDVector.at(i).length() > 2)
+				stationIDNumber = stoi(GetNum(stationIDVector.at(i)));
+			else
+				stationIDNumber = 0;
 			// If station ID number is greater than that of the one you're adding (e.g. EW14 > EW12)
 			// insert our new stationID inside the stationIDVector at the current position
 			// Available range here: First number until (last - 1)
-		if (stationIDNumber > stoi(GetNum(stationID))) {
-			stationIDVector.insert(stationIDVector.begin() + i, stationID);
+			if (stationIDNumber > stoi(GetNum(stationID))) {
+				stationIDVector.insert(stationIDVector.begin() + i, stationID);
 
-			// Calculate the distances here!!!
-			// Check if it is not the first number
-			// Deduct the distance from the previous position
-			if (i != 0)
+				// Calculate the distances here!!!
+				// Check if it is not the first number
+				// Deduct the distance from the previous position
+				if (i != 0)
+					distanceVector.at(i - 1) = to_string(stoi(distanceVector.at(i - 1)) - stoi(dist));
+
+				// insert our distance in this current position
+				distanceVector.insert(distanceVector.begin() + i, dist);
+
+				break;
+			}
+
+			// Check if it is the last number
+			if (i == stationIDVector.size() - 1 && stationIDNumber < stoi(GetNum(stationID))) {
+				stationIDVector.push_back(stationID);
+
+				// Calculate the distance between our current station ID and the previous station ID
 				distanceVector.at(i - 1) = to_string(stoi(distanceVector.at(i - 1)) - stoi(dist));
-
-			// insert our distance in this current position
-			distanceVector.insert(distanceVector.begin() + i, dist);
-
-			break;
+				distanceVector.insert(distanceVector.begin() + i, dist);
+				break;
+			}
 		}
 
-		// Check if it is the last number
-		if (i == stationIDVector.size() - 1 && stationIDNumber < stoi(GetNum(stationID))) {
-			stationIDVector.push_back(stationID);
-
-			// Calculate the distance between our current station ID and the previous station ID
-			distanceVector.at(i - 1) = to_string(stoi(distanceVector.at(i - 1)) - stoi(dist));
-			distanceVector.insert(distanceVector.begin() + i, dist);
-			break;
+		for (int i = 0; i < stationIDVector.size(); i++) {
+			//cout << stationIDVector.at(i) << endl;
+			stationIDString.append(stationIDVector.at(i) + ",");
 		}
+		for (int i = 0; i < distanceVector.size(); i++) {
+			//cout << distanceVector.at(i) << endl;
+			distanceString.append(distanceVector.at(i) + ",");
+		}
+		stationIDString.pop_back();
+		distanceString.pop_back();
+
+		cout << stationIDString << endl;
+		cout << distanceString << endl;
+
+		// Convert our vector into a string & write into file
+		WriteFile(RoutesPath, stationIDString, rowNumber);
+		WriteFile(RoutesPath, distanceString, rowNumber + 1);
 	}
+	// If stationID contains '-', add the station to the last column of line.
+	else
+	{
+		string newStationID = GetLine(stationID) + to_string(stoi(GetNum(stationIDVector.back())) + 1);
 
-	for (int i = 0; i < stationIDVector.size(); i++) {
-		//cout << stationIDVector.at(i) << endl;
-		stationIDString.append(stationIDVector.at(i) + ",");
+		stationIDVector.push_back(newStationID);
+		distanceVector.push_back(dist);
+
+		for (int i = 0; i < stationIDVector.size(); i++) {
+			//cout << stationIDVector.at(i) << endl;
+			stationIDString.append(stationIDVector.at(i) + ",");
+		}
+		for (int i = 0; i < distanceVector.size(); i++) {
+			//cout << distanceVector.at(i) << endl;
+			distanceString.append(distanceVector.at(i) + ",");
+		}
+		stationIDString.pop_back();
+		distanceString.pop_back();
+
+		cout << stationIDString << endl;
+		cout << distanceString << endl;
+
+		// Convert our vector into a string & write into file
+		WriteFile(RoutesPath, stationIDString, rowNumber);
+		WriteFile(RoutesPath, distanceString, rowNumber + 1);
+
 	}
-	for (int i = 0; i < distanceVector.size(); i++) {
-		//cout << distanceVector.at(i) << endl;
-		distanceString.append(distanceVector.at(i) + ",");
-	}
-	stationIDString.pop_back();
-	distanceString.pop_back();
-
-	cout << stationIDString << endl;
-	cout << distanceString << endl;
-
-	// Convert our vector into a string & write into file
-	WriteFile(RoutesPath, stationIDString, rowNumber);
-	WriteFile(RoutesPath, distanceString, rowNumber + 1);
-
 	return false;
 }
 
@@ -1030,6 +1092,14 @@ vector<string>* getConnections(string stationName)
 // General instantiating function. Used mainly to set new vectors
 void init()
 {
+	delete FaresList;
+	delete InterchangesList;
+	delete RoutesList;
+	delete StationsList;
+	delete LineList;
+	delete dic;
+	delete linesDict;
+
 	FaresList = new vector<string>();
 	InterchangesList = new vector<string>();
 	RoutesList = new vector<string>();
