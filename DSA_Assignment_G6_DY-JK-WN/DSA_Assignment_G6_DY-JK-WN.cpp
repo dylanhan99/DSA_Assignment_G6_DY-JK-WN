@@ -56,11 +56,6 @@ void init();
 
 int main()
 {
-	//init();
-	//
-	//cout << "\n";
-	//InitDictionary();
-	//cout << "len = " << dic->getLength() << endl;
 
 	// Initialising variables
 	int lineNumber;
