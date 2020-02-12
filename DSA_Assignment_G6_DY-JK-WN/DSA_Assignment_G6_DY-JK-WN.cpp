@@ -790,15 +790,31 @@ bool WriteIntoStations(string stationID, string stationName, Dictionary<Station>
 			return false;
 	}
 
-	// Name and ID are available on that line, add into CSV files
-	// Station dont need to be in order so can just add to the end
-	// Routes need to be in order so must adjust
-	// Interchanges also need
+	// Write the stationID in order in the file
 	if (GetNum(stationID) != "-") {
 		string strToWrite = stationID + "," + stationName;
-		WriteFile(StationsPath, strToWrite);
+		
+		// Find the line of the stationID (GetLine) and compare it with that in the file
+		int rowNumber = 0;
+		for (int i = 0; i < StationsList->size(); i++) {
+			string row = StationsList->at(i);
+			rowNumber += 1;
+			if (GetLine(row) == GetLine(stationID)) {
+				break;
+			}
+		}
+		for (int i = 0; i < StationsList->size(); i++) {
+			string row = StationsList->at(i);
+			rowNumber += 1;
+			if (GetNum(row) > GetNum(stationID)) {
+				break;
+			}
+		}
+
+		WriteFile(StationsPath, strToWrite, rowNumber-2);
 	}
-	else{
+	else 
+	{
 		vector<string> stationIDVector;
 		int rowNumber = 0;
 
@@ -809,8 +825,6 @@ bool WriteIntoStations(string stationID, string stationName, Dictionary<Station>
 			if (i % 2 == 0) {
 				stringstream ss(row);
 
-				// Get the prefix of the SECOND element in the routes list, and then compares it to the prefix of the one we want to add
-				//if (row.substr(row.find(",") + 1, 2) == stationID.substr(0, 1)) {
 				if (GetLine(row) == GetLine(stationID)) {
 					// Retrieve all stationIDs of the row here
 					while (ss.good())
@@ -827,7 +841,21 @@ bool WriteIntoStations(string stationID, string stationName, Dictionary<Station>
 		string newStationID = GetLine(stationID) + to_string(stoi(GetNum(stationIDVector.back())) + 1);
 
 		string strToWrite = newStationID + "," + stationName;
-		WriteFile(StationsPath, strToWrite);
+
+		// Find the line of the stationID (GetLine) and compare it with that in the file
+		rowNumber = 0;
+
+		for (int i = 0; i < StationsList->size(); i++) {
+			string row = StationsList->at(i);
+			rowNumber += 1;
+			if (GetLine(row) == GetLine(stationID)) {
+				break;
+			}
+		}
+
+		rowNumber += stoi(GetNum(stationIDVector.back()));
+		cout << rowNumber << endl;
+		//WriteFile(StationsPath, strToWrite, rowNumber);
 	}
 	return true;
 }
@@ -849,9 +877,8 @@ bool WriteIntoRoutes(string stationID, string dist)
 		// Getting the stationID row
 		if (i % 2 == 0) {
 			stringstream ss(row);
-
-			// Get the prefix of the SECOND element in the routes list, and then compares it to the prefix of the one we want to add
-			//if (row.substr(row.find(",") + 1, 2) == stationID.substr(0, 1)) {
+			
+			// Comparing if the line of the station is the same as that of our stationID
 			if (GetLine(row) == GetLine(stationID)) {
 				// Retrieve all stationIDs of the row here
 				while (ss.good())
@@ -860,6 +887,7 @@ bool WriteIntoRoutes(string stationID, string dist)
 					getline(ss, substr, ',');
 					stationIDVector.push_back(substr); // stationIDVector contains every stationID in the row (e.g. EW1, EW2, EW3...)
 					rowNumber = i;
+
 				}
 			}
 		}
@@ -883,6 +911,7 @@ bool WriteIntoRoutes(string stationID, string dist)
 				stationIDNumber = stoi(GetNum(stationIDVector.at(i)));
 			else
 				stationIDNumber = 0;
+
 			// If station ID number is greater than that of the one you're adding (e.g. EW14 > EW12)
 			// insert our new stationID inside the stationIDVector at the current position
 			// Available range here: First number until (last - 1)
@@ -913,18 +942,13 @@ bool WriteIntoRoutes(string stationID, string dist)
 		}
 
 		for (int i = 0; i < stationIDVector.size(); i++) {
-			//cout << stationIDVector.at(i) << endl;
 			stationIDString.append(stationIDVector.at(i) + ",");
 		}
 		for (int i = 0; i < distanceVector.size(); i++) {
-			//cout << distanceVector.at(i) << endl;
 			distanceString.append(distanceVector.at(i) + ",");
 		}
 		stationIDString.pop_back();
 		distanceString.pop_back();
-
-		cout << stationIDString << endl;
-		cout << distanceString << endl;
 
 		// Convert our vector into a string & write into file
 		WriteFile(RoutesPath, stationIDString, rowNumber);
@@ -939,24 +963,20 @@ bool WriteIntoRoutes(string stationID, string dist)
 		distanceVector.push_back(dist);
 
 		for (int i = 0; i < stationIDVector.size(); i++) {
-			//cout << stationIDVector.at(i) << endl;
 			stationIDString.append(stationIDVector.at(i) + ",");
 		}
 		for (int i = 0; i < distanceVector.size(); i++) {
-			//cout << distanceVector.at(i) << endl;
 			distanceString.append(distanceVector.at(i) + ",");
 		}
 		stationIDString.pop_back();
 		distanceString.pop_back();
-
-		cout << stationIDString << endl;
-		cout << distanceString << endl;
 
 		// Convert our vector into a string & write into file
 		WriteFile(RoutesPath, stationIDString, rowNumber);
 		WriteFile(RoutesPath, distanceString, rowNumber + 1);
 
 	}
+
 	return false;
 }
 
@@ -1006,6 +1026,7 @@ void WriteIntoInterchanges(string stationID, string stationName, Dictionary<Stat
 		cout << stationName << " will not be an interchange" << endl;
 }
 
+
 // Lim Wan Ning
 // 10177683K
 // Group 6
@@ -1020,6 +1041,10 @@ bool AddNewStation(string stationID, string stationName, string distToNext, Dict
 	else
 		return false;
 }
+
+//bool AddNewRoute(string stationID, string stationName, string dist) {
+//
+//}
 
 // Han Wei Dylan
 // 10178483G
