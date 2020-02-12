@@ -260,6 +260,9 @@ bool Dictionary<ItemType>::get(KeyType key, ItemType* item)
 template <class ItemType>
 bool Dictionary<ItemType>::contains(KeyType key)
 {
+	if (key == "")
+		return false;
+
 	int index = hash(key) % DIC_MAX_SIZE;
 	//Station returnItem;
 	Node* currentNode = NULL;
@@ -277,7 +280,7 @@ bool Dictionary<ItemType>::contains(KeyType key)
 		{
 			x += 1;
 			index = (hash(key) + x) % DIC_MAX_SIZE;
-			if (items[index != NULL])
+			if (items[index] != NULL)
 			{
 				currentNode = items[index];
 
@@ -286,6 +289,9 @@ bool Dictionary<ItemType>::contains(KeyType key)
 					return true;
 				}
 			}
+
+			if (x > DIC_MAX_SIZE)
+				return false;
 
 		}
 

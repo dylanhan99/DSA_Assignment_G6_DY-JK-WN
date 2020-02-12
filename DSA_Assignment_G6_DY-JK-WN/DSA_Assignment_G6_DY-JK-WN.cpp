@@ -45,7 +45,7 @@ bool AddNewStation(string stationID, string stationName, string distToNext, Dict
 bool WriteFile(string filePath, string str);
 bool WriteFile(string filePath, string str, int line);
 void InitDictionary();
-string FindInterchange(vector<string> sourceLineStations, string sourceLineName, string source, string destinationLineName, Dictionary<Station> stationDict);
+int FindInterchange(Station source, Station destination, Dictionary<Station> stationDict, ListDictionary<string> linesDict, Station* outInterchange);
 void printLinesOptions();
 void printStationsInLine(int lineNumber);
 void CalculateThreeRoutes(string source, string destination);
@@ -182,7 +182,10 @@ int main()
 				}
 				else
 				{
-					cout << "Invalid Query" << endl;
+					if (distance < 0)
+						cout << "Error finding route." << endl;
+					else
+						cout << "Invalid Query" << endl << endl;
 				}
 
 				continue;
@@ -298,8 +301,12 @@ int CalculateFares(int routeLength)
 int CalculateRoute(string source, string destination, Dictionary<Station> stationDict, ListDictionary<string> lineDict)
 {
 	int totalDistance = 0;
+
 	trimAll(&source);
 	trimAll(&destination);
+
+	vector<Station> sourceStations;
+	vector<Station> destinationStations;
 
 	Station sourceStation;
 	Station destinationStation;
@@ -309,8 +316,8 @@ int CalculateRoute(string source, string destination, Dictionary<Station> statio
 
 	if (isSourceExists && isDestinationExists)
 	{
-		sourceStation = *stationDict.get(source);
-		destinationStation = *stationDict.get(destination);
+		sourceStations = *stationDict.getStations(source);
+		destinationStations = *stationDict.getStations(destination);
 	}
 	else
 	{
@@ -321,39 +328,60 @@ int CalculateRoute(string source, string destination, Dictionary<Station> statio
 		return 0;
 	}
 
-	//if (!stationDict.get(source, &sourceStation) || !stationDict.get(source, &destinationstation))
-	//{
-	//	cout << "Station does not exist." << endl;
-	//	return 0;
-	//}
-
-	string sourceLineName = GetLine(sourceStation.getStationID());
-	string destinationLineName = GetLine(destinationStation.getStationID());
-
-	vector<string> sourceLineStations;
-	vector<string> destinationLineStations;
-	//vector<string> interchangeLineStations;
-
-	//Compare Lines
-	sourceLineStations = *lineDict.get(sourceLineName);
-	destinationLineStations = *lineDict.get(destinationLineName);
-
-	if (sourceLineName != destinationLineName)
+	bool sameLine = false;
+	for (int s = 0; s < sourceStations.size(); s++)
 	{
-		string nearestInterchange = FindInterchange(sourceLineStations, sourceLineName, source, destinationLineName, stationDict);
+		Station sStation = sourceStations[s];
+		string sourceLine = sStation.getStationID().substr(0, 1);
+		bool matchFound = false;
 
-		Station interchangeStation = stationDict.getByID(nearestInterchange);
-		string interchange = interchangeStation.getStationName();
-		trimAll(&interchange);
+		for (int d = 0; d < destinationStations.size(); d++)
+		{
+			Station dStation = destinationStations[d];
+			string destLine = dStation.getStationID().substr(0, 1);
+			if (destLine == sourceLine)
+			{
+				destinationStation = dStation;
+				sourceStation = sStation;
 
-		totalDistance += CalculateRouteDistance(sourceLineStations, source, interchange, stationDict);
+				sameLine = true;
+				matchFound = true;
 
-		source = interchange;
-		sourceLineStations = destinationLineStations;
+				break;
+			}
+
+		}
+		if (matchFound)
+			break;
 
 	}
 
-	totalDistance += CalculateRouteDistance(sourceLineStations, source, destination, stationDict);
+	string sourceLineName = sourceStation.getStationID().substr(0, 1);
+	string destinationLineName = destinationStation.getStationID().substr(0, 1);
+
+	if (!sameLine)
+	{
+		Station interchange;
+		int distanceToInterchange = FindInterchange(sourceStation, destinationStation, stationDict, lineDict, &interchange);
+		if (distanceToInterchange >= 0)
+			totalDistance += distanceToInterchange;
+		else
+			return 0;
+
+		source = interchange.getStationName();
+		trimAll(&source);
+
+	}
+
+	vector<string> sourceLineStations;
+	vector<string> destinationLineStations;
+
+	sourceLineStations = *lineDict.get(sourceLineName);
+	destinationLineStations = *lineDict.get(destinationLineName);
+
+	vector<string> stations = destinationLineStations;
+
+	totalDistance += CalculateRouteDistance(stations, source, destination, stationDict);
 	return totalDistance;
 
 }
@@ -362,45 +390,131 @@ int CalculateRoute(string source, string destination, Dictionary<Station> statio
 // 10177804G
 // Group 6
 // Closest interchange is returned by using a list of stations on the source and destination lines.
-string FindInterchange(vector<string> sourceLineStations, string sourceLineName, string source, string destinationLineName, Dictionary<Station> stationDict)
+int FindInterchange(Station source, Station destination, Dictionary<Station> stationDict, ListDictionary<string> linesDict, Station* outInterchange)
 {
-	vector<vector<string>> availableInterchanges;
-	vector<string> lineInterchanges;
+	vector<Station> availableInterchanges;
+	vector<string> interchanges;
+	string nearestInterchange;
+
+	int shortestDistanceFromSource = -1;
+	int shortestDistance = -1;
+
+	//string sourceLineName = source.getStationID().substr(0, 1);
+	//string destinationLineName = destination.getStationID().substr(0, 1);
+
+	vector<Station> sourceStations = *stationDict.getStations(source.getStationName());
+	vector<Station> destinationStations = *stationDict.getStations(destination.getStationName());
+
 	for (int i = 0; i < InterchangesList->size(); i++)
 	{
 		vector<string> interchange = *Split(InterchangesList->at(i), ',');
 		for (int n = 0; n < interchange.size(); n++)
 		{
-			if (GetLine(interchange[n]) == sourceLineName)
+			string lineName = interchange[n].substr(0, 1);
+			for (int s = 0; s < sourceStations.size(); s++)
 			{
-				availableInterchanges.push_back(interchange);
-				lineInterchanges.push_back(interchange[n]);
+				string sourceLineName = sourceStations[s].getStationID().substr(0, 1);
+				if (lineName == sourceLineName)
+				{
+					interchanges.push_back(interchange[n]);
+					break;
 
+				}
 			}
 
 		}
 
 	}
 
-	string nearestInterchange;
-	int shortestDistance = -1;
-	for (int i = 0; i < availableInterchanges.size(); i++)
+	for (int i = 0; i < interchanges.size(); i++)
 	{
-		Station destStation = stationDict.getByID(lineInterchanges[i]);
-		string destination = destStation.getStationName();
-		trimAll(&destination);
+		Station station = stationDict.getByID(interchanges[i]);
+		vector<Station> interchangeStations = *stationDict.getStations(station.getStationName());
 
-		int interchangeDistance = CalculateRouteDistance(sourceLineStations, source, destination, stationDict);
-		if (shortestDistance < 0 || interchangeDistance < shortestDistance)
+		for (int n = 0; n < interchangeStations.size(); n++)
 		{
-			shortestDistance = interchangeDistance;
-			nearestInterchange = lineInterchanges[i];
+			string lineName = interchangeStations[n].getStationID().substr(0, 1);
+			for (int s = 0; s < destinationStations.size(); s++)
+			{
+				string destinationLineName = destinationStations[s].getStationID().substr(0, 1);
+				if (lineName == destinationLineName)
+				{
+					availableInterchanges.push_back(interchangeStations[n]);
+				}
+			}
 
 		}
 
 	}
 
-	return nearestInterchange;
+	if (availableInterchanges.size() > 0)
+	{
+		for (int i = 0; i < availableInterchanges.size(); i++)
+		{
+			Station interchange = availableInterchanges[i];
+			string interchangeID = interchange.getStationID();
+			string interchangeLine = interchangeID.substr(0, 1);
+
+			if (interchange.getStationName() == destination.getStationName())
+				continue;
+
+			for (int s = 0; s < sourceStations.size(); s++)
+			{
+				Station sourceStation = sourceStations[s];
+				string sourceLine = sourceStation.getStationID().substr(0, 1);
+
+				if (sourceLine == interchangeLine)
+				{
+					source = sourceStation;
+					break;
+				}
+
+			}
+
+			for (int s = 0; s < destinationStations.size(); s++)
+			{
+				Station destinationStation = destinationStations[s];
+				string destinationLine = destinationStation.getStationID().substr(0, 1);
+
+				if (destinationLine == interchangeLine)
+				{
+					destination = destinationStation;
+					break;
+				}
+
+			}
+
+			string sourceLine = source.getStationID().substr(0, 1);
+			if (sourceLine != interchangeLine)
+				continue;
+
+			string sourceName = source.getStationName();
+			string destinationName = destination.getStationName();
+			string interchangeName = interchange.getStationName();
+
+			vector<string> stations = *linesDict.get(interchangeLine);
+			int distanceFromSource = CalculateRouteDistance(stations, sourceName, interchangeName, stationDict);
+			int distanceFromDestination = CalculateRouteDistance(stations, destinationName, interchangeName, stationDict);
+
+			int interchangeDistance = distanceFromSource + distanceFromDestination;
+
+			if (shortestDistance < 0 || interchangeDistance < shortestDistance)
+			{
+				shortestDistance = interchangeDistance;
+				shortestDistanceFromSource = distanceFromSource;
+				nearestInterchange = interchangeName;
+				*outInterchange = interchange;
+
+			}
+
+		}
+	}
+	else
+	{
+
+	}
+
+	return shortestDistanceFromSource;
 
 }
 
@@ -412,10 +526,14 @@ int CalculateRouteDistance(vector<string> line, string source, string destinatio
 {
 	int distance = 0;
 	int lineLength = line.size();
+
+	trimAll(&source);
+	trimAll(&destination);
+
 	if (lineLength > 0)
 	{
-		int start;
-		int end;
+		int start = 0;
+		int end = 0;
 
 		for (int i = 0; i < lineLength; i++)
 		{
@@ -636,10 +754,10 @@ bool WriteFile(string filePath, string str, int line)
 	{
 		cout << fileData->size() << endl;
 		while(fileData->size() > 0)
-		{	
+		{
 			myfile << fileData->front() << "\n";
 			fileData->erase(fileData->begin());
-		}		
+		}
 
 		myfile.close();
 		return true;
